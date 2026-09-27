@@ -22,7 +22,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] S6 · Question graph and tap answers — Needs: S3, C1
 - [x] W1 · Web app skeleton — Needs: F1
 - [x] W2 · Staff login and auto-lock — Needs: W1, F6
-- [ ] W3 · Doctor queue board — Needs: W2
+- [x] W3 · Doctor queue board — Needs: W2
 - [ ] W4 · Patient view layout (fixtures) — Needs: W1
 - [ ] W12 · Assisted desk: walk-in registration — Needs: W2, S3
 - [ ] A1 · Android project skeleton and settings — Needs: —
