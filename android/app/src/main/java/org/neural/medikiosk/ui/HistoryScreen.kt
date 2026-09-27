@@ -15,13 +15,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import java.io.File
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonElement
 import org.neural.medikiosk.IntakeViewModel
 import org.neural.medikiosk.R
+import org.neural.medikiosk.data.answerAudio
 import org.neural.medikiosk.data.errorCode
+import org.neural.medikiosk.net.Choice
 import org.neural.medikiosk.net.AnswerRequest
 import org.neural.medikiosk.net.NextQuestion
 import org.neural.medikiosk.net.Question
@@ -45,6 +51,11 @@ fun HistoryScreen(vm: IntakeViewModel, onDone: () -> Unit) {
     var busy by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    var voice by remember { mutableStateOf(VoicePhase.IDLE) }
+    val micHidden = remember { mutableStateListOf<String>() }  // questions where speech failed (503): tap only
+    var didYouMean by remember { mutableStateOf<Pair<String?, List<Choice>>?>(null) }
+    val debugClip = remember { debugFile(context, "voice.m4a") }
 
     fun show(next: NextQuestion) {
         if (next.done || next.question == null) {
@@ -66,6 +77,28 @@ fun HistoryScreen(vm: IntakeViewModel, onDone: () -> Unit) {
         }
     }
 
+    fun answerByVoice(q: Question, clip: File) {
+        voice = VoicePhase.UPLOADING; error = null; didYouMean = null
+        scope.launch {
+            val phase = launch { delay(1200); voice = VoicePhase.UNDERSTANDING }
+            val r = try { vm.repo.answerAudio(session.id, q.id, lang, clip) } finally { clip.delete() }
+            phase.cancel()
+            voice = VoicePhase.IDLE
+            r.onSuccess {
+                if (it.alerts.isNotEmpty()) vm.triageAlerts = vm.triageAlerts + it.alerts
+                if (it.fallbackChoices.isNotEmpty() || it.answer.status == "uncertain") {
+                    didYouMean = it.answer.rawText to it.fallbackChoices.ifEmpty { q.choices }
+                } else {
+                    vm.previousQuestions.add(q)
+                    show(it.next)
+                }
+            }
+            val code = r.errorCode()
+            if (code == "nlp_unavailable") micHidden.add(q.id)
+            error = code
+        }
+    }
+
     fun answer(q: Question, value: JsonElement) {
         if (busy) return
         busy = true; error = null
@@ -83,6 +116,7 @@ fun HistoryScreen(vm: IntakeViewModel, onDone: () -> Unit) {
 
     // Fresh start or resume: ask the server for the first unanswered question.
     LaunchedEffect(session.id) { if (vm.question == null) load() }
+    LaunchedEffect(vm.question?.id) { didYouMean = null; voice = VoicePhase.IDLE }
     BackHandler(enabled = vm.previousQuestions.isNotEmpty()) {
         vm.question = vm.previousQuestions.removeAt(vm.previousQuestions.lastIndex)
         error = null
@@ -103,9 +137,20 @@ fun HistoryScreen(vm: IntakeViewModel, onDone: () -> Unit) {
                 LinearProgressIndicator(progress = { p.answered.toFloat() / total }, modifier = Modifier.fillMaxWidth())
                 Text(tr(R.string.history_progress, p.answered, total), style = MaterialTheme.typography.bodyMedium)
             }
+            val dym = didYouMean
+            if (dym != null) {
+                DidYouMeanScreen(q, dym.first, dym.second, enabled = !busy, onChoice = { answer(q, it) },
+                    onSpeakAgain = { didYouMean = null }, onTapInstead = { didYouMean = null })
+                if (busy) CircularProgressIndicator()
+                return@ScreenBody
+            }
             Heading(q.text)
             if (busy) CircularProgressIndicator()
-            AnswerInput(q, enabled = !busy) { answer(q, it) }
+            if (q.allowVoice && q.id !in micHidden) {
+                MicButton(voice, enabled = !busy, onRecorded = { answerByVoice(q, it) }, debugClip = debugClip, onPhase = { voice = it })
+                Text(tr(R.string.mic_or_tap), style = MaterialTheme.typography.bodyMedium)
+            }
+            AnswerInput(q, enabled = !busy && voice == VoicePhase.IDLE) { answer(q, it) }
             if (vm.previousQuestions.isNotEmpty()) {
                 BigOutlinedButton(tr(R.string.history_previous), Icons.AutoMirrored.Filled.ArrowBack, {
                     vm.question = vm.previousQuestions.removeAt(vm.previousQuestions.lastIndex); error = null

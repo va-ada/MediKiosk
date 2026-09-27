@@ -2,6 +2,11 @@ package org.neural.medikiosk.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import org.neural.medikiosk.net.Api
 import org.neural.medikiosk.net.ApiClient
 import kotlin.coroutines.cancellation.CancellationException
@@ -31,6 +36,27 @@ class KioskRepository(private val settings: () -> DeviceSettings) {
             Result.failure(ApiFailure(ApiClient.errorCode(t), t))
         }
     }
+}
+
+/** Voice answer upload (multipart `question_id`, `language`, `audio`, §4.3). The caller deletes [clip] afterwards. */
+suspend fun KioskRepository.answerAudio(sessionId: String, questionId: String, language: String, clip: File) = call {
+    val text = "text/plain".toMediaType()
+    answerAudio(
+        sessionId,
+        questionId.toRequestBody(text),
+        language.toRequestBody(text),
+        MultipartBody.Part.createFormData("audio", clip.name, clip.asRequestBody("audio/mp4".toMediaType())),
+    )
+}
+
+/** Document page upload (multipart `image` jpeg/png, `page_no`, §4.4). */
+suspend fun KioskRepository.uploadDocument(sessionId: String, pageNo: Int, image: File) = call {
+    val type = if (image.extension.lowercase() == "png") "image/png" else "image/jpeg"
+    uploadDocument(
+        sessionId,
+        MultipartBody.Part.createFormData("image", image.name, image.asRequestBody(type.toMediaType())),
+        pageNo.toString().toRequestBody("text/plain".toMediaType()),
+    )
 }
 
 /** The §1 error code of a failed [Result]. */

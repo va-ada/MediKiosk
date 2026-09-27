@@ -122,4 +122,17 @@
 
     <!-- Audio (A9) -->
     <string name="listen_again">Listen again</string>
+
+    <!-- Voice (A8) -->
+    <string name="mic_hold">Hold the button and speak</string>
+    <string name="mic_recording">Listening… let go when you finish</string>
+    <string name="mic_uploading">Sending…</string>
+    <string name="mic_understanding">Understanding…</string>
+    <string name="mic_too_short">Hold the button a little longer while you speak</string>
+    <string name="mic_allow">Allow the microphone, then hold to speak</string>
+    <string name="mic_or_tap">— or tap your answer below —</string>
+    <string name="dym_title">Did you mean…?</string>
+    <string name="dym_heard">We heard: “%1$s”</string>
+    <string name="dym_speak_again">Speak again</string>
+    <string name="dym_tap_instead">Show all answers to tap</string>
 </resources>

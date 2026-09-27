@@ -120,4 +120,17 @@
 
     <!-- Audio (A9) -->
     <string name="listen_again">फिर से सुनें</string>
+
+    <!-- Voice (A8) -->
+    <string name="mic_hold">बटन दबाकर रखें और बोलें</string>
+    <string name="mic_recording">सुन रहे हैं… बोलकर बटन छोड़ दें</string>
+    <string name="mic_uploading">भेज रहे हैं…</string>
+    <string name="mic_understanding">समझ रहे हैं…</string>
+    <string name="mic_too_short">बोलते समय बटन थोड़ी देर दबाकर रखें</string>
+    <string name="mic_allow">माइक चालू करने दें, फिर दबाकर बोलें</string>
+    <string name="mic_or_tap">— या नीचे छूकर जवाब दें —</string>
+    <string name="dym_title">क्या आपका मतलब यह था?</string>
+    <string name="dym_heard">हमने सुना: “%1$s”</string>
+    <string name="dym_speak_again">फिर से बोलें</string>
+    <string name="dym_tap_instead">सभी जवाब छूकर चुनें</string>
 </resources>
