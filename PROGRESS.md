@@ -67,7 +67,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 5 — Summary and doctor review
 - [x] N8 · Grounded summarisation (`/summarize`) — Needs: N3
-- [ ] S12 · Summary builder and submit — Needs: S11, N8
+- [x] S12 · Summary builder and submit — Needs: S11, N8
 - [x] S13 · Read-back — Needs: S6
 - [ ] A11 · Read-back screen and submit — Needs: A10, S13, S12
 - [x] S14 · Verification endpoints — Needs: S12
@@ -139,3 +139,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N3] `/extract` never 5xx for Ollama trouble: Ollama down/HTTP error → 200 `uncertain` + note `language model unavailable` (S7 shows fallback choices). Also `uncertain` when every slot is null (`nothing extracted`). Rule-based `normalize()` duration **overrides** the model's (the 3B model says 15/30 for "teen mahine"), with a note. Prompt adds choice labels (en, hi) looked up by slot name from content/questions/*.yaml — the 3B model maps "ghutne"→knee only with them; it is reliable single-slot (~0.5 s warm), weaker multi-slot Devanagari. Manual: `python3 scripts/try_extract.py [--question jp_x] "text"` (re-execs via `uv run --project nlp`).
 - [N4] `negation.check(text, slots, slot_keywords=None)` only touches slots the model set to `true` that are in the keyword map (fever, swelling, injury, chest_pain, breathless, fainted); window = 3 tokens either side; conservative ("haan bukhar hai, sujan nahi" also drops fever → uncertain → tap). Note text: `fever=true dropped: negation 'nahi hai' near 'bukhar'`.
 - [N8] `/summarize` always 200: `{narrative, unsupported_terms, fallback_used}`; S12 should send only complaint+hpi facts (allergies/drugs/labs are templated, rule 4). Checks per sentence: numbers (digits + two..hundred words), clinical/diagnosis/advice words (list + lexicon concept words), and asserting a symptom the facts only deny ("No fever" → "has fever" dropped). ~2–3 s warm for 10 facts; Ollama down / nothing left → facts `text_en` joined "; ", `fallback_used: true`; no facts → narrative "".
+- [S12] Live-verified with real `/summarize` (qwen2.5:3b): narrative generated at submit (~3 s), reused by doctor GET (~0.02 s) while HPI facts are unchanged. Known limitation: the model can mis-attribute facts (e.g. "swelling relieved by heat" when heat relieves pain) — the faithfulness check only catches unsupported numbers/terms, so the UI must keep the "AI-drafted — verify" label next to the narrative.
