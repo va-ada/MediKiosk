@@ -175,7 +175,7 @@ def post_audio_answer(
 
     slot = question["slot"]
     slot_spec: dict[str, Any] = {"name": slot["name"], "type": slot["type"]}
-    if question.get("choices"):
+    if question.get("choices") and slot["type"] in ("enum", "list_enum"):  # duration/number choices are tap fallbacks only
         slot_spec["enum"] = [c["value"] for c in question["choices"]]
     with httpx.Client() as client:
         asr = _nlp(

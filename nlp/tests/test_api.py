@@ -50,20 +50,29 @@ def test_asr_with_fake_model(client, monkeypatch: pytest.MonkeyPatch, say_clip) 
 
     def fake_model(wav, lang, mode):
         calls.append((tuple(wav.shape), lang, mode))
-        return "my knee hurts"
+        return "मेरे घुटने में दर्द है"
 
     make_engine(monkeypatch, lambda: fake_model)
-    r = client.post("/asr", files={"audio": ("k.m4a", say_clip.read_bytes(), "audio/mp4")}, data={"language": "en"})
+    r = client.post("/asr", files={"audio": ("k.m4a", say_clip.read_bytes(), "audio/mp4")}, data={"language": "hi"})
     assert r.status_code == 200, r.text
     body = r.json()
-    assert body["text"] == "my knee hurts" and body["confidence"] == 0.85 and body["duration_sec"] > 0
-    assert calls[0][0][0] == 1 and calls[0][1:] == ("en", "ctc")
+    assert body["text"] == "मेरे घुटने में दर्द है" and body["duration_sec"] > 0
+    assert body["confidence"] == asr.confidence(body["text"], body["duration_sec"], "hi")
+    assert calls[0][0][0] == 1 and calls[0][1:] == ("hi", "ctc")
+
+
+def test_asr_english_is_unsupported(client, monkeypatch: pytest.MonkeyPatch, say_clip) -> None:
+    """IndicConformer has no English: 422 unsupported_language, and the model is never called."""
+    calls: list[str] = []
+    make_engine(monkeypatch, lambda: lambda *a: calls.append("called") or "x")
+    r = client.post("/asr", files={"audio": ("k.m4a", say_clip.read_bytes(), "audio/mp4")}, data={"language": "en"})
+    assert r.status_code == 422 and r.json()["error"]["code"] == "unsupported_language" and calls == []
 
 
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg missing")
 def test_asr_invalid_audio(client, monkeypatch: pytest.MonkeyPatch) -> None:
     make_engine(monkeypatch, lambda: lambda *a: "x")
-    r = client.post("/asr", files={"audio": ("a.wav", b"garbage", "audio/wav")}, data={"language": "en"})
+    r = client.post("/asr", files={"audio": ("a.wav", b"garbage", "audio/wav")}, data={"language": "hi"})
     assert r.status_code == 422 and r.json()["error"]["code"] == "invalid_audio"
 
 

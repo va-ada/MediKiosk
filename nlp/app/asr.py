@@ -101,9 +101,26 @@ def wav_to_samples(wav_bytes: bytes) -> tuple[Any, float]:
 
 
 def _load_indic_conformer() -> Any:
-    from transformers import AutoModel
+    """Load IndicConformer from a plain folder of real files (`settings.asr_model_dir`).
 
-    model = AutoModel.from_pretrained(settings.asr_model, trust_remote_code=True)
+    The model's own `from_pretrained` always resolves to the Hugging Face cache, whose files are symlinks into
+    `blobs/`; recent onnxruntime refuses ONNX external data that "escapes" the model directory through them.
+    So we download once into a normal folder (no symlinks) and build the model from its own pinned code
+    (`model_onnx.py`, the file `trust_remote_code=True` would run) pointing at that folder.
+    """
+    import importlib.util
+
+    model_dir = settings.asr_model_dir
+    if not (model_dir / "model_onnx.py").exists():
+        from huggingface_hub import snapshot_download  # gated repo: needs `hf auth login` + accepted terms
+
+        snapshot_download(repo_id=settings.asr_model, local_dir=model_dir)
+    spec = importlib.util.spec_from_file_location("indic_conformer_model_onnx", model_dir / "model_onnx.py")
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load model code from {model_dir}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    model = module.IndicASRModel(module.IndicASRConfig(ts_folder=str(model_dir)))
     if settings.asr_device != "cpu" and hasattr(model, "to"):
         model = model.to(settings.asr_device)
     return model
@@ -148,8 +165,7 @@ class AsrEngine:
 
     def transcribe(self, wav: Any, language: str) -> str:
         """Run CTC decoding on a [1, n] float32 16 kHz mono tensor."""
-        # VERIFY against model card once gated access works: signature `model(wav, lang, "ctc")`,
-        # input = torch float tensor [1, n] at 16 kHz mono, output = transcript str.
+        # Verified against the model card (2026-09-28): `model(wav, lang, "ctc")` on a [1, n] 16 kHz mono tensor.
         with self._infer_lock:
             if settings.asr_device != "cpu" and hasattr(wav, "to"):
                 wav = wav.to(settings.asr_device)
@@ -158,5 +174,9 @@ class AsrEngine:
             out = out[0] if out else ""
         return str(out).strip()
 
+
+# IndicConformer covers 22 Indian languages (IN-22) and has NO English: English speakers answer by tap
+# (the server sends `allow_voice: false` for English questions).
+ASR_LANGUAGES = frozenset({"hi"})
 
 engine = AsrEngine()

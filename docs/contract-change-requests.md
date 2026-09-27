@@ -30,3 +30,9 @@ Everything §4 marks is enforced (a test walks every route). These three are out
    *Proposal:* after 5 wrong PINs for a staff id, `429 too_many_attempts` for 5 minutes (audited). Kept server-side in the DB so restarts don't reset it.
 3. **The kiosk header is only an identifier (§1 "K").** Any LAN device can send `X-Kiosk-Id: KIOSK-01` and register patients, answer questions or raise alarms.
    *Proposal:* per-device secret `X-Kiosk-Key` provisioned in the hidden settings screen and checked against a `kiosk_device` list in `.env`/settings. (Demo-acceptable as is on an isolated hotspot; required before any real deployment.)
+
+## 2026-09-28 · N1/S7 · Voice is Hindi-only (decision needed)
+- **Finding:** `ai4bharat/indic-conformer-600m-multilingual` covers the 22 scheduled Indian languages and has **no English**.
+- **Implemented (within the contract):** `Question.allow_voice` is `false` for English (server setting `VOICE_LANGUAGES=hi`), so English speakers answer by tap (rule 11 "voice **or** tap" still holds). NLP `/asr` with `language=en` returns `422 unsupported_language` instead of crashing; the server maps it to `503 nlp_unavailable`.
+- **Option for the team:** add an English ASR model (e.g. a small Whisper) behind the same `/asr` — a stack change needing approval.
+- **Also implemented:** `/extract` marks an enum answer `uncertain` when the chosen option isn't actually heard in the transcript (fuzzy label match), after a live test where misheard "दोनों तरफ़" came back as a confident "right".

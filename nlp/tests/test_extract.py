@@ -194,3 +194,38 @@ def test_list_slots(client) -> None:
 def test_bad_slot_type_is_422(client) -> None:
     r = client.post("/extract", json=req("x", [{"name": "a", "type": "colour"}]))
     assert r.status_code == 422 and r.json()["error"]["code"] == "validation_error"
+
+
+# ---- grounding (added after the live voice test: misheard "दोनों तरफ़" came back as a confident "right") ----
+from app.extract import SlotSpec, ungrounded
+
+
+@pytest.mark.parametrize(
+    ("slot", "enum", "value", "text", "ok"),
+    [
+        ("site", ["knee", "back", "hip", "shoulder", "hands", "ankle", "neck"], "knee", "मेरे घुटने में दर्द है", True),
+        ("site", ["knee", "back", "hip", "shoulder", "hands", "ankle", "neck"], "back", "कमर में दर्द", True),
+        ("side", ["left", "right", "both"], "right", "जूनों तरफ", False),  # the real misheard case
+        ("side", ["left", "right", "both"], "both", "दोनों तरफ़", True),
+        ("onset", ["sudden", "gradual"], "gradual", "धीरे धीरे शुरू हुआ", True),
+        ("morning_stiffness", ["none", "under_30", "over_30"], "under_30", "आधा घंटा से ज्यादा", False),
+        ("character", ["aching", "sharp", "burning", "throbbing"], "aching", "हम", False),
+    ],
+)
+def test_enum_grounding(slot, enum, value, text, ok) -> None:
+    assert (ungrounded(SlotSpec(name=slot, type="enum", enum=enum), value, text) is None) is ok
+
+
+def test_list_grounding_and_non_enum_skipped() -> None:
+    spec = SlotSpec(name="worse_with", type="list_enum", enum=["stairs", "walking", "cold", "rest", "morning"])
+    assert ungrounded(spec, ["stairs", "cold"], "सीढ़ी चढ़ने में और ठंड में") is None
+    assert ungrounded(spec, ["stairs", "morning"], "सीढ़ी चढ़ने में") is not None
+    assert ungrounded(SlotSpec(name="duration_days", type="duration_days"), 90, "तीन महीने से") is None
+    assert ungrounded(SlotSpec(name="unknown_slot", type="enum", enum=["a"]), "a", "xyz") is None  # no labels known
+
+
+def test_romanised_hindi_is_not_grounding_checked() -> None:
+    spec = SlotSpec(name="site", type="enum", enum=["knee", "back", "hip", "shoulder", "hands", "ankle", "neck"])
+    assert ungrounded(spec, "knee", "ghutne mein dard", "hi") is None  # typed romanised: no labels in that script
+    assert ungrounded(spec, "knee", "my knee hurts", "en") is None
+    assert ungrounded(spec, "back", "my knee hurts", "en") is not None

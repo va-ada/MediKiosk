@@ -6,12 +6,14 @@ Durations come from the rule-based `normalize()` whenever it finds one; red flag
 
 import json
 import logging
+import re
 from functools import lru_cache
 from typing import Any, Literal
 
 import httpx
 import yaml
 from pydantic import BaseModel
+from rapidfuzz import fuzz
 
 from app import negation
 from app.config import settings
@@ -103,6 +105,40 @@ def choice_labels() -> dict[str, dict[str, str]]:
                     text = ", ".join(str(c[k]) for k in ("en", "hi") if c.get(k))
                     labels.setdefault(slot, {}).setdefault(c["value"], text)
     return labels
+
+
+SINGLE_MIN, MULTI_MIN = 75, 70  # partial_ratio thresholds, measured on real Hindi transcripts (see tests)
+
+
+def label_score(slot_name: str, value: str, text: str) -> float | None:
+    """Best fuzzy match (0–100) of any label of `value` inside the answer text; None if no labels are known."""
+    label = choice_labels().get(slot_name, {}).get(value)
+    if label is None:
+        return None
+    parts = [p.strip().lower() for p in label.split(",") if p.strip()] + [value.lower()]
+    return max(fuzz.partial_ratio(p, text.lower()) for p in parts)
+
+
+def ungrounded(slot: SlotSpec, value: Any, text: str, language: str = "hi") -> str | None:
+    """Reason string if an enum choice isn't supported by what the patient said, else None.
+
+    Labels exist in English and Devanagari only, so romanised Hindi ("ghutne mein dard") can't be checked — it
+    only comes from typed input, never from the speech model (which writes Devanagari), so it is skipped.
+    """
+    if value is None or slot.type not in ("enum", "list_enum"):
+        return None
+    if language == "hi" and not re.search(r"[\u0900-\u097F]", text):
+        return None
+    if slot.type == "enum":
+        mine = label_score(slot.name, value, text)
+        if mine is None:
+            return None
+        best = max((label_score(slot.name, v, text) or 0) for v in slot.enum or [value])
+        if mine < SINGLE_MIN or mine < best:
+            return f"{slot.name} '{value}' not heard in the answer (match {mine:.0f}, best {best:.0f})"
+        return None
+    weak = [v for v in value if (sc := label_score(slot.name, v, text)) is not None and sc < MULTI_MIN]
+    return f"{slot.name} {weak} not heard in the answer" if weak else None
 
 
 def _options(slot: SlotSpec) -> str:
@@ -283,6 +319,14 @@ async def extract(req: ExtractIn) -> ExtractOut:
     slots, neg_notes, neg_uncertain = negation.check(req.text, slots)
     notes += neg_notes
     uncertain = uncertain or neg_uncertain
+
+    # Grounding: a chosen option must actually be heard. A misheard "दोनों" (both) must never become a confident
+    # "right" just because the model guessed — ungrounded choices go back to the patient as "Did you mean…?".
+    for s in req.slots:
+        why = ungrounded(s, slots.get(s.name), req.text, req.language)
+        if why:
+            notes.append(why)
+            uncertain = True
 
     if all(v is None for v in slots.values()) and not uncertain:
         notes.append("nothing extracted")

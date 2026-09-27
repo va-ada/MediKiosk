@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     master_key_b64: str = ""
     content_dir: Path = REPO_ROOT / "content"
     data_dir: Path = REPO_ROOT / "data"
+    voice_languages: str = "hi"  # ASR (IndicConformer) has no English → English questions are tap-only
     run_workers: bool = True  # background loops (outbox, escalation); tests turn them off
 
 

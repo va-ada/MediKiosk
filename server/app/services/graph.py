@@ -190,7 +190,7 @@ def render(question: dict[str, Any], language: str, progress: dict[str, int] | N
         "audio": question["id"],
         "choices": choices,
         "slot": {"name": question["slot"]["name"], "type": question["slot"]["type"]},
-        "allow_voice": True,
+        "allow_voice": lang in settings.voice_languages.split(","),
         "progress": progress or {"answered": 0, "remaining_estimate": 0},
     }
 

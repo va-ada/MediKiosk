@@ -36,12 +36,12 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
   - **Milestone:** a patient can go from kiosk (or help desk) to the doctor's queue by tapping.
 
 ## Phase 2 — Voice
-- [ ] N1 · NLP service skeleton and speech recognition — Needs: F1
+- [x] N1 · NLP service skeleton and speech recognition — Needs: F1
 - [x] C2 · Red-flag rules, lexicon, festivals — Needs: C1
 - [x] N2 · Normalisation: folk terms and time phrases — Needs: N1, C2
 - [x] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
 - [x] N4 · Negation double-check — Needs: N3
-- [ ] S7 · Voice answers via NLP — Needs: S6, N3
+- [x] S7 · Voice answers via NLP — Needs: S6, N3
 - [x] C4 · Render audio prompts — Needs: C1, C2
 - [ ] A9 · Audio prompt playback — Needs: A2, C4
 - [ ] A8 · Voice answers (hold to talk) — Needs: A7, S7
@@ -157,3 +157,5 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [W10] /display: department picker (All/General/Ayurveda) in localStorage `mk.display.department`; reloads on any `token.*` on `display` (+15 s poll). `token.called` for the chosen dept → yellow card for 10 s, ding-dong chime, then speech: Hindi (only if a hi-IN voice exists — macOS has Lekha) "टोकन A 17, Dr. Mehta, कमरा नंबर 1" then English "Token A 17, Dr. Mehta, Room 1". Verified in Chrome: board updated 0.3 s and speech queued 1.1 s after Call on /doctor.
 - [W11] Admin console: island toggle with confirm (live via `island.changed`), 5 health tiles + tables refresh every 10 s, outbox table uses `resource_count` (payload omitted by the server), audit latest 100 + Verify chain, erase form needs second admin id + PIN AND typing ERASE. Also: `/triage` is now exempt from the 5-min staff auto-lock (StaffLayout) so alarms are never hidden behind a PIN screen.
 - [D4] docs/demo-script.md written (cast, setup, 6-min beats, recovery, checklist) with a working /desk + curl FALLBACK for every kiosk beat (fallback curls verified). NOT ticked: acceptance needs a teammate to run it with the real Android app (A1–A15). Update the kiosk beats once Android exists.
+- [N1] UNBLOCKED + live-verified 2026-09-28. The model is loaded from `data/models/indic-conformer-600m-multilingual` (real files, gitignored; auto-downloaded there on first start after `hf auth login`) and built from its own `model_onnx.py` — loading from the HF cache fails because recent onnxruntime rejects ONNX external data behind the cache's symlinks. Loads in ~12 s. Model has NO English → `ASR_LANGUAGES={"hi"}`, `/asr` en → 422 `unsupported_language`.
+- [S7] Live-verified with real audio: Hindi answers ~2 s each (site, duration 90, onset); misheard "दोनों" → uncertain + Did-you-mean; mumble → uncertain. Fixes: `enum` is sent to /extract only for enum/list_enum slots (duration's numeric tap choices broke it); `allow_voice` is false for English (`VOICE_LANGUAGES`, default "hi"); /extract grounding check (N3 area, `extract.ungrounded`) — romanised Hindi text skips it.

@@ -48,6 +48,10 @@ async def health() -> HealthOut:
 
 @app.post("/asr", response_model=AsrOut)
 def transcribe(audio: Annotated[UploadFile, File()], language: Annotated[Literal["hi", "en"], Form()]) -> AsrOut:
+    if language not in asr.ASR_LANGUAGES:
+        raise ApiError(
+            422, "unsupported_language", f"Speech recognition is not available for '{language}' — tap instead"
+        )
     engine = asr.engine
     if not engine.loaded:
         raise ApiError(503, "model_loading", engine.status_message())

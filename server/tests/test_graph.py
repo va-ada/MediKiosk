@@ -229,3 +229,9 @@ def test_condition_ops() -> None:
     assert not graph.condition_holds({"slot": "missing", "is": True}, slots)
     assert not graph.condition_holds({"slot": "none", "gte": 1}, slots)
     assert not graph.condition_holds({"slot": "s", "gte": 1}, slots)  # type mismatch is just false
+
+
+def test_allow_voice_only_for_asr_languages(client: TestClient) -> None:
+    sid = start(client)
+    assert nxt(client, sid, "hi")["question"]["allow_voice"] is True
+    assert nxt(client, sid, "en")["question"]["allow_voice"] is False  # IndicConformer has no English

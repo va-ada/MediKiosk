@@ -133,3 +133,19 @@ def test_bad_uploads(client: TestClient) -> None:
         files={"audio": ("a.wav", b"", "audio/wav")},
     )
     assert res.status_code == 422
+
+
+@respx.mock
+def test_duration_question_sends_no_enum(client: TestClient) -> None:
+    """jp_duration has numeric tap-fallback choices; they must not be sent as an `enum` to /extract."""
+    sid = session(client)
+    for qid, v in (("jp_site", "knee"), ("jp_side", "left")):
+        client.post(f"/api/sessions/{sid}/answers", json={"question_id": qid, "source": "tap", "value": v}, headers=K)
+    respx.post(f"{NLP}/asr").mock(return_value=httpx.Response(200, json={"text": "तीन महीने से", "confidence": 0.85,
+                                                                         "duration_sec": 1.0}))
+    ext = respx.post(f"{NLP}/extract").mock(return_value=httpx.Response(
+        200, json={"slots": {"duration_days": 90}, "status": "confident", "notes": []}))
+    res = speak(client, sid, "jp_duration").json()
+    assert res["answer"]["slots"] == {"duration_days": 90}
+    body = httpx.Response(200, content=ext.calls.last.request.content).json()
+    assert body["slots"] == [{"name": "duration_days", "type": "duration_days"}]

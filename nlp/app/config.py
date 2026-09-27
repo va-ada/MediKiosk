@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     ollama_model: str = "qwen2.5:3b-instruct-q4_K_M"
     asr_device: str = "cpu"  # "mps" to try the Apple GPU
     asr_model: str = "ai4bharat/indic-conformer-600m-multilingual"
+    asr_model_dir: Path = REPO_ROOT / "data" / "models" / "indic-conformer-600m-multilingual"  # real files, no symlinks
     ffmpeg_timeout_sec: float = 30.0
 
 
