@@ -29,7 +29,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] A2 · Start screen and kiosk scaffold — Needs: A1
 - [x] A3 · Identify: ABHA or new patient — Needs: A2, S1
 - [x] A4 · Informant and consent — Needs: A3, S2
-- [ ] A5 · Triage: complaint, body map, red flags → token — Needs: A4, S3
+- [x] A5 · Triage: complaint, body map, red flags → token — Needs: A4, S3
 - [ ] A6 · Token screen with QR — Needs: A5
 - [ ] A7 · History loop (tap answers) — Needs: A6, S6
 - [ ] A13 · Done screen, wipe, inactivity, resume — Needs: A7
@@ -165,3 +165,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A2] Android nav: `navigation/Routes.kt` + `KioskNavHost` (provides `LocalNavController`, `LocalLang`); patient strings are resources in values/ (en) + values-hi/ read via `tr(R.string.x)` in the patient's language (`trIn(lang, …)` for bilingual); every intake screen wraps `KioskScaffold(audioKey)` (Emergency + Need help, plays/stops the prompt). `IntakeViewModel.clear()` = the whole wipe (memory + cacheDir). KIOSK mode calls startLockTask (emulator shows an "App is pinned" prompt — tap Got it at 859,2306).
 - [A3] Android network goes through `data/KioskRepository.call { api… }` → `Result` whose failure is `ApiFailure(code)` (`result.errorCode()`); `ui/Errors.kt` maps §1 codes → hi/en `ErrorCard`. Shared widgets in `ui/Components.kt` (BigButton, IconTile, Grid, NumericKeypad, DigitDisplay, Heading, ScreenBody, NavRow in IdentifyScreen). Add strings to BOTH values/ and values-hi/.
 - [A4] Proxy relations sent as `informant_relation` = son|daughter|spouse|parent|other. InformantScreen reuses `vm.session` if one already exists for this patient (Back never creates a second session). Screens without a recorded WAV (identify/informant) pass `audioKey = null`.
+- [A5] `COMPLAINTS` / `REDFLAG_QUESTIONS` in `ui/TriageScreen.kt` are hard-coded copies of content/triage.yaml — edit both together. `ui/ContentIcons.contentIcon(name)` maps every content icon name → Material icon (reuse for question choices). Triage result is kept in `vm.token` / `vm.triageAlerts`. `YesNoButtons` lives in TriageScreen.kt.

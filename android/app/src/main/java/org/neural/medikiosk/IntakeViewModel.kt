@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.data.KioskRepository
 import org.neural.medikiosk.data.SettingsRepository
+import org.neural.medikiosk.net.Alert
 import org.neural.medikiosk.net.Patient
 import org.neural.medikiosk.net.QueueItem
 import org.neural.medikiosk.net.Session
@@ -32,6 +33,7 @@ class IntakeViewModel(app: Application) : AndroidViewModel(app) {
     var patient by mutableStateOf<Patient?>(null)
     var session by mutableStateOf<Session?>(null)
     var token by mutableStateOf<QueueItem?>(null)
+    var triageAlerts by mutableStateOf<List<Alert>>(emptyList())
 
     /** Forget the patient: memory state and every cache file (photos, voice clips, QR images). */
     fun clear() {
@@ -39,6 +41,7 @@ class IntakeViewModel(app: Application) : AndroidViewModel(app) {
         patient = null
         session = null
         token = null
+        triageAlerts = emptyList()
         wipeCacheFiles()
     }
 

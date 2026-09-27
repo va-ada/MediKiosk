@@ -63,4 +63,20 @@
     <string name="consent_opt_doctor">इस अस्पताल में आपके डॉक्टर</string>
     <string name="consent_opt_internet">इंटरनेट पर कोई भी</string>
     <string name="consent_opt_companies">दवा बेचने वाली कंपनियाँ</string>
+
+    <!-- Triage (A5) -->
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="question_n_of_m">सवाल %1$d / %2$d</string>
+    <string name="triage_what_problem">आज आपकी मुख्य तकलीफ़ क्या है?</string>
+    <string name="triage_where_pain">दर्द कहाँ है? तस्वीर पर छुइए।</string>
+    <string name="triage_somewhere_else">कहीं और, या पता नहीं</string>
+    <string name="body_front">आगे से</string>
+    <string name="body_back">पीछे से</string>
+    <string name="part_knee">घुटना</string>
+    <string name="part_hip">कूल्हा</string>
+    <string name="part_shoulder">कंधा</string>
+    <string name="part_back">कमर</string>
+    <string name="part_hands">हाथ या उंगलियाँ</string>
+    <string name="nurse_informed">नर्स को खबर कर दी गई है, वे जल्दी आपको देखेंगी।</string>
 </resources>

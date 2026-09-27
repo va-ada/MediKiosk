@@ -65,4 +65,20 @@
     <string name="consent_opt_doctor">Your doctor at this hospital</string>
     <string name="consent_opt_internet">Anyone on the internet</string>
     <string name="consent_opt_companies">Companies that sell medicines</string>
+
+    <!-- Triage (A5) -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="question_n_of_m">Question %1$d of %2$d</string>
+    <string name="triage_what_problem">What is your main problem today?</string>
+    <string name="triage_where_pain">Where is the pain? Touch the picture.</string>
+    <string name="triage_somewhere_else">Somewhere else, or not sure</string>
+    <string name="body_front">Front</string>
+    <string name="body_back">Back</string>
+    <string name="part_knee">Knee</string>
+    <string name="part_hip">Hip</string>
+    <string name="part_shoulder">Shoulder</string>
+    <string name="part_back">Lower back</string>
+    <string name="part_hands">Hands or fingers</string>
+    <string name="nurse_informed">A nurse has been informed and will see you soon.</string>
 </resources>

@@ -32,6 +32,7 @@ import org.neural.medikiosk.ui.KioskScaffold
 import org.neural.medikiosk.ui.LocalLang
 import org.neural.medikiosk.ui.NeedHelpScreen
 import org.neural.medikiosk.ui.StartScreen
+import org.neural.medikiosk.ui.TriageScreen
 import org.neural.medikiosk.ui.tr
 
 /** The kiosk navigation graph. The patient's language (from [IntakeViewModel]) is provided to every screen. */
@@ -67,7 +68,10 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
             composable(Routes.CONSENT) {
                 ConsentScreen(vm, onDone = { nav.forward(Routes.TRIAGE) }, onBack = { nav.popBackStack() })
             }
-            composable(Routes.TRIAGE) { Placeholder(R.string.identify_title) }
+            composable(Routes.TRIAGE) {
+                TriageScreen(vm, onDone = { nav.forward(Routes.TOKEN) }, onBack = { nav.popBackStack() })
+            }
+            composable(Routes.TOKEN) { Placeholder(R.string.nurse_informed) }
         }
     }
 }
