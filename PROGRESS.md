@@ -38,7 +38,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 ## Phase 2 — Voice
 - [ ] N1 · NLP service skeleton and speech recognition — Needs: F1
 - [x] C2 · Red-flag rules, lexicon, festivals — Needs: C1
-- [ ] N2 · Normalisation: folk terms and time phrases — Needs: N1, C2
+- [x] N2 · Normalisation: folk terms and time phrases — Needs: N1, C2
 - [ ] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
 - [ ] N4 · Negation double-check — Needs: N3
 - [ ] S7 · Voice answers via NLP — Needs: S6, N3
@@ -124,3 +124,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [D1] Mock HIS: `POST /fhir` → 400 `missing_idempotency_key` / `invalid_bundle` (body must have `resourceType: "Bundle"`); bundles persist as `data/his/<id>.json` and are reloaded on start, so a re-send after restart is still `duplicate: true` (D2 reset should delete `data/his/*.json`). `GET /bundles` = `[{id, idempotency_key, received_at, bundle}]` newest first; `GET /` shows Patient `name[0].text` or given+family.
 - [C5] Samples (A4 1240x1754, English only, Arial): lab_report_cbc (Kamla Devi, 12/08/2026, ref ranges use an en dash `12.0–15.0`, units like `x10^3/uL`), lab_report_diabetes (Rahul Verma, 05/07/2026: FBS 142, PPBS 198 mg/dL, HbA1c 7.4 %), rx_allopathic, rx_ayurveda, discharge_summary, handwritten_style (Bradley Hand — N7 should mark it unreadable/low-conf), plus *_photo.png variants of cbc and rx_allopathic. Regenerate: `uv run --with pillow python scripts/make_samples.py` (deterministic).
 - [N1] BLOCKED: HF gated model — owner must accept terms + hf auth login; skeleton committed, live /asr check pending.
+- [N2] `normalize(text, language, today=None)` (today defaults to Asia/Kolkata date); durations = number(word|digit, incl. dedh/dhai)+unit with optional for/since/pichhle before and se/ago/pehle after, plus relative (kal 1, parson 2, pichhle hafte/mahine/saal, last week…) and festivals (only dated entries ≤ today). Days round half up (2.5 yr = 913). Terms are whole-token, longest-first.
