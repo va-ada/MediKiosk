@@ -38,9 +38,9 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 ## Phase 2 — Voice
 - [ ] N1 · NLP service skeleton and speech recognition — Needs: F1
 - [x] C2 · Red-flag rules, lexicon, festivals — Needs: C1
-- [ ] N2 · Normalisation: folk terms and time phrases — Needs: N1, C2
-- [ ] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
-- [ ] N4 · Negation double-check — Needs: N3
+- [x] N2 · Normalisation: folk terms and time phrases — Needs: N1, C2
+- [x] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
+- [x] N4 · Negation double-check — Needs: N3
 - [ ] S7 · Voice answers via NLP — Needs: S6, N3
 - [x] C4 · Render audio prompts — Needs: C1, C2
 - [ ] A9 · Audio prompt playback — Needs: A2, C4
@@ -66,7 +66,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
   - **Milestone:** old reports become facts with highlighted sources.
 
 ## Phase 5 — Summary and doctor review
-- [ ] N8 · Grounded summarisation (`/summarize`) — Needs: N3
+- [x] N8 · Grounded summarisation (`/summarize`) — Needs: N3
 - [ ] S12 · Summary builder and submit — Needs: S11, N8
 - [x] S13 · Read-back — Needs: S6
 - [ ] A11 · Read-back screen and submit — Needs: A10, S13, S12
@@ -135,3 +135,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [W12] `/desk` uses `web/src/api/kiosk.ts` (`registerWalkIn(input, progress)` resumes a half-finished registration from the same `progress` object, so a retry never duplicates the patient/session). Desk requires all 5 danger-sign answers and a "consent explained" tick; today’s list lives in sessionStorage (per IST date). QR payload is exactly `{"session_id","token_id"}`.
 - [S12] Code + tests committed and live-checked on Postgres with the NLP fallback narrative; NOT ticked until the AI narrative path is checked against real `/summarize` (N8). Summary extras beyond §11.1: hpi `narrative_ai` (bool — label AI text in the UI), item `doctor_note` on AYUSH answer facts, red_flags items `{alert_id, text, level, status}`, new_since_opened items `{fact_id, section, text}`. Empty sections are omitted. `routers/summary.rebuild(db, session, actor)` = store-if-changed + commit + emit `summary.ready` — S14 should call it after every change. Allergy strip: detail facts win over the yes/no fact; "No known allergies (patient said)" for a no.
 - [S14] Every review change calls `routers.summary.rebuild()` (store-if-changed + commit + `summary.ready`). Approve requires that THIS doctor opened the section. ayush-exam fields accept a string or `{value, note}`; re-saving replaces earlier doctor facts with the same `exam_<field>` key. Diagnosis `system` must be NAMASTE | ICD11_TM2 | ICD10. `fact_public()` lives in `routers/review.py`.
+- [N2] `normalize(text, language, today=None)` (today defaults to Asia/Kolkata date); durations = number(word|digit, incl. dedh/dhai)+unit with optional for/since/pichhle before and se/ago/pehle after, plus relative (kal 1, parson 2, pichhle hafte/mahine/saal, last week…) and festivals (only dated entries ≤ today). Days round half up (2.5 yr = 913). Terms are whole-token, longest-first.
+- [N3] `/extract` never 5xx for Ollama trouble: Ollama down/HTTP error → 200 `uncertain` + note `language model unavailable` (S7 shows fallback choices). Also `uncertain` when every slot is null (`nothing extracted`). Rule-based `normalize()` duration **overrides** the model's (the 3B model says 15/30 for "teen mahine"), with a note. Prompt adds choice labels (en, hi) looked up by slot name from content/questions/*.yaml — the 3B model maps "ghutne"→knee only with them; it is reliable single-slot (~0.5 s warm), weaker multi-slot Devanagari. Manual: `python3 scripts/try_extract.py [--question jp_x] "text"` (re-execs via `uv run --project nlp`).
+- [N4] `negation.check(text, slots, slot_keywords=None)` only touches slots the model set to `true` that are in the keyword map (fever, swelling, injury, chest_pain, breathless, fainted); window = 3 tokens either side; conservative ("haan bukhar hai, sujan nahi" also drops fever → uncertain → tap). Note text: `fever=true dropped: negation 'nahi hai' near 'bukhar'`.
+- [N8] `/summarize` always 200: `{narrative, unsupported_terms, fallback_used}`; S12 should send only complaint+hpi facts (allergies/drugs/labs are templated, rule 4). Checks per sentence: numbers (digits + two..hundred words), clinical/diagnosis/advice words (list + lexicon concept words), and asserting a symptom the facts only deny ("No fever" → "has fever" dropped). ~2–3 s warm for 10 facts; Ollama down / nothing left → facts `text_en` joined "; ", `fallback_used: true`; no facts → narrative "".
