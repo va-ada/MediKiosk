@@ -25,3 +25,8 @@ def iso_z(dt: datetime | None) -> str | None:
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=UTC)
     return dt.astimezone(UTC).isoformat().replace("+00:00", "Z")
+
+
+def as_utc(dt: datetime) -> datetime:
+    """Aware UTC datetime (SQLite hands back naive UTC values)."""
+    return dt.replace(tzinfo=UTC) if dt.tzinfo is None else dt.astimezone(UTC)
