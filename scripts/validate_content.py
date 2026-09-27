@@ -3,6 +3,7 @@
 Usage:  python3 scripts/validate_content.py        → prints OK, or every error and exits 1.
 """
 
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,7 @@ DEPARTMENTS = {"general", "ayurveda"}
 COMPLAINT_CODES = {"joint_pain", "fever", "cough", "stomach", "headache", "chest_pain", "breathing", "skin", "other"}
 REDFLAG_SLOTS = ["chest_pain", "breathless", "stroke_signs", "heavy_bleeding", "fainted"]
 CONDITION_OPS = {"is", "in", "gte", "lte"}
+ALERT_LEVELS = {"urgent", "emergency"}
 # question type → slot types that make sense for it
 TYPE_SLOTS = {
     "choice": {"enum", "string"},
@@ -174,10 +176,75 @@ def check_triage(rep: Report, pathways: dict[str, dict]) -> None:
             rep.err(f"triage.yaml#{q.get('slot')}", "red-flag question needs en and hi")
 
 
+def check_redflags(rep: Report, pathways: dict[str, dict]) -> None:
+    doc = load_yaml(CONTENT / "redflags.yaml", rep)
+    if not isinstance(doc, dict) or not isinstance(doc.get("rules"), list):
+        rep.err("redflags.yaml", "needs a rules list")
+        return
+    known_slots = set(REDFLAG_SLOTS).union(*(p["slots"] for p in pathways.values()))
+    seen: set[str] = set()
+    for i, rule in enumerate(doc["rules"]):
+        w = f"redflags.yaml#{rule.get('id', i)}"
+        if not rule.get("id"):
+            rep.err(w, "rule needs an id")
+        elif rule["id"] in seen:
+            rep.err(w, "duplicate rule id")
+        seen.add(rule.get("id"))
+        if rule.get("level") not in ALERT_LEVELS:
+            rep.err(w, f"bad level {rule.get('level')!r}")
+        if not str(rule.get("reason_text") or "").strip():
+            rep.err(w, "missing reason_text")
+        conds = [*(rule.get("all") or []), *(rule.get("any") or [])]
+        if not conds:
+            rep.err(w, "needs at least one condition in all/any")
+        for cond in conds:
+            check_condition(w, cond, rep)
+            if isinstance(cond, dict) and cond.get("slot") not in known_slots:
+                rep.err(w, f"slot {cond.get('slot')!r} is neither a question slot nor a triage red-flag slot")
+
+
+def check_lexicon(rep: Report) -> None:
+    doc = load_yaml(CONTENT / "lexicon_hi.yaml", rep)
+    if not isinstance(doc, dict):
+        rep.err("lexicon_hi.yaml", "missing or not a mapping")
+        return
+    for t in doc.get("terms") or []:
+        if not t.get("match") or not isinstance(t["match"], list) or not t.get("concept"):
+            rep.err("lexicon_hi.yaml", f"term needs match list + concept: {t!r}")
+        if not isinstance(t.get("ambiguous"), bool):
+            rep.err("lexicon_hi.yaml", f"term needs ambiguous true/false: {t.get('concept')!r}")
+    if not doc.get("negation_cues"):
+        rep.err("lexicon_hi.yaml", "negation_cues missing")
+    nums = doc.get("numbers") or {}
+    if not all(isinstance(v, int | float) for v in nums.values()):
+        rep.err("lexicon_hi.yaml", "numbers values must be numeric")
+    if set(doc.get("units") or {}) != {"day", "week", "month", "year"}:
+        rep.err("lexicon_hi.yaml", "units must have exactly day, week, month, year")
+
+
+def check_festivals(rep: Report) -> None:
+    doc = load_yaml(CONTENT / "festivals.yaml", rep)
+    if not isinstance(doc, dict):
+        rep.err("festivals.yaml", "missing or not a mapping")
+        return
+    for fest, years in doc.items():
+        for year, day in (years or {}).items():
+            if day is None:
+                continue
+            if not (isinstance(day, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", day) and day.startswith(str(year))):
+                rep.err("festivals.yaml", f"{fest} {year}: {day!r} must be null or 'YYYY-MM-DD' in that year")
+
+
 def main() -> int:
     rep = Report()
     pathways = check_questions(rep)
     check_triage(rep, pathways)
+    if (CONTENT / "redflags.yaml").exists():
+        check_redflags(rep, pathways)
+    if (CONTENT / "lexicon_hi.yaml").exists():
+        check_lexicon(rep)
+    if (CONTENT / "festivals.yaml").exists():
+        check_festivals(rep)
     if rep.errors:
         print(f"{len(rep.errors)} error(s):")
         for e in rep.errors:

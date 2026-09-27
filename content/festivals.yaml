@@ -1,0 +1,10 @@
+# Festival dates for phrases like "Diwali ke baad" (CONTRACTS.md §9.4).
+# Dates MUST be copied from an official calendar (e.g. the Government of India gazetted holiday list
+# for that year) — never guessed. Format "YYYY-MM-DD". While a date is null, festival phrases are ignored
+# and the question falls back to asking again / tap answers.
+diwali:
+  2025: null
+  2026: null
+holi:
+  2025: null
+  2026: null

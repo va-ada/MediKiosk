@@ -1,0 +1,46 @@
+# DRAFT — clinician review required
+# Red-flag rules (CONTRACTS.md §9.3). Decided by these rules only — never by a model (rule 3).
+# A rule fires when ALL `all` conditions hold AND (if `any` exists) at least one `any` condition holds.
+# Slots: the 5 triage red-flag slots + any question slot (see content/questions/*.yaml).
+rules:
+  - id: chest_pain_breathless
+    level: emergency
+    reason_text: "Chest pain with breathlessness"
+    all: [{slot: chest_pain, is: true}, {slot: breathless, is: true}]
+
+  - id: stroke_signs
+    level: emergency
+    reason_text: "Possible stroke: sudden weakness, face drooping or slurred speech"
+    all: [{slot: stroke_signs, is: true}]
+
+  - id: heavy_bleeding
+    level: emergency
+    reason_text: "Heavy bleeding"
+    all: [{slot: heavy_bleeding, is: true}]
+
+  - id: fainted_today
+    level: urgent
+    reason_text: "Fainted today"
+    any: [{slot: fainted, is: true}]
+
+  - id: severe_pain
+    level: urgent
+    reason_text: "Very severe pain (9 or 10 out of 10)"
+    all: [{slot: severity, gte: 9}]
+
+  - id: fever_with_swelling
+    level: urgent
+    reason_text: "Fever with a swollen joint (possible joint infection)"
+    all: [{slot: fever, is: true}, {slot: swelling, is: true}]
+
+  # Added beyond the task card for safety — confirm with the clinician. Written so they never fire
+  # together with chest_pain_breathless for the same patient.
+  - id: chest_pain_only
+    level: urgent
+    reason_text: "Chest pain now"
+    all: [{slot: chest_pain, is: true}, {slot: breathless, is: false}]
+
+  - id: breathless_only
+    level: urgent
+    reason_text: "Difficulty breathing"
+    all: [{slot: breathless, is: true}, {slot: chest_pain, is: false}]

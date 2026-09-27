@@ -1,0 +1,131 @@
+# DRAFT — clinician review required
+# Folk terms → concepts, negation cues, number words, unit words (CONTRACTS.md §9.4).
+# `ambiguous: true` means the doctor must clarify (e.g. "BP" can mean high or low).
+terms:
+  - {match: ["sugar", "शुगर", "madhumeh", "मधुमेह", "diabetes", "डायबिटीज़", "डायबिटीज"], concept: "diabetes", ambiguous: false}
+  - {match: ["bp", "बीपी", "blood pressure", "ब्लड प्रेशर"], concept: "blood pressure problem", ambiguous: true}
+  - {match: ["high bp", "हाई बीपी"], concept: "high blood pressure", ambiguous: false}
+  - {match: ["low bp", "लो बीपी"], concept: "low blood pressure", ambiguous: false}
+  - {match: ["gas", "गैस", "vayu", "वायु"], concept: "gas / bloating", ambiguous: true}
+  - {match: ["acidity", "एसिडिटी", "khatti dakar", "खट्टी डकार"], concept: "acidity / acid reflux", ambiguous: false}
+  - {match: ["seene mein jalan", "सीने में जलन", "chhati mein jalan", "छाती में जलन"], concept: "heartburn", ambiguous: false}
+  - {match: ["kabz", "qabz", "कब्ज़", "कब्ज"], concept: "constipation", ambiguous: false}
+  - {match: ["dast", "दस्त", "loose motion", "लूज़ मोशन", "पतले दस्त"], concept: "diarrhoea", ambiguous: false}
+  - {match: ["ulti", "उल्टी", "vomiting"], concept: "vomiting", ambiguous: false}
+  - {match: ["ji machlana", "जी मचलना", "matli", "मतली"], concept: "nausea", ambiguous: false}
+  - {match: ["chakkar", "चक्कर"], concept: "dizziness", ambiguous: true}
+  - {match: ["bukhar", "बुखार", "taap", "ताप", "fever"], concept: "fever", ambiguous: false}
+  - {match: ["khansi", "khaansi", "खाँसी", "खांसी"], concept: "cough", ambiguous: false}
+  - {match: ["balgam", "बलगम"], concept: "sputum / phlegm", ambiguous: false}
+  - {match: ["zukam", "jukam", "ज़ुकाम", "जुकाम"], concept: "common cold", ambiguous: false}
+  - {match: ["sardi", "सर्दी"], concept: "cold / chills", ambiguous: true}
+  - {match: ["saans phoolna", "sans phoolna", "साँस फूलना", "सांस फूलना"], concept: "breathlessness", ambiguous: false}
+  - {match: ["ghabrahat", "घबराहट"], concept: "anxiety or palpitations", ambiguous: true}
+  - {match: ["dhadkan tez", "धड़कन तेज़", "धड़कन तेज"], concept: "palpitations", ambiguous: false}
+  - {match: ["kamzori", "कमज़ोरी", "कमजोरी"], concept: "weakness", ambiguous: true}
+  - {match: ["thakan", "थकान"], concept: "fatigue", ambiguous: false}
+  - {match: ["sujan", "soojan", "सूजन"], concept: "swelling", ambiguous: false}
+  - {match: ["jakdan", "जकड़न"], concept: "stiffness", ambiguous: false}
+  - {match: ["gathiya", "गठिया"], concept: "arthritis", ambiguous: true}
+  - {match: ["baay", "baai", "बाय", "बाई", "vaat", "वात"], concept: "joint pain (folk term)", ambiguous: true}
+  - {match: ["kamar dard", "कमर दर्द"], concept: "low back pain", ambiguous: false}
+  - {match: ["ghutne ka dard", "ghutne mein dard", "घुटने का दर्द", "घुटने में दर्द"], concept: "knee pain", ambiguous: false}
+  - {match: ["sar dard", "sir dard", "सर दर्द", "सिर दर्द"], concept: "headache", ambiguous: false}
+  - {match: ["aadhasisi", "आधासीसी"], concept: "one-sided headache (possible migraine)", ambiguous: true}
+  - {match: ["pet dard", "पेट दर्द", "पेट में दर्द"], concept: "abdominal pain", ambiguous: false}
+  - {match: ["peshab mein jalan", "पेशाब में जलन"], concept: "burning urination", ambiguous: false}
+  - {match: ["piliya", "पीलिया"], concept: "jaundice", ambiguous: false}
+  - {match: ["khoon ki kami", "खून की कमी"], concept: "anaemia", ambiguous: false}
+  - {match: ["thyroid", "थायराइड", "थायरॉइड"], concept: "thyroid problem", ambiguous: true}
+  - {match: ["dama", "दमा"], concept: "asthma", ambiguous: false}
+  - {match: ["mirgi", "मिर्गी"], concept: "epilepsy / seizures", ambiguous: false}
+  - {match: ["lakwa", "लकवा"], concept: "paralysis / stroke", ambiguous: true}
+  - {match: ["khujli", "खुजली"], concept: "itching", ambiguous: false}
+  - {match: ["daane", "दाने"], concept: "rash", ambiguous: false}
+  - {match: ["bawasir", "बवासीर"], concept: "piles / haemorrhoids", ambiguous: false}
+  - {match: ["pathri", "पथरी"], concept: "stones (kidney or gall bladder)", ambiguous: true}
+  - {match: ["dil ki bimari", "दिल की बीमारी"], concept: "heart disease", ambiguous: true}
+  - {match: ["tb", "टीबी"], concept: "tuberculosis", ambiguous: false}
+  - {match: ["cholesterol", "कोलेस्ट्रॉल"], concept: "high cholesterol", ambiguous: false}
+  - {match: ["motapa", "मोटापा"], concept: "obesity", ambiguous: false}
+
+negation_cues: ["नहीं", "नही", "ना", "न", "मत", "कोई नहीं", "nahi", "nahin", "nahi hai", "nhi", "na", "mat", "no", "not", "never", "none", "don't", "dont"]
+
+numbers:
+  एक: 1
+  दो: 2
+  तीन: 3
+  चार: 4
+  पाँच: 5
+  पांच: 5
+  छह: 6
+  छः: 6
+  छे: 6
+  सात: 7
+  आठ: 8
+  नौ: 9
+  दस: 10
+  ग्यारह: 11
+  बारह: 12
+  तेरह: 13
+  चौदह: 14
+  पंद्रह: 15
+  पन्द्रह: 15
+  सोलह: 16
+  सत्रह: 17
+  अठारह: 18
+  उन्नीस: 19
+  बीस: 20
+  डेढ़: 1.5
+  ढाई: 2.5
+  ek: 1
+  do: 2
+  teen: 3
+  char: 4
+  chaar: 4
+  panch: 5
+  paanch: 5
+  chhe: 6
+  chhah: 6
+  saat: 7
+  aath: 8
+  nau: 9
+  das: 10
+  gyarah: 11
+  barah: 12
+  terah: 13
+  chaudah: 14
+  pandrah: 15
+  solah: 16
+  satrah: 17
+  atharah: 18
+  unnis: 19
+  bees: 20
+  dedh: 1.5
+  dhai: 2.5
+  one: 1
+  two: 2
+  three: 3
+  four: 4
+  five: 5
+  six: 6
+  seven: 7
+  eight: 8
+  nine: 9
+  ten: 10
+  eleven: 11
+  twelve: 12
+  thirteen: 13
+  fourteen: 14
+  fifteen: 15
+  sixteen: 16
+  seventeen: 17
+  eighteen: 18
+  nineteen: 19
+  twenty: 20
+
+units:
+  day: ["दिन", "din", "day", "days"]
+  week: ["हफ्ता", "हफ्ते", "हफ़्ता", "हफ़्ते", "सप्ताह", "hafta", "hafte", "week", "weeks"]
+  month: ["महीना", "महीने", "महिना", "महिने", "mahina", "mahine", "month", "months"]
+  year: ["साल", "बरस", "वर्ष", "saal", "sal", "baras", "year", "years"]
