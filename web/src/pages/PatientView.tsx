@@ -1,16 +1,11 @@
-import { useMemo, useState } from 'react'
-import { SECTION_ORDER, type Section, type Summary } from '../api/types'
+import { useCallback, useMemo, useState } from 'react'
+import { SECTION_ORDER, type Bbox, type Section, type Summary, type SummaryDocument, type SummaryItem } from '../api/types'
 import CriticalStrip from '../components/CriticalStrip'
+import DocumentViewer from '../components/DocumentViewer'
+import DocumentsPanel from '../components/DocumentsPanel'
 import PatientHeader from '../components/PatientHeader'
 import SectionAccordion from '../components/SectionAccordion'
 import { summaryFixture } from '../fixtures'
-
-const DOC_TYPE: Record<string, string> = {
-  lab_report: 'Lab report',
-  prescription: 'Prescription',
-  discharge_summary: 'Discharge summary',
-  unknown: 'Document',
-}
 
 /** `/doctor/session/:sessionId`: structured, trust-labelled summary. Layout only — uses the §11.1 fixture. */
 export default function PatientView() {
@@ -31,7 +26,12 @@ export default function PatientView() {
       return next
     })
 
-  const documents = [...summary.documents].sort((a, b) => Number(b.pinned) - Number(a.pinned))
+  const [viewer, setViewer] = useState<{ doc: SummaryDocument; bbox: Bbox | null } | null>(null)
+  const closeViewer = useCallback(() => setViewer(null), [])
+  const openSource = (item: SummaryItem): void => {
+    const doc = summary.documents.find((d) => d.id === item.source?.document_id)
+    if (doc) setViewer({ doc, bbox: item.source?.bbox ?? null })
+  }
 
   return (
     <div className="flex min-h-full flex-col">
@@ -47,6 +47,7 @@ export default function PatientView() {
               open={openSections.has(s.key)}
               onToggle={() => toggle(s.key)}
               newFactIds={newFactIds}
+              onSourceClick={openSource}
             />
           ))}
           <p className="text-xs text-slate-500">
@@ -54,22 +55,8 @@ export default function PatientView() {
           </p>
         </div>
 
-        <aside aria-label="Documents" className="min-w-0">
-          <h2 className="mb-2 font-semibold text-navy">Documents ({documents.length})</h2>
-          <ul className="space-y-2">
-            {documents.map((d) => (
-              <li key={d.id} className="rounded-lg bg-white p-3 text-sm shadow-sm ring-1 ring-slate-200">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium">{DOC_TYPE[d.doc_type] ?? d.doc_type}</span>
-                  {d.pinned && <span className="text-xs font-semibold text-brand-orange">Pinned</span>}
-                </div>
-                <div className="text-slate-500">
-                  {d.doc_date ?? 'No date'} · {d.status}
-                </div>
-              </li>
-            ))}
-            {documents.length === 0 && <li className="text-sm text-slate-500">No documents</li>}
-          </ul>
+        <aside className="min-w-0">
+          <DocumentsPanel documents={summary.documents} onOpen={(doc) => setViewer({ doc, bbox: null })} />
         </aside>
       </div>
 
@@ -87,6 +74,8 @@ export default function PatientView() {
           </button>
         ))}
       </footer>
+
+      {viewer && <DocumentViewer document={viewer.doc} bbox={viewer.bbox} onClose={closeViewer} />}
     </div>
   )
 }

@@ -62,7 +62,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] N7 · Prescription extraction — Needs: N5, C6
 - [ ] S11 · Document upload and facts — Needs: S6, S7, N5
 - [ ] A10 · Document capture — Needs: A7, S11
-- [ ] W6 · Documents panel and source highlight — Needs: W4
+- [x] W6 · Documents panel and source highlight — Needs: W4
   - **Milestone:** old reports become facts with highlighted sources.
 
 ## Phase 5 — Summary and doctor review
@@ -118,3 +118,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S6] `graph.apply_answer(db, session, question, value, source, raw_text, confidence, status, actor)` validates + stores + replaces that slot's answer-sourced facts + runs `redflags.evaluate_and_alert` with all slots, and **commits**; returns `(answer, alerts)`. It does NOT emit `alert.created` — S8's `evaluate_and_alert` must emit. Answer facts have `value={"value": v}` (dict, so read-back can add `patient_disputed`/`patient_unsure`); drugs from answers are one fact per medicine with the §3 drugs shape, `found_in_documents: false`. Only `status=confident` answers count as answered. `graph.render()` choices = `{value, label, en, hi, icon}` and never include `doctor_note`. Tests install a graph with `graph.set_graph(Graph.from_docs([...]))`. Helpers in `routers/intake.py`: `question_for`, `next_response`, `answer_public`, `language_for`, `require_answerable` (S7 reuses them).
 - [W1] Web: `api<T>(method, path, body?, {auth?, headers?})` in `web/src/api/client.ts` (204 → `null`; 401 `unauthorized` clears the auth store); `apiBlobUrl(path)` for images; auth store in `web/src/auth/store.ts` (`useAuth`, `authStore`, `getToken`); `useChannel(channel, onMessage)`; fixtures in `web/src/fixtures/` (`VITE_USE_FIXTURES=true`, summary served for any session id; placeholder doc images d1/d2). React Router v7 (v6 had open advisories). Tailwind v4 via `@tailwindcss/vite`; brand colours `navy`, `brand-orange`, `brand-green`, `brand-red`.
 - [W2] Staff pages render inside `auth/StaffLayout` (header + logout + 5-min `AutoLock` PIN overlay); wrap pages with `<RequireRole roles={[...]}>` in `App.tsx`. `/display` is public (outside the layout). `/triage` allows nurse and doctor. Doctor logout calls `POST /api/doctors/signout` first (best effort). `auth/PinPad` is reusable.
+- [W6] `DocumentsPanel` exports `useDocumentImage(path)` (cached object URL per path) and `sortDocuments`; `DocumentViewer` takes `{document, bbox, onClose}` and exports `bboxToPercent`. PatientView already wires `onSourceClick` → viewer with highlight; W5 only needs to swap the fixture for `GET /api/sessions/{id}/summary`. Placeholder images show only with `VITE_USE_FIXTURES=true`.
