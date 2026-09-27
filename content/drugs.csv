@@ -1,0 +1,103 @@
+generic,brand_examples,strengths,form,system
+Paracetamol,Crocin; Dolo 650,500 mg; 650 mg,tablet,allopathic
+Ibuprofen,Brufen,200 mg; 400 mg,tablet,allopathic
+Diclofenac,Voveran,50 mg; 75 mg,tablet,allopathic
+Aceclofenac,Hifenac; Zerodol,100 mg,tablet,allopathic
+Naproxen,Naprosyn,250 mg; 500 mg,tablet,allopathic
+Etoricoxib,Nucoxia; Etoshine,60 mg; 90 mg; 120 mg,tablet,allopathic
+Tramadol,Ultracet; Contramal,50 mg,tablet,allopathic
+Metformin,Glycomet; Glucophage,500 mg; 850 mg; 1000 mg,tablet,allopathic
+Glimepiride,Amaryl,1 mg; 2 mg,tablet,allopathic
+Gliclazide,Diamicron,40 mg; 80 mg,tablet,allopathic
+Sitagliptin,Januvia,50 mg; 100 mg,tablet,allopathic
+Vildagliptin,Galvus,50 mg,tablet,allopathic
+Teneligliptin,Tenepride; Teneza,20 mg,tablet,allopathic
+Dapagliflozin,Forxiga,5 mg; 10 mg,tablet,allopathic
+Empagliflozin,Jardiance,10 mg; 25 mg,tablet,allopathic
+Insulin glargine,Lantus; Basalog,100 IU/ml,injection,allopathic
+Insulin human (regular),Actrapid; Huminsulin R,40 IU/ml; 100 IU/ml,injection,allopathic
+Amlodipine,Amlong; Amlopres,2.5 mg; 5 mg; 10 mg,tablet,allopathic
+Telmisartan,Telma,20 mg; 40 mg; 80 mg,tablet,allopathic
+Losartan,Losar; Repace,25 mg; 50 mg,tablet,allopathic
+Olmesartan,Olmezest; Olsar,20 mg; 40 mg,tablet,allopathic
+Enalapril,Envas,2.5 mg; 5 mg; 10 mg,tablet,allopathic
+Ramipril,Cardace,2.5 mg; 5 mg,tablet,allopathic
+Metoprolol,Metolar; Seloken,25 mg; 50 mg,tablet,allopathic
+Atenolol,Aten; Tenormin,25 mg; 50 mg,tablet,allopathic
+Bisoprolol,Concor,2.5 mg; 5 mg,tablet,allopathic
+Hydrochlorothiazide,Aquazide,12.5 mg; 25 mg,tablet,allopathic
+Chlorthalidone,Thalizide,6.25 mg; 12.5 mg,tablet,allopathic
+Furosemide,Lasix,20 mg; 40 mg,tablet,allopathic
+Spironolactone,Aldactone,25 mg; 50 mg,tablet,allopathic
+Atorvastatin,Atorva; Lipitor,10 mg; 20 mg; 40 mg,tablet,allopathic
+Rosuvastatin,Rosuvas; Crestor,5 mg; 10 mg; 20 mg,tablet,allopathic
+Aspirin,Ecosprin,75 mg; 150 mg,tablet,allopathic
+Clopidogrel,Clopilet; Plavix,75 mg,tablet,allopathic
+Isosorbide mononitrate,Monotrate,10 mg; 20 mg; 30 mg,tablet,allopathic
+Warfarin,Warf; Uniwarfin,1 mg; 2 mg; 5 mg,tablet,allopathic
+Pantoprazole,Pan; Pantocid,20 mg; 40 mg,tablet,allopathic
+Omeprazole,Omez,20 mg,capsule,allopathic
+Rabeprazole,Razo; Rablet,20 mg,tablet,allopathic
+Ranitidine,Rantac; Aciloc,150 mg,tablet,allopathic
+Domperidone,Domstal,10 mg,tablet,allopathic
+Ondansetron,Emeset; Vomikind,4 mg; 8 mg,tablet,allopathic
+Metronidazole,Flagyl; Metrogyl,200 mg; 400 mg,tablet,allopathic
+Loperamide,Imodium; Eldoper,2 mg,capsule,allopathic
+Lactulose,Duphalac,10 g/15 ml,syrup,allopathic
+Oral rehydration salts,Electral,21.8 g sachet,powder,allopathic
+Amoxicillin,Mox; Novamox,250 mg; 500 mg,capsule,allopathic
+Amoxicillin + clavulanic acid,Augmentin; Clavam,375 mg; 625 mg,tablet,allopathic
+Azithromycin,Azithral; Azee,250 mg; 500 mg,tablet,allopathic
+Ciprofloxacin,Ciplox; Cifran,250 mg; 500 mg,tablet,allopathic
+Levofloxacin,Levoflox; Glevo,250 mg; 500 mg; 750 mg,tablet,allopathic
+Doxycycline,Doxy-1; Microdox,100 mg,capsule,allopathic
+Cefixime,Taxim-O; Zifi,100 mg; 200 mg,tablet,allopathic
+Nitrofurantoin,Martifur; Niftran,100 mg,capsule,allopathic
+Cetirizine,Cetzine; Okacet,10 mg,tablet,allopathic
+Levocetirizine,Levocet; Xyzal,5 mg,tablet,allopathic
+Fexofenadine,Allegra,120 mg; 180 mg,tablet,allopathic
+Montelukast,Montair; Singulair,10 mg,tablet,allopathic
+Salbutamol,Asthalin,100 mcg/dose; 2 mg,inhaler,allopathic
+Budesonide + formoterol,Foracort,200/6 mcg; 400/6 mcg,inhaler,allopathic
+Prednisolone,Wysolone; Omnacortil,5 mg; 10 mg; 20 mg,tablet,allopathic
+Levothyroxine,Thyronorm; Eltroxin,25 mcg; 50 mcg; 75 mcg; 100 mcg,tablet,allopathic
+Calcium carbonate + vitamin D3,Shelcal; Calcimax,500 mg + 250 IU,tablet,allopathic
+Cholecalciferol,Uprise-D3; Calcirol,60000 IU,capsule,allopathic
+Ferrous ascorbate + folic acid,Orofer XT; Livogen,100 mg + 1.5 mg,tablet,allopathic
+Folic acid,Folvite,5 mg,tablet,allopathic
+Methylcobalamin,Mecobalamin; Nurokind,500 mcg; 1500 mcg,tablet,allopathic
+Pregabalin,Lyrica; Pregeb,75 mg; 150 mg,capsule,allopathic
+Gabapentin,Gabapin,100 mg; 300 mg,capsule,allopathic
+Amitriptyline,Tryptomer,10 mg; 25 mg,tablet,allopathic
+Alprazolam,Alprax,0.25 mg; 0.5 mg,tablet,allopathic
+Escitalopram,Nexito; Cipralex,5 mg; 10 mg,tablet,allopathic
+Thiocolchicoside,Myoril,4 mg; 8 mg,capsule,allopathic
+Allopurinol,Zyloric,100 mg; 300 mg,tablet,allopathic
+Febuxostat,Febutaz; Zurig,40 mg; 80 mg,tablet,allopathic
+Hydroxychloroquine,HCQS,200 mg; 400 mg,tablet,allopathic
+Methotrexate,Folitrax,2.5 mg; 7.5 mg; 10 mg,tablet,allopathic
+Glucosamine,Jointace; Cartigen,500 mg; 1500 mg,tablet,allopathic
+Tamsulosin,Urimax; Contiflo,0.4 mg,capsule,allopathic
+Triphala churna,Patanjali Triphala; Dabur Triphala,3-6 g,churna,ayurveda
+Ashwagandha churna,Dabur Ashwagandha; Baidyanath Ashwagandha,3-6 g,churna,ayurveda
+Yograj guggulu,Baidyanath Yograj Guggulu; Dabur Yogaraj Guggulu,1-2 tab,vati,ayurveda
+Mahayograj guggulu,Baidyanath Mahayograj Guggulu,1-2 tab,vati,ayurveda
+Simhanad guggulu,Baidyanath Simhanad Guggulu,1-2 tab,vati,ayurveda
+Kaishore guggulu,Baidyanath Kaishore Guggulu,1-2 tab,vati,ayurveda
+Triphala guggulu,Dabur Triphala Guggulu,1-2 tab,vati,ayurveda
+Gokshuradi guggulu,Baidyanath Gokshuradi Guggulu,1-2 tab,vati,ayurveda
+Dashmool kwath,Baidyanath Dashmool Kwath,20 ml,kwath,ayurveda
+Rasnasaptak kwath,Baidyanath Rasnasaptak Kwath,20 ml,kwath,ayurveda
+Maharasnadi kwath,Baidyanath Maharasnadi Kwath,20 ml,kwath,ayurveda
+Dashmoolarishta,Dabur Dashmularishta,15-30 ml,arishta,ayurveda
+Ashwagandharishta,Dabur Ashwagandharishta,15-30 ml,arishta,ayurveda
+Arjunarishta,Dabur Arjunarishta,15-30 ml,arishta,ayurveda
+Chyawanprash,Dabur Chyawanprash,10-12 g,avaleha,ayurveda
+Sitopaladi churna,Dabur Sitopaladi; Baidyanath Sitopaladi,3-6 g,churna,ayurveda
+Avipattikar churna,Baidyanath Avipattikar,3-6 g,churna,ayurveda
+Hingvashtak churna,Baidyanath Hingvashtak,1-3 g,churna,ayurveda
+Chandraprabha vati,Baidyanath Chandraprabha Vati,1-2 tab,vati,ayurveda
+Arogyavardhini vati,Baidyanath Arogyavardhini Vati,1-2 tab,vati,ayurveda
+Sanjivani vati,Baidyanath Sanjivani Vati,1-2 tab,vati,ayurveda
+Mahanarayan taila,Dabur Mahanarayan Oil,external use,taila,ayurveda
+Giloy ghanvati,Patanjali Giloy Ghanvati,1-2 tab,vati,ayurveda

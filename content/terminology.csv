@@ -1,0 +1,27 @@
+system,code,display,sample
+NAMASTE,SAMPLE-NAM-001,Sandhigata Vata (knee osteoarthritis),true
+NAMASTE,SAMPLE-NAM-002,Amavata (inflammatory joint disorder),true
+NAMASTE,SAMPLE-NAM-003,Katigraha (low back stiffness and pain),true
+NAMASTE,SAMPLE-NAM-004,Gridhrasi (sciatica-like radiating pain),true
+NAMASTE,SAMPLE-NAM-005,Vatarakta (gout-like joint disorder),true
+NAMASTE,SAMPLE-NAM-006,Jvara (fever),true
+NAMASTE,SAMPLE-NAM-007,Kasa (cough),true
+NAMASTE,SAMPLE-NAM-008,Amlapitta (hyperacidity),true
+NAMASTE,SAMPLE-NAM-009,Madhumeha (diabetes-like disorder),true
+NAMASTE,SAMPLE-NAM-010,Shirahshula (headache),true
+NAMASTE,SAMPLE-NAM-011,Kushtha (chronic skin disorder),true
+NAMASTE,SAMPLE-NAM-012,Pandu (anaemia-like disorder),true
+ICD11_TM2,SAMPLE-TM2-001,Joint disorder pattern (TM2 placeholder),true
+ICD11_TM2,SAMPLE-TM2-002,Vata pattern (TM2 placeholder),true
+ICD11_TM2,SAMPLE-TM2-003,Pitta pattern (TM2 placeholder),true
+ICD11_TM2,SAMPLE-TM2-004,Kapha pattern (TM2 placeholder),true
+ICD11_TM2,SAMPLE-TM2-005,Digestive disorder pattern (TM2 placeholder),true
+ICD11_TM2,SAMPLE-TM2-006,Fever disorder pattern (TM2 placeholder),true
+ICD10,SAMPLE-ICD10-001,Osteoarthritis of knee,true
+ICD10,SAMPLE-ICD10-002,Low back pain,true
+ICD10,SAMPLE-ICD10-003,Rheumatoid arthritis,true
+ICD10,SAMPLE-ICD10-004,Type 2 diabetes mellitus,true
+ICD10,SAMPLE-ICD10-005,Essential hypertension,true
+ICD10,SAMPLE-ICD10-006,Fever unspecified,true
+ICD10,SAMPLE-ICD10-007,Iron deficiency anaemia,true
+ICD10,SAMPLE-ICD10-008,Gastro-oesophageal reflux,true

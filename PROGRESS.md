@@ -12,7 +12,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] F6 · Seed data and staff login — Needs: F3, F4
 
 ## Phase 1 — Walking skeleton (typed answers end to end)
-- [ ] C6 · Data files: drugs, terminology, mock ABHA — Needs: F1
+- [x] C6 · Data files: drugs, terminology, mock ABHA — Needs: F1
 - [ ] C1 · Triage config and joint-pain question graph — Needs: F1
 - [ ] S1 · Patients: register and mock ABHA — Needs: F6, C6
 - [ ] S2 · Sessions and consent — Needs: S1
@@ -108,3 +108,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [F5] `from app.ws import hub`; call `hub.emit(["queue","display"], "token.created", data)` from sync or async code. The `/ws` router is included explicitly in `main.py` (it lives in `app/ws.py`, not `app/routers/`).
 - [F6] Auth: `Depends(current_staff(["doctor"]))` → Staff; `Depends(kiosk_id)` → str. Login upper-cases `staff_id`, returns the same `invalid_pin` for unknown id or wrong PIN, and audits failures as `staff.login_failed`. Seed: `cd server && uv run python ../scripts/seed.py`; `seed(db)` is importable for tests (see `tests/test_login.py::_seed`).
 - [F6] TODO(S19): 4-digit PINs have no attempt limit yet — consider a per-staff lockout when wiring auth guards (not in the contract; propose it in docs/contract-change-requests.md if needed).
+- [C6] `mock_abha.json` has 2 profiles (Kamla Devi 12345678901234, Rahul Verma 98765432109876): §9.7 shows only one, and the card says "two … plus Rahul" — treated as two total. drugs.csv multi-value cells (brands, strengths) are `; `-separated. All terminology codes are `SAMPLE-*` placeholders.
