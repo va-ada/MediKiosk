@@ -79,4 +79,15 @@
     <string name="part_back">कमर</string>
     <string name="part_hands">हाथ या उंगलियाँ</string>
     <string name="nurse_informed">नर्स को खबर कर दी गई है, वे जल्दी आपको देखेंगी।</string>
+
+    <!-- Token (A6) -->
+    <string name="your_token">आपका टोकन नंबर</string>
+    <string name="dept_ayurveda">आयुर्वेद ओपीडी</string>
+    <string name="dept_general">जनरल ओपीडी</string>
+    <string name="done">हो गया</string>
+    <string name="token_qr_hint">यह कोड आपकी बारी आगे बढ़ाता है — स्क्रीन की फ़ोटो लीजिए या पर्ची माँगिए।</string>
+    <string name="token_continue_here">अपनी बाकी जानकारी यहीं दीजिए</string>
+    <string name="token_continue_hall">हॉल वाली मशीन पर आगे बढ़ें</string>
+    <string name="token_hall_title">टोकन %1$s — यह कोड साथ ले जाइए</string>
+    <string name="token_hall_steps">1. इस कोड की फ़ोटो लीजिए, या कर्मचारी से छपी पर्ची माँगिए।\n2. वेटिंग हॉल में हॉल वाली मशीन पर जाइए।\n3. उसके कैमरे को यह कोड दिखाइए और बाकी सवालों के जवाब वहीं दीजिए।</string>
 </resources>

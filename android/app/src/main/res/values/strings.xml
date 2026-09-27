@@ -81,4 +81,15 @@
     <string name="part_back">Lower back</string>
     <string name="part_hands">Hands or fingers</string>
     <string name="nurse_informed">A nurse has been informed and will see you soon.</string>
+
+    <!-- Token (A6) -->
+    <string name="your_token">Your token number</string>
+    <string name="dept_ayurveda">Ayurveda OPD</string>
+    <string name="dept_general">General OPD</string>
+    <string name="done">Done</string>
+    <string name="token_qr_hint">Keep this screen or ask for a printed slip — this code continues your visit.</string>
+    <string name="token_continue_here">Continue your history here</string>
+    <string name="token_continue_hall">Continue at a hall station</string>
+    <string name="token_hall_title">Token %1$s — take this code with you</string>
+    <string name="token_hall_steps">1. Take a photo of this code, or ask staff for a printed slip.\n2. Go to a hall station in the waiting hall.\n3. Show this code to its camera and answer the rest of the questions there.</string>
 </resources>

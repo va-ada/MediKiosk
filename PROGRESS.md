@@ -30,7 +30,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] A3 · Identify: ABHA or new patient — Needs: A2, S1
 - [x] A4 · Informant and consent — Needs: A3, S2
 - [x] A5 · Triage: complaint, body map, red flags → token — Needs: A4, S3
-- [ ] A6 · Token screen with QR — Needs: A5
+- [x] A6 · Token screen with QR — Needs: A5
 - [ ] A7 · History loop (tap answers) — Needs: A6, S6
 - [ ] A13 · Done screen, wipe, inactivity, resume — Needs: A7
   - **Milestone:** a patient can go from kiosk (or help desk) to the doctor's queue by tapping.
@@ -166,3 +166,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A3] Android network goes through `data/KioskRepository.call { api… }` → `Result` whose failure is `ApiFailure(code)` (`result.errorCode()`); `ui/Errors.kt` maps §1 codes → hi/en `ErrorCard`. Shared widgets in `ui/Components.kt` (BigButton, IconTile, Grid, NumericKeypad, DigitDisplay, Heading, ScreenBody, NavRow in IdentifyScreen). Add strings to BOTH values/ and values-hi/.
 - [A4] Proxy relations sent as `informant_relation` = son|daughter|spouse|parent|other. InformantScreen reuses `vm.session` if one already exists for this patient (Back never creates a second session). Screens without a recorded WAV (identify/informant) pass `audioKey = null`.
 - [A5] `COMPLAINTS` / `REDFLAG_QUESTIONS` in `ui/TriageScreen.kt` are hard-coded copies of content/triage.yaml — edit both together. `ui/ContentIcons.contentIcon(name)` maps every content icon name → Material icon (reuse for question choices). Triage result is kept in `vm.token` / `vm.triageAlerts`. `YesNoButtons` lives in TriageScreen.kt.
+- [A6] `tokenQrPayload(token)` / `qrBitmap(text)` / `QrImage` / `TokenBadge` / `NurseInformedBanner` live in `ui/TokenScreen.kt`; TokenScreen takes an optional `statusCard` slot for the patient app (A14). Verified the on-screen QR decodes (OpenCV) to exactly `{"session_id","token_id"}`.

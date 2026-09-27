@@ -32,6 +32,7 @@ import org.neural.medikiosk.ui.KioskScaffold
 import org.neural.medikiosk.ui.LocalLang
 import org.neural.medikiosk.ui.NeedHelpScreen
 import org.neural.medikiosk.ui.StartScreen
+import org.neural.medikiosk.ui.TokenScreen
 import org.neural.medikiosk.ui.TriageScreen
 import org.neural.medikiosk.ui.tr
 
@@ -71,7 +72,11 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
             composable(Routes.TRIAGE) {
                 TriageScreen(vm, onDone = { nav.forward(Routes.TOKEN) }, onBack = { nav.popBackStack() })
             }
-            composable(Routes.TOKEN) { Placeholder(R.string.nurse_informed) }
+            composable(Routes.TOKEN) {
+                TokenScreen(vm, onContinueHere = { nav.forward(Routes.HISTORY) }, onFinishHere = { nav.forward(Routes.DONE) })
+            }
+            composable(Routes.HISTORY) { Placeholder(R.string.token_continue_here) }
+            composable(Routes.DONE) { Placeholder(R.string.done) }
         }
     }
 }
