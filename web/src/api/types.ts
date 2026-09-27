@@ -244,7 +244,9 @@ export interface Outbox {
   kind: 'fhir_bundle'
   session_id: string
   patient_id: string
-  payload: JsonValue
+  /** Only with `?include_payload=true` (S16); the list omits it and sends `resource_count`. */
+  payload?: JsonValue
+  resource_count: number
   idempotency_key: string
   status: OutboxStatus
   attempts: number

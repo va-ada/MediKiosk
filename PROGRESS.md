@@ -79,7 +79,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] D1 · Mock HIS — Needs: F1
 - [x] S15 · FHIR bundle builder — Needs: S14, D1
 - [x] S16 · Outbox worker, island mode, admin health — Needs: S15
-- [ ] W11 · Admin console — Needs: W2, S16
+- [x] W11 · Admin console — Needs: W2, S16
 - [x] C3 · AYUSH question set — Needs: C1
 - [x] S17 · Terminology search — Needs: F6, C6
 - [x] W8 · AYUSH tab and diagnosis coding — Needs: W5, S17
@@ -155,3 +155,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [W8] PatientView shows Summary | AYUSH tabs for ayurveda tokens; DiagnosisBox sits under the sections (all depts; default system NAMASTE for ayurveda, ICD10 otherwise). Summary items carry no fact `key`, so AyushTab splits exam findings from patient answers by the server's text prefix (`Nadi:`, `Jihva:`, `Pramana:`…) — keep those labels stable in `review.ayush_exam`. No GET for a saved diagnosis exists, so the box can't show earlier saves after reload. New-since banner skips doctor_verified facts (the doctor's own exam).
 - [W9] /triage keeps every server alert it has seen (also loads `status=confirmed,downgraded`) so relay copies of resolved alerts stay hidden; a relay alarm whose id the server doesn't know shows "via relay — server not confirmed" with only a local "Hide (handled)" (localStorage) — after a DB reset the relay's in-memory alarms reappear this way until hidden/relay restart. Beep = Web Audio (double 1.1 kHz for emergency) every 1.5 s while any card is `open`; "Sound is off" button when the AudioContext is suspended. 15 s poll backs up the WS (escalation from another server process still shows). TODO: StaffLayout's 5-min AutoLock covers this station — consider exempting /triage. Verified in headless Chrome (card+beep <0.2 s, ack/confirm/downgrade, escalated badge, API down → relay card).
 - [W10] /display: department picker (All/General/Ayurveda) in localStorage `mk.display.department`; reloads on any `token.*` on `display` (+15 s poll). `token.called` for the chosen dept → yellow card for 10 s, ding-dong chime, then speech: Hindi (only if a hi-IN voice exists — macOS has Lekha) "टोकन A 17, Dr. Mehta, कमरा नंबर 1" then English "Token A 17, Dr. Mehta, Room 1". Verified in Chrome: board updated 0.3 s and speech queued 1.1 s after Call on /doctor.
+- [W11] Admin console: island toggle with confirm (live via `island.changed`), 5 health tiles + tables refresh every 10 s, outbox table uses `resource_count` (payload omitted by the server), audit latest 100 + Verify chain, erase form needs second admin id + PIN AND typing ERASE. Also: `/triage` is now exempt from the 5-min staff auto-lock (StaffLayout) so alarms are never hidden behind a PIN screen.

@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import AutoLock from './AutoLock'
 import { logout } from './login'
 import { ROLE_HOME, ROLE_LABEL } from './roles'
@@ -8,6 +8,8 @@ import { useAuth } from './store'
 export default function StaffLayout() {
   const auth = useAuth()
   const navigate = useNavigate()
+  // The triage/alert station must never be hidden behind a lock screen: alarms have to stay visible.
+  const lockable = !useLocation().pathname.startsWith('/triage')
 
   const onLogout = async (): Promise<void> => {
     await logout()
@@ -44,7 +46,7 @@ export default function StaffLayout() {
       <div className="flex-1">
         <Outlet />
       </div>
-      <AutoLock key={auth?.staff.id ?? 'logged-out'} />
+      {lockable && <AutoLock key={auth?.staff.id ?? 'logged-out'} />}
     </div>
   )
 }
