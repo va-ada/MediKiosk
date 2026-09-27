@@ -196,4 +196,9 @@
     <string name="pa_waiting">Please wait — more than 5 people are ahead of you.</string>
     <string name="pa_now_serving">Now being seen: %1$s</string>
     <string name="pa_now_none">The doctor has not called anyone yet.</string>
+
+    <!-- Hall station (A15) -->
+    <string name="hall_title">Hall station — continue your questions</string>
+    <string name="hall_scan">Scan your token slip</string>
+    <string name="hall_hint">Got your token at the kiosk? Show its code to the camera.</string>
 </resources>

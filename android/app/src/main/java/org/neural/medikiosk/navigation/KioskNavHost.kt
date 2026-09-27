@@ -19,6 +19,8 @@ import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.ui.DeviceSettingsScreen
 import org.neural.medikiosk.ui.DocumentsScreen
 import org.neural.medikiosk.ui.DoneScreen
+import org.neural.medikiosk.ui.HallStartScreen
+import org.neural.medikiosk.ui.SettingsScreen
 import org.neural.medikiosk.ui.EmergencyScreen
 import org.neural.medikiosk.ui.ReadbackScreen
 import org.neural.medikiosk.ui.ResumeScanner
@@ -38,7 +40,12 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
     val nav = rememberNavController()
     val scope = rememberCoroutineScope()
     val patientApp = settings.deviceMode == DeviceMode.PATIENT_APP
-    val startRoute = if (patientApp) Routes.PATIENT_HOME else Routes.START
+    val hall = settings.deviceMode == DeviceMode.HALL
+    val startRoute = when {
+        patientApp -> Routes.PATIENT_HOME
+        hall -> Routes.HALL_START
+        else -> Routes.START
+    }
     // Patient app: the live status card sits in the left pane when unfolded, else inside the token/done screens.
     val statusCard: (@Composable () -> Unit)? = if (patientApp) ({ if (!LocalTwoPane.current) LiveStatusCard(vm) }) else null
 
@@ -63,12 +70,27 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
                     onResume = { nav.forward(Routes.RESUME) },
                 )
             }
+            composable(Routes.HALL_START) {
+                HallStartScreen(onScan = { vm.clear(); nav.forward(Routes.RESUME) }, onOpenSettings = { nav.forward(Routes.DEVICE_SETTINGS) })
+            }
             composable(Routes.DEVICE_SETTINGS) {
                 DeviceSettingsScreen(
                     settings,
-                    onSave = { scope.launch { vm.settingsRepo.save(it); nav.toStart(startRoute) } },
+                    // keep the accessibility toggles as saved (live) by SettingsScreen
+                    onSave = { draft ->
+                        val now = vm.settings.value ?: settings
+                        scope.launch {
+                            vm.settingsRepo.save(draft.copy(largeText = now.largeText, highContrast = now.highContrast,
+                                slowPrompts = now.slowPrompts, handsetMode = now.handsetMode))
+                            nav.toStart(startRoute)
+                        }
+                    },
                     onClose = { nav.popBackStack() },
+                    onAccessibility = { nav.forward(Routes.ACCESSIBILITY) },
                 )
+            }
+            composable(Routes.ACCESSIBILITY) {
+                SettingsScreen(settings, onChange = { scope.launch { vm.settingsRepo.save(it) } }, onClose = { nav.popBackStack() })
             }
             composable(Routes.HELP) { NeedHelpScreen(onBack = { nav.popBackStack() }) }
             composable(Routes.EMERGENCY) { EmergencyScreen(vm, settings, onBack = { nav.popBackStack() }) }
@@ -88,12 +110,12 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
                 TokenScreen(vm, onContinueHere = { nav.forward(Routes.HISTORY) }, onFinishHere = { nav.forward(Routes.DONE) },
                     statusCard = statusCard, showHallOption = !patientApp)
             }
-            composable(Routes.HISTORY) { HistoryScreen(vm, onDone = { nav.forward(Routes.DOCUMENTS) }) }
+            composable(Routes.HISTORY) { HistoryScreen(vm, onDone = { nav.forward(if (hall) Routes.READBACK else Routes.DOCUMENTS) }) }
             composable(Routes.DOCUMENTS) { DocumentsScreen(vm, onDone = { nav.forward(Routes.READBACK) }) }
             composable(Routes.READBACK) { ReadbackScreen(vm, onDone = { nav.forward(Routes.DONE) }) }
             composable(Routes.DONE) { DoneScreen(vm, autoWipe = !patientApp, statusCard = statusCard) }
             composable(Routes.RESUME) {
-                ResumeScanner(vm, onResumed = { nav.forward(resumeRoute(it.status)) }, onBack = { nav.popBackStack() })
+                ResumeScanner(vm, onResumed = { nav.forward(resumeRoute(it.status, hall)) }, onBack = { nav.popBackStack() })
             }
         }
     } }
@@ -105,11 +127,11 @@ private fun PatientAppFrameIf(patientApp: Boolean, vm: IntakeViewModel, content:
     if (patientApp) PatientAppFrame(vm, content) else content()
 
 /** Where a scanned token slip continues, by session status (§2 session_status). */
-fun resumeRoute(status: String): String = when (status) {
-    "identifying" -> Routes.CONSENT
-    "consented" -> Routes.TRIAGE
+fun resumeRoute(status: String, hall: Boolean = false): String = when (status) {
+    "identifying" -> if (hall) Routes.DONE else Routes.CONSENT  // the hall station only continues triaged visits
+    "consented" -> if (hall) Routes.DONE else Routes.TRIAGE
     "triaged", "history" -> Routes.HISTORY
-    "documents" -> Routes.DOCUMENTS
+    "documents" -> if (hall) Routes.READBACK else Routes.DOCUMENTS  // no documents at the hall station
     "verifying" -> Routes.READBACK
     else -> Routes.DONE  // submitted / with_doctor / closed: nothing left to answer
 }

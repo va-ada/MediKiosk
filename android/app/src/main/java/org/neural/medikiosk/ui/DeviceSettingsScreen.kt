@@ -17,7 +17,6 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,8 +39,9 @@ import org.neural.medikiosk.ui.theme.Red
 
 /** Hidden device settings (long-press the logo for 3 s). Staff-only; no patient data here. */
 @Composable
-fun DeviceSettingsScreen(initial: DeviceSettings, onSave: (DeviceSettings) -> Unit, onClose: () -> Unit) {
-    var s by remember(initial) { mutableStateOf(initial) }
+fun DeviceSettingsScreen(initial: DeviceSettings, onSave: (DeviceSettings) -> Unit, onClose: () -> Unit, onAccessibility: () -> Unit) {
+    // Draft of the connection/mode fields; accessibility toggles live in SettingsScreen (saved at once there).
+    var s by remember { mutableStateOf(initial) }
     var status by remember { mutableStateOf<Pair<Boolean, String>?>(null) }
     val scope = rememberCoroutineScope()
 
@@ -71,10 +71,9 @@ fun DeviceSettingsScreen(initial: DeviceSettings, onSave: (DeviceSettings) -> Un
                     label = { Text(label) }, modifier = Modifier.heightIn(min = MinTouch))
             }
         }
-        ToggleRow("High contrast", s.highContrast) { s = s.copy(highContrast = it) }
-        ToggleRow("Large text", s.largeText) { s = s.copy(largeText = it) }
-        ToggleRow("Slower prompts", s.slowPrompts) { s = s.copy(slowPrompts = it) }
-        ToggleRow("Handset mode (earpiece)", s.handsetMode) { s = s.copy(handsetMode = it) }
+        OutlinedButton(onClick = onAccessibility, modifier = Modifier.fillMaxWidth().heightIn(min = MinTouch)) {
+            Text("Accessibility: large text, high contrast, slower prompts, handset mode")
+        }
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedButton(onClick = {
@@ -93,14 +92,5 @@ fun DeviceSettingsScreen(initial: DeviceSettings, onSave: (DeviceSettings) -> Un
             Button(onClick = { onSave(s) }, modifier = Modifier.heightIn(min = MinTouch)) { Text("Save") }
             OutlinedButton(onClick = onClose, modifier = Modifier.heightIn(min = MinTouch)) { Text("Close") }
         }
-    }
-}
-
-@Composable
-private fun ToggleRow(label: String, checked: Boolean, onChange: (Boolean) -> Unit) {
-    Row(Modifier.fillMaxWidth().heightIn(min = MinTouch), verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(label, style = MaterialTheme.typography.bodyLarge)
-        Switch(checked = checked, onCheckedChange = onChange)
     }
 }

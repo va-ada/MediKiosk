@@ -194,4 +194,9 @@
     <string name="pa_waiting">कृपया इंतज़ार कीजिए — आपसे पहले 5 से ज़्यादा लोग हैं।</string>
     <string name="pa_now_serving">अभी देखे जा रहे हैं: %1$s</string>
     <string name="pa_now_none">डॉक्टर ने अभी किसी को नहीं बुलाया है।</string>
+
+    <!-- Hall station (A15) -->
+    <string name="hall_title">हॉल मशीन — अपने बाकी सवाल यहाँ पूरे करें</string>
+    <string name="hall_scan">अपनी टोकन पर्ची स्कैन करें</string>
+    <string name="hall_hint">कियोस्क से टोकन मिल गया? उसका कोड कैमरे को दिखाइए।</string>
 </resources>
