@@ -39,4 +39,28 @@
     <string name="err_forbidden">इसकी अनुमति नहीं है। कृपया मदद माँगिए।</string>
     <string name="err_too_large">फ़ोटो बहुत बड़ी है। कृपया फिर से खींचिए।</string>
     <string name="err_unknown">कुछ गड़बड़ हो गई। फिर से कोशिश कीजिए, या मदद माँगिए।</string>
+
+    <!-- Informant + consent (A4) -->
+    <string name="hello_name">नमस्ते, %1$s</string>
+    <string name="try_again">फिर से कोशिश करें</string>
+    <string name="inf_who_answers">सवालों के जवाब कौन दे रहा है?</string>
+    <string name="inf_myself">मैं खुद (मैं ही मरीज़ हूँ)</string>
+    <string name="inf_someone_else">कोई और, मरीज़ की तरफ़ से</string>
+    <string name="inf_relation">आप मरीज़ के क्या लगते हैं?</string>
+    <string name="rel_son">बेटा</string>
+    <string name="rel_daughter">बेटी</string>
+    <string name="rel_spouse">पति या पत्नी</string>
+    <string name="rel_parent">माँ या पिता</string>
+    <string name="rel_other">कोई और</string>
+    <string name="consent_title">आपकी अनुमति</string>
+    <string name="consent_explain">आपके जवाब और पुरानी रिपोर्ट की फ़ोटो इस अस्पताल के डॉक्टर के लिए रखी जाएँगी, ताकि वे आपसे मिलने से पहले उन्हें पढ़ सकें। आप किसी भी हिस्से के लिए मना कर सकते हैं। आपकी जानकारी इसी अस्पताल में रहेगी।</string>
+    <string name="consent_capture">मेरे जवाब डॉक्टर के लिए रखे जाएँ</string>
+    <string name="consent_scan">मेरी पुरानी रिपोर्ट की फ़ोटो ली जाए</string>
+    <string name="consent_share">मेरी जानकारी अस्पताल के रिकॉर्ड में रखी जाए</string>
+    <string name="consent_link_abha">यह जानकारी मेरे ABHA खाते से जोड़ी जाए</string>
+    <string name="consent_check_q">यह जानकारी कौन देखेगा?</string>
+    <string name="consent_check_wrong">ऐसा नहीं है। एक बार फिर सुनिए, फिर चुनिए।</string>
+    <string name="consent_opt_doctor">इस अस्पताल में आपके डॉक्टर</string>
+    <string name="consent_opt_internet">इंटरनेट पर कोई भी</string>
+    <string name="consent_opt_companies">दवा बेचने वाली कंपनियाँ</string>
 </resources>

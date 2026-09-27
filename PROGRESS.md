@@ -28,7 +28,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] A1 · Android project skeleton and settings — Needs: —
 - [x] A2 · Start screen and kiosk scaffold — Needs: A1
 - [x] A3 · Identify: ABHA or new patient — Needs: A2, S1
-- [ ] A4 · Informant and consent — Needs: A3, S2
+- [x] A4 · Informant and consent — Needs: A3, S2
 - [ ] A5 · Triage: complaint, body map, red flags → token — Needs: A4, S3
 - [ ] A6 · Token screen with QR — Needs: A5
 - [ ] A7 · History loop (tap answers) — Needs: A6, S6
@@ -164,3 +164,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A1] `net/Models.kt` mirrors the contract incl. server extras (`allow_voice`, `fallback_choices`, choices `{value(JsonElement), label, en, hi, icon}`); `ApiClient.api(serverUrl, deviceId)` adds X-Kiosk-Id; `ApiClient.relay(...)` has 3 s timeouts; `ApiClient.errorCode(t)` → §1 code or `network_error`. Theme: body 20–22 sp, labelLarge 24 sp, `MinTouch` 56 dp, high-contrast + large-text (×1.3) schemes already wired from DeviceSettings.
 - [A2] Android nav: `navigation/Routes.kt` + `KioskNavHost` (provides `LocalNavController`, `LocalLang`); patient strings are resources in values/ (en) + values-hi/ read via `tr(R.string.x)` in the patient's language (`trIn(lang, …)` for bilingual); every intake screen wraps `KioskScaffold(audioKey)` (Emergency + Need help, plays/stops the prompt). `IntakeViewModel.clear()` = the whole wipe (memory + cacheDir). KIOSK mode calls startLockTask (emulator shows an "App is pinned" prompt — tap Got it at 859,2306).
 - [A3] Android network goes through `data/KioskRepository.call { api… }` → `Result` whose failure is `ApiFailure(code)` (`result.errorCode()`); `ui/Errors.kt` maps §1 codes → hi/en `ErrorCard`. Shared widgets in `ui/Components.kt` (BigButton, IconTile, Grid, NumericKeypad, DigitDisplay, Heading, ScreenBody, NavRow in IdentifyScreen). Add strings to BOTH values/ and values-hi/.
+- [A4] Proxy relations sent as `informant_relation` = son|daughter|spouse|parent|other. InformantScreen reuses `vm.session` if one already exists for this patient (Back never creates a second session). Screens without a recorded WAV (identify/informant) pass `audioKey = null`.

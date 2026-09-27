@@ -25,7 +25,9 @@ import org.neural.medikiosk.R
 import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.ui.BigButton
 import org.neural.medikiosk.ui.DeviceSettingsScreen
+import org.neural.medikiosk.ui.ConsentScreen
 import org.neural.medikiosk.ui.IdentifyScreen
+import org.neural.medikiosk.ui.InformantScreen
 import org.neural.medikiosk.ui.KioskScaffold
 import org.neural.medikiosk.ui.LocalLang
 import org.neural.medikiosk.ui.NeedHelpScreen
@@ -59,7 +61,13 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
             composable(Routes.IDENTIFY) {
                 IdentifyScreen(vm, onIdentified = { nav.forward(Routes.INFORMANT) }, onExit = { vm.clear(); nav.toStart(startRoute) })
             }
-            composable(Routes.INFORMANT) { Placeholder(R.string.identify_title) }
+            composable(Routes.INFORMANT) {
+                InformantScreen(vm, onDone = { nav.forward(Routes.CONSENT) }, onBack = { nav.popBackStack() })
+            }
+            composable(Routes.CONSENT) {
+                ConsentScreen(vm, onDone = { nav.forward(Routes.TRIAGE) }, onBack = { nav.popBackStack() })
+            }
+            composable(Routes.TRIAGE) { Placeholder(R.string.identify_title) }
         }
     }
 }

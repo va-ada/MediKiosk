@@ -41,4 +41,28 @@
     <string name="err_forbidden">This isn\'t allowed. Please ask for help.</string>
     <string name="err_too_large">The photo is too large. Please take it again.</string>
     <string name="err_unknown">Something went wrong. Please try again, or ask for help.</string>
+
+    <!-- Informant + consent (A4) -->
+    <string name="hello_name">Namaste, %1$s</string>
+    <string name="try_again">Try again</string>
+    <string name="inf_who_answers">Who is answering the questions?</string>
+    <string name="inf_myself">Myself (I am the patient)</string>
+    <string name="inf_someone_else">Someone else, for the patient</string>
+    <string name="inf_relation">How are you related to the patient?</string>
+    <string name="rel_son">Son</string>
+    <string name="rel_daughter">Daughter</string>
+    <string name="rel_spouse">Husband or wife</string>
+    <string name="rel_parent">Mother or father</string>
+    <string name="rel_other">Someone else</string>
+    <string name="consent_title">Your permission</string>
+    <string name="consent_explain">We will keep your answers and photos of your old reports so that your doctor at this hospital can read them before seeing you. You can say no to any part. Your information stays in this hospital.</string>
+    <string name="consent_capture">Keep my answers for the doctor</string>
+    <string name="consent_scan">Take photos of my old reports</string>
+    <string name="consent_share">Put my information in the hospital records</string>
+    <string name="consent_link_abha">Link this visit to my ABHA account</string>
+    <string name="consent_check_q">Who will see this information?</string>
+    <string name="consent_check_wrong">Not quite. Please listen once more, then choose.</string>
+    <string name="consent_opt_doctor">Your doctor at this hospital</string>
+    <string name="consent_opt_internet">Anyone on the internet</string>
+    <string name="consent_opt_companies">Companies that sell medicines</string>
 </resources>
