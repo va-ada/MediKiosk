@@ -1,0 +1,31 @@
+# Secrets and runtime data
+.env
+data/*
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+web/.env
+
+# Android / Gradle
+.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/
+
+# OS
+.DS_Store

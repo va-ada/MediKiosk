@@ -4,7 +4,7 @@ Build top to bottom. `/next` picks the first unchecked task whose **Needs** are 
 Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and `/check` at the end of each phase.
 
 ## Phase 0 — Foundation
-- [ ] F1 · Repo skeleton, Postgres and environment — Needs: —
+- [x] F1 · Repo skeleton, Postgres and environment — Needs: —
 - [ ] F2 · Server skeleton — Needs: F1
 - [ ] F3 · Data models and database — Needs: F2
 - [ ] F4 · Hash-chained audit log — Needs: F3
@@ -99,3 +99,5 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 ## Notes for later tasks
 
 <!-- One line per note: `- [ID] note`. Decisions, gotchas, TODOs left for later tasks. -->
+- [F1] Docker Postgres is mapped to host port **5433** (not 5432): this Mac's Homebrew postgresql@18 already owns localhost:5432. `DATABASE_URL` in `.env`/`.env.example` uses 5433; inside the container it is still 5432.
+- [F1] Python 3.11 comes from `uv python install 3.11` (system python3 is 3.14) — use `uv run`, never bare `python3`, for service code.
