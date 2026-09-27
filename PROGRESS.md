@@ -31,7 +31,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] A4 · Informant and consent — Needs: A3, S2
 - [x] A5 · Triage: complaint, body map, red flags → token — Needs: A4, S3
 - [x] A6 · Token screen with QR — Needs: A5
-- [ ] A7 · History loop (tap answers) — Needs: A6, S6
+- [x] A7 · History loop (tap answers) — Needs: A6, S6
 - [ ] A13 · Done screen, wipe, inactivity, resume — Needs: A7
   - **Milestone:** a patient can go from kiosk (or help desk) to the doctor's queue by tapping.
 
@@ -167,3 +167,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A4] Proxy relations sent as `informant_relation` = son|daughter|spouse|parent|other. InformantScreen reuses `vm.session` if one already exists for this patient (Back never creates a second session). Screens without a recorded WAV (identify/informant) pass `audioKey = null`.
 - [A5] `COMPLAINTS` / `REDFLAG_QUESTIONS` in `ui/TriageScreen.kt` are hard-coded copies of content/triage.yaml — edit both together. `ui/ContentIcons.contentIcon(name)` maps every content icon name → Material icon (reuse for question choices). Triage result is kept in `vm.token` / `vm.triageAlerts`. `YesNoButtons` lives in TriageScreen.kt.
 - [A6] `tokenQrPayload(token)` / `qrBitmap(text)` / `QrImage` / `TokenBadge` / `NurseInformedBanner` live in `ui/TokenScreen.kt`; TokenScreen takes an optional `statusCard` slot for the patient app (A14). Verified the on-screen QR decodes (OpenCV) to exactly `{"session_id","token_id"}`.
+- [A7] History state lives in `vm.question` + `vm.previousQuestions` ("Previous question" re-shows the last one; re-answering replaces it server-side). `AnswerInput(q)` dispatches by type to `ui/answers/*` (multi: none/dont_know/not_sure are exclusive; duration sends days = n × 1/7/30/365; number/duration show the question's choices as quick picks). Answer `alerts` are appended to `vm.triageAlerts` (banner). Live: full joint-pain+AYUSH run by tapping = 38 facts, session → documents.

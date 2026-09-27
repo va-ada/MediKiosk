@@ -26,6 +26,7 @@ import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.ui.BigButton
 import org.neural.medikiosk.ui.DeviceSettingsScreen
 import org.neural.medikiosk.ui.ConsentScreen
+import org.neural.medikiosk.ui.HistoryScreen
 import org.neural.medikiosk.ui.IdentifyScreen
 import org.neural.medikiosk.ui.InformantScreen
 import org.neural.medikiosk.ui.KioskScaffold
@@ -75,7 +76,8 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
             composable(Routes.TOKEN) {
                 TokenScreen(vm, onContinueHere = { nav.forward(Routes.HISTORY) }, onFinishHere = { nav.forward(Routes.DONE) })
             }
-            composable(Routes.HISTORY) { Placeholder(R.string.token_continue_here) }
+            composable(Routes.HISTORY) { HistoryScreen(vm, onDone = { nav.forward(Routes.DOCUMENTS) }) }
+            composable(Routes.DOCUMENTS) { Placeholder(R.string.docs_title) }
             composable(Routes.DONE) { Placeholder(R.string.done) }
         }
     }

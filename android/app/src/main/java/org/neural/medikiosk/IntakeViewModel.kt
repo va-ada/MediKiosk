@@ -2,6 +2,7 @@ package org.neural.medikiosk
 
 import android.app.Application
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
@@ -14,6 +15,7 @@ import org.neural.medikiosk.data.KioskRepository
 import org.neural.medikiosk.data.SettingsRepository
 import org.neural.medikiosk.net.Alert
 import org.neural.medikiosk.net.Patient
+import org.neural.medikiosk.net.Question
 import org.neural.medikiosk.net.QueueItem
 import org.neural.medikiosk.net.Session
 
@@ -35,6 +37,10 @@ class IntakeViewModel(app: Application) : AndroidViewModel(app) {
     var token by mutableStateOf<QueueItem?>(null)
     var triageAlerts by mutableStateOf<List<Alert>>(emptyList())
 
+    /** History loop: the question on screen and the ones answered before it (for "previous question"). */
+    var question by mutableStateOf<Question?>(null)
+    val previousQuestions = mutableStateListOf<Question>()
+
     /** Forget the patient: memory state and every cache file (photos, voice clips, QR images). */
     fun clear() {
         language = settings.value?.defaultLanguage ?: "hi"
@@ -42,6 +48,8 @@ class IntakeViewModel(app: Application) : AndroidViewModel(app) {
         session = null
         token = null
         triageAlerts = emptyList()
+        question = null
+        previousQuestions.clear()
         wipeCacheFiles()
     }
 

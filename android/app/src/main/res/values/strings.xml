@@ -92,4 +92,19 @@
     <string name="token_continue_hall">Continue at a hall station</string>
     <string name="token_hall_title">Token %1$s — take this code with you</string>
     <string name="token_hall_steps">1. Take a photo of this code, or ask staff for a printed slip.\n2. Go to a hall station in the waiting hall.\n3. Show this code to its camera and answer the rest of the questions there.</string>
+
+    <!-- History (A7) -->
+    <string name="answer_done">Done</string>
+    <string name="answer_quick_pick">Tap one:</string>
+    <string name="answer_or_type">Or type the number:</string>
+    <string name="answer_or_write">Or write it here:</string>
+    <string name="unit_days">days</string>
+    <string name="unit_weeks">weeks</string>
+    <string name="unit_months">months</string>
+    <string name="unit_years">years</string>
+    <string name="scale_none">no pain</string>
+    <string name="scale_worst">worst pain</string>
+    <string name="history_progress">%1$d of about %2$d answered</string>
+    <string name="history_previous">Previous question</string>
+    <string name="docs_title">Photos of old reports</string>
 </resources>

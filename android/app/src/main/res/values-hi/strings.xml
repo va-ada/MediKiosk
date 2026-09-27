@@ -90,4 +90,19 @@
     <string name="token_continue_hall">हॉल वाली मशीन पर आगे बढ़ें</string>
     <string name="token_hall_title">टोकन %1$s — यह कोड साथ ले जाइए</string>
     <string name="token_hall_steps">1. इस कोड की फ़ोटो लीजिए, या कर्मचारी से छपी पर्ची माँगिए।\n2. वेटिंग हॉल में हॉल वाली मशीन पर जाइए।\n3. उसके कैमरे को यह कोड दिखाइए और बाकी सवालों के जवाब वहीं दीजिए।</string>
+
+    <!-- History (A7) -->
+    <string name="answer_done">हो गया</string>
+    <string name="answer_quick_pick">इनमें से चुनिए:</string>
+    <string name="answer_or_type">या नंबर दबाइए:</string>
+    <string name="answer_or_write">या यहाँ लिखिए:</string>
+    <string name="unit_days">दिन</string>
+    <string name="unit_weeks">हफ़्ते</string>
+    <string name="unit_months">महीने</string>
+    <string name="unit_years">साल</string>
+    <string name="scale_none">बिल्कुल दर्द नहीं</string>
+    <string name="scale_worst">सबसे ज़्यादा दर्द</string>
+    <string name="history_progress">लगभग %2$d में से %1$d जवाब हो गए</string>
+    <string name="history_previous">पिछला सवाल</string>
+    <string name="docs_title">पुरानी रिपोर्ट की फ़ोटो</string>
 </resources>
