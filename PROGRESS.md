@@ -17,7 +17,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] S1 · Patients: register and mock ABHA — Needs: F6, C6
 - [x] S2 · Sessions and consent — Needs: S1
 - [x] S3 · Triage and token issue — Needs: S2, C1, F5
-- [ ] S4 · Queue selector, queue list, display state — Needs: S3
+- [x] S4 · Queue selector, queue list, display state — Needs: S3
 - [ ] S5 · Token actions and outcomes — Needs: S4
 - [ ] S6 · Question graph and tap answers — Needs: S3, C1
 - [ ] W1 · Web app skeleton — Needs: F1
@@ -113,3 +113,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S1] `app/auth.py` also has `kiosk_or_staff` (dependency for "K or S" routes; returns the audit actor string) and `actor_for(kiosk, staff)` — added here because S2/S11/S12 need the same check. `patient_public(p)` and `create_patient(...)` live in `app/routers/patients.py`. ABHA input may contain spaces/hyphens (stripped before the 14-digit check).
 - [S2] `session_public`, `consent_public`, `get_session_or_404(db, id)` live in `app/routers/sessions.py`. `informant_relation` is kept only for proxy. Re-posting consent adds a new Consent row but never moves status backwards; the latest Consent row (by created_at) is the one to re-check at send time (S16).
 - [S3] Triage is idempotent (existing token → same response) and needs consent (409 `consent_required`, logged in docs/contract-change-requests.md). Triage slots (5 red flags + `complaint_code` + optional `body_part`) are stored on Answer `question_id="triage"` — S6/S8 must merge them into "all slots so far". `serialize.queue_item`/`alert_public` in `app/services/serialize.py`; `tokens.issue_token`/`latest_token`; `triage_config()` (lru_cached) in `app/routers/triage.py`. Complaint label comes from the `chief_complaint` fact.
+- [S4] `GET /api/queue` = waiting preview (§10.2 order) **followed by** today's `called`/`in` tokens so W3 can still press In / No-show; `/next` and display `next` use waiting only. Department param optional: defaults to the staff member's department (nurse with none → all). Calling (via `/next` or `/call`) sets `token.doctor_id` = caller so the display board knows doctor + room — reuse `services.queue.mark_called()` and `routers.queue.called_payload()` in S5.
