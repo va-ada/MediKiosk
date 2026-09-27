@@ -57,7 +57,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 4 — Documents
 - [x] C5 · Sample documents for OCR — Needs: F1
-- [ ] N5 · OCR and document classification (`/document`) — Needs: N1, C5
+- [x] N5 · OCR and document classification (`/document`) — Needs: N1, C5
 - [ ] N6 · Lab value extraction — Needs: N5
 - [ ] N7 · Prescription extraction — Needs: N5, C6
 - [ ] S11 · Document upload and facts — Needs: S6, S7, N5
@@ -124,3 +124,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [D1] Mock HIS: `POST /fhir` → 400 `missing_idempotency_key` / `invalid_bundle` (body must have `resourceType: "Bundle"`); bundles persist as `data/his/<id>.json` and are reloaded on start, so a re-send after restart is still `duplicate: true` (D2 reset should delete `data/his/*.json`). `GET /bundles` = `[{id, idempotency_key, received_at, bundle}]` newest first; `GET /` shows Patient `name[0].text` or given+family.
 - [C5] Samples (A4 1240x1754, English only, Arial): lab_report_cbc (Kamla Devi, 12/08/2026, ref ranges use an en dash `12.0–15.0`, units like `x10^3/uL`), lab_report_diabetes (Rahul Verma, 05/07/2026: FBS 142, PPBS 198 mg/dL, HbA1c 7.4 %), rx_allopathic, rx_ayurveda, discharge_summary, handwritten_style (Bradley Hand — N7 should mark it unreadable/low-conf), plus *_photo.png variants of cbc and rx_allopathic. Regenerate: `uv run --with pillow python scripts/make_samples.py` (deterministic).
 - [N1] BLOCKED: HF gated model — owner must accept terms + hf auth login; skeleton committed, live /asr check pending.
+- [N5] `/document`: OCR loads lazily on the first call (~1 s; `/health.ocr_loaded` false until then); bboxes are ints in original pixels AFTER EXIF rotation; photos >2400 px are downscaled for OCR only. Undecodable upload → 422 `invalid_image`; OCR load failure → 503 `model_loading`. Helpers `group_rows`/`union_bbox`/`parse_date` in `app/document.py`; lines carry an internal `quad` for skew (dropped from the response).

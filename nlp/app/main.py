@@ -6,7 +6,7 @@ import httpx
 from fastapi import FastAPI, File, Form, UploadFile
 from pydantic import BaseModel
 
-from app import asr
+from app import asr, document
 from app.config import settings
 from app.errors import ApiError, register_error_handlers
 
@@ -43,7 +43,7 @@ async def _ollama_up() -> bool:
 
 @app.get("/health", response_model=HealthOut)
 async def health() -> HealthOut:
-    return HealthOut(asr_loaded=asr.engine.loaded, ocr_loaded=False, ollama=await _ollama_up())  # OCR arrives in N5
+    return HealthOut(asr_loaded=asr.engine.loaded, ocr_loaded=document.engine.loaded, ollama=await _ollama_up())
 
 
 @app.post("/asr", response_model=AsrOut)
@@ -57,3 +57,13 @@ def transcribe(audio: Annotated[UploadFile, File()], language: Annotated[Literal
         raise ApiError(422, "invalid_audio", str(exc)) from exc
     text = engine.transcribe(wav, language) if duration > 0 else ""
     return AsrOut(text=text, confidence=asr.confidence(text, duration, language), duration_sec=round(duration, 2))
+
+
+@app.post("/document", response_model=document.DocumentOut)
+def read_document(image: Annotated[UploadFile, File()]) -> document.DocumentOut:
+    if not document.engine.ensure_loaded():  # lazy: first call loads RapidOCR (~1 s)
+        raise ApiError(503, "model_loading", f"OCR engine failed to load ({document.engine.error})")
+    try:
+        return document.process(image.file.read())
+    except document.ImageError as exc:
+        raise ApiError(422, "invalid_image", str(exc)) from exc
