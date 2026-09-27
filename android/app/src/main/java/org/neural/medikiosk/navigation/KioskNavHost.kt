@@ -21,10 +21,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import org.neural.medikiosk.IntakeViewModel
+import org.neural.medikiosk.LocalWipe
 import org.neural.medikiosk.R
 import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.ui.BigButton
 import org.neural.medikiosk.ui.DeviceSettingsScreen
+import org.neural.medikiosk.ui.DoneScreen
+import org.neural.medikiosk.ui.ResumeScanner
 import org.neural.medikiosk.ui.ConsentScreen
 import org.neural.medikiosk.ui.HistoryScreen
 import org.neural.medikiosk.ui.IdentifyScreen
@@ -44,12 +47,15 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
     val scope = rememberCoroutineScope()
     val startRoute = Routes.START
 
-    CompositionLocalProvider(LocalNavController provides nav, LocalLang provides vm.language) {
+    val wipe: () -> Unit = { vm.clear(); nav.toStart(startRoute) }
+
+    CompositionLocalProvider(LocalNavController provides nav, LocalLang provides vm.language, LocalWipe provides wipe) {
         NavHost(navController = nav, startDestination = startRoute) {
             composable(Routes.START) {
                 StartScreen(
                     onLanguage = { lang -> vm.clear(); vm.language = lang; nav.forward(Routes.IDENTIFY) },
                     onOpenSettings = { nav.forward(Routes.DEVICE_SETTINGS) },
+                    onResume = { nav.forward(Routes.RESUME) },
                 )
             }
             composable(Routes.DEVICE_SETTINGS) {
@@ -78,9 +84,23 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
             }
             composable(Routes.HISTORY) { HistoryScreen(vm, onDone = { nav.forward(Routes.DOCUMENTS) }) }
             composable(Routes.DOCUMENTS) { Placeholder(R.string.docs_title) }
-            composable(Routes.DONE) { Placeholder(R.string.done) }
+            composable(Routes.READBACK) { Placeholder(R.string.done) }
+            composable(Routes.DONE) { DoneScreen(vm) }
+            composable(Routes.RESUME) {
+                ResumeScanner(vm, onResumed = { nav.forward(resumeRoute(it.status)) }, onBack = { nav.popBackStack() })
+            }
         }
     }
+}
+
+/** Where a scanned token slip continues, by session status (§2 session_status). */
+fun resumeRoute(status: String): String = when (status) {
+    "identifying" -> Routes.CONSENT
+    "consented" -> Routes.TRIAGE
+    "triaged", "history" -> Routes.HISTORY
+    "documents" -> Routes.DOCUMENTS
+    "verifying" -> Routes.READBACK
+    else -> Routes.DONE  // submitted / with_doctor / closed: nothing left to answer
 }
 
 /** Stand-in for screens later cards build. */

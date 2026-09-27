@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.neural.medikiosk.IntakeViewModel
+import org.neural.medikiosk.LocalActivityPing
 import org.neural.medikiosk.R
 import org.neural.medikiosk.data.errorCode
 import org.neural.medikiosk.net.AbhaVerifyRequest
@@ -48,6 +49,7 @@ private enum class IdStep { CHOOSE, ABHA, OTP, NAME, AGE, SEX }
 @Composable
 fun IdentifyScreen(vm: IntakeViewModel, onIdentified: (Patient) -> Unit, onExit: () -> Unit) {
     var step by rememberSaveable { mutableStateOf(IdStep.CHOOSE) }
+    val ping = LocalActivityPing.current
     var abha by rememberSaveable { mutableStateOf("") }
     var otp by rememberSaveable { mutableStateOf("") }
     var name by rememberSaveable { mutableStateOf("") }
@@ -117,7 +119,7 @@ fun IdentifyScreen(vm: IntakeViewModel, onIdentified: (Patient) -> Unit, onExit:
                     Text(tr(R.string.id_name_hint), style = MaterialTheme.typography.bodyMedium)
                     OutlinedTextField(
                         value = name,
-                        onValueChange = { if (it.length <= 120) name = it },
+                        onValueChange = { ping(); if (it.length <= 120) name = it },
                         textStyle = MaterialTheme.typography.headlineMedium,
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Next),

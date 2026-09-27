@@ -107,4 +107,16 @@
     <string name="history_progress">%1$d of about %2$d answered</string>
     <string name="history_previous">Previous question</string>
     <string name="docs_title">Photos of old reports</string>
+
+    <!-- Done, inactivity, resume (A13) -->
+    <string name="done_thanks">Thank you!</string>
+    <string name="done_wait">Please wait for your token number to be called.</string>
+    <string name="done_clearing">For your privacy this screen clears in %1$d seconds.</string>
+    <string name="done_finish_now">Finish now</string>
+    <string name="still_there">Are you still there?</string>
+    <string name="still_there_hint">Touch the screen to continue. Otherwise, for your privacy, this screen will be cleared.</string>
+    <string name="still_there_continue">I am here — continue</string>
+    <string name="resume_title">Continue with my token</string>
+    <string name="resume_hint">Hold the code on your token slip in front of the camera.</string>
+    <string name="resume_allow_camera">Allow the camera</string>
 </resources>

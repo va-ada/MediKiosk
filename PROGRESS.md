@@ -32,7 +32,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] A5 · Triage: complaint, body map, red flags → token — Needs: A4, S3
 - [x] A6 · Token screen with QR — Needs: A5
 - [x] A7 · History loop (tap answers) — Needs: A6, S6
-- [ ] A13 · Done screen, wipe, inactivity, resume — Needs: A7
+- [x] A13 · Done screen, wipe, inactivity, resume — Needs: A7
   - **Milestone:** a patient can go from kiosk (or help desk) to the doctor's queue by tapping.
 
 ## Phase 2 — Voice
@@ -168,3 +168,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A5] `COMPLAINTS` / `REDFLAG_QUESTIONS` in `ui/TriageScreen.kt` are hard-coded copies of content/triage.yaml — edit both together. `ui/ContentIcons.contentIcon(name)` maps every content icon name → Material icon (reuse for question choices). Triage result is kept in `vm.token` / `vm.triageAlerts`. `YesNoButtons` lives in TriageScreen.kt.
 - [A6] `tokenQrPayload(token)` / `qrBitmap(text)` / `QrImage` / `TokenBadge` / `NurseInformedBanner` live in `ui/TokenScreen.kt`; TokenScreen takes an optional `statusCard` slot for the patient app (A14). Verified the on-screen QR decodes (OpenCV) to exactly `{"session_id","token_id"}`.
 - [A7] History state lives in `vm.question` + `vm.previousQuestions` ("Previous question" re-shows the last one; re-answering replaces it server-side). `AnswerInput(q)` dispatches by type to `ui/answers/*` (multi: none/dont_know/not_sure are exclusive; duration sends days = n × 1/7/30/365; number/duration show the question's choices as quick picks). Answer `alerts` are appended to `vm.triageAlerts` (banner). Live: full joint-pain+AYUSH run by tapping = 38 facts, session → documents.
+- [A13] Wipe = `LocalWipe` (nav host: `vm.clear()` + back to the start route; clears cacheDir + externalCacheDir — verified). `KioskScaffold(inactivity = true)` wraps `InactivityWatcher` (60 s → `sys_still_there` + 30 s overlay → wipe); text fields call `LocalActivityPing` since IME typing isn't a touch. Resume: `ResumeScanner` → `navigation.resumeRoute(status)`; calls reactivate best-effort (only an `absent` token changes; otherwise vm.token stays null — no kiosk GET for a token). Debug-only test hook: push a QR image to `/sdcard/Android/data/org.neural.medikiosk/files/debug/qr.png` → a DEBUG button decodes it with the same ZXing code (hidden when the file is absent).

@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.neural.medikiosk.InactivityWatcher
 import org.neural.medikiosk.R
 import org.neural.medikiosk.audio.LocalAudioPrompter
 import org.neural.medikiosk.navigation.LocalNavController
@@ -53,6 +54,18 @@ fun KioskScaffold(
     modifier: Modifier = Modifier,
     bilingual: Boolean = false,
     showHelp: Boolean = true,
+    inactivity: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit,
+) = InactivityWatcher(enabled = inactivity) {
+    KioskFrame(audioKey, modifier, bilingual, showHelp, content)
+}
+
+@Composable
+private fun KioskFrame(
+    audioKey: String?,
+    modifier: Modifier,
+    bilingual: Boolean,
+    showHelp: Boolean,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val nav = LocalNavController.current

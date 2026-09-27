@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,8 +24,8 @@ import org.neural.medikiosk.R
 
 /** Start: two big language tiles (हिंदी / English). Long-press the logo 3 s → hidden device settings. */
 @Composable
-fun StartScreen(onLanguage: (String) -> Unit, onOpenSettings: () -> Unit, extra: @Composable () -> Unit = {}) {
-    KioskScaffold(audioKey = "sys_welcome", bilingual = true) {
+fun StartScreen(onLanguage: (String) -> Unit, onOpenSettings: () -> Unit, onResume: () -> Unit) {
+    KioskScaffold(audioKey = "sys_welcome", bilingual = true, inactivity = false) {
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -38,7 +39,8 @@ fun StartScreen(onLanguage: (String) -> Unit, onOpenSettings: () -> Unit, extra:
             )
             BigButton("हिंदी", Icons.Filled.Translate, { onLanguage("hi") }, Modifier.fillMaxWidth(), minHeight = 120.dp)
             BigButton("English", Icons.Filled.Translate, { onLanguage("en") }, Modifier.fillMaxWidth(), minHeight = 120.dp)
-            extra()
+            BigOutlinedButton("${trIn("hi", R.string.resume_title)}\n${trIn("en", R.string.resume_title)}", Icons.Filled.QrCodeScanner,
+                onResume, Modifier.fillMaxWidth())
         }
     }
 }

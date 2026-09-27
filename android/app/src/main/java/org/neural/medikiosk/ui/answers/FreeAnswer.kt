@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
+import org.neural.medikiosk.LocalActivityPing
 import org.neural.medikiosk.R
 import org.neural.medikiosk.net.Choice
 import org.neural.medikiosk.ui.BigButton
@@ -34,13 +35,14 @@ import org.neural.medikiosk.ui.tr
 @Composable
 fun FreeAnswer(questionId: String, choices: List<Choice>, enabled: Boolean, onAnswer: (JsonElement) -> Unit) {
     var text by rememberSaveable(questionId) { mutableStateOf("") }
+    val ping = LocalActivityPing.current
     val keyboard = LocalSoftwareKeyboardController.current
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         if (choices.isNotEmpty()) ChoiceAnswer(choices, enabled) { keyboard?.hide(); onAnswer(it) }
         Text(tr(R.string.answer_or_write), style = MaterialTheme.typography.bodyMedium)
         OutlinedTextField(
             value = text,
-            onValueChange = { if (it.length <= 500) text = it },
+            onValueChange = { ping(); if (it.length <= 500) text = it },
             textStyle = MaterialTheme.typography.bodyLarge,
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
             modifier = Modifier.fillMaxWidth().heightIn(min = 120.dp),

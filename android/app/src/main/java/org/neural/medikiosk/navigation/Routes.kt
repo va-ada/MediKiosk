@@ -18,6 +18,7 @@ object Routes {
     const val DONE = "done"
     const val EMERGENCY = "emergency"
     const val HELP = "help"
+    const val RESUME = "resume"
 }
 
 val LocalNavController = staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
