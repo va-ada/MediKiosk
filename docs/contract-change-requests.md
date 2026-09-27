@@ -12,3 +12,7 @@ Proposals to change `CONTRACTS.md`. Each entry: date, task ID, what changes, why
 - **What:** token actions on a token in the wrong status return `409 invalid_state` (e.g. outcome on a `waiting` token, reactivate on a non-`absent` token, call on a `done` token).
 - **Why:** §4.6 only names `already_in`. Without a guard, double-clicks could, for example, close a finished visit twice or push a `done` token back to `waiting`.
 - **Also:** `in` pressed twice by the same doctor returns 200 (idempotent); `call`/`queue/next` record the calling doctor in `token.doctor_id` so the display board can show doctor + room.
+
+## 2026-09-27 · N1 · New NLP error code `invalid_audio` (informational — already implemented)
+- **What:** `POST /asr` returns `422 {"error":{"code":"invalid_audio"}}` when ffmpeg cannot decode the upload (empty/corrupt file).
+- **Why:** §6 only defines `503 model_loading`; a corrupt upload is a client error, not "model loading". The server (S7) maps any NLP error to `503 nlp_unavailable` for the kiosk anyway, so kiosks never see this code.
