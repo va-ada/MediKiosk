@@ -1,4 +1,4 @@
-.PHONY: db-up db-down server nlp relay his web test
+.PHONY: db-up db-down server nlp relay his web test seed demo-reset
 
 db-up:
 	docker compose up -d postgres
@@ -19,7 +19,19 @@ his:
 	cd mock_his && uv run uvicorn main:app --host 0.0.0.0 --port 8002
 
 web:
-	@echo "web: not created yet (task W1)"
+	cd web && npm run dev -- --host 0.0.0.0 --port 5173
 
 test:
 	cd server && uv run pytest -q
+	cd nlp && uv run pytest -q
+	cd relay && uv run pytest -q
+	cd mock_his && uv run pytest -q
+	cd web && npx tsc --noEmit -p tsconfig.app.json
+	python3 scripts/validate_content.py
+
+seed:
+	cd server && uv run python ../scripts/seed.py
+
+# DESTRUCTIVE: wipes the local demo database and patient files, then loads the three demo patients.
+demo-reset:
+	cd server && uv run python ../scripts/reset_demo.py --yes

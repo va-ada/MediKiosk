@@ -91,7 +91,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] A14 · Patient app mode (Z Fold) — Needs: A7, S4
 - [ ] A15 · Accessibility settings and hall-station mode — Needs: A13
 - [ ] W10 · Display board — Needs: W1, S5
-- [ ] D2 · Demo reset — Needs: S16
+- [x] D2 · Demo reset — Needs: S16
 - [ ] D3 · End-to-end smoke test — Needs: S19, S16, D1
 - [ ] D4 · Demo script and checklist — Needs: D2
   - **Milestone:** demo-ready.
@@ -148,3 +148,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N7] Drug entity value = §3 shape (`name` = drugs.csv generic, `name_as_written` = OCR text, e.g. brand "Glycomet"); frequency joins codes/phrases ("twice daily, after food"); a following "before breakfast x 14 days" row is merged into the medicine above. Unreadable (conf < 0.6, Tab/Cap with no csv match, or ANY digit/letter confusion like "4o mg" in a medicine line on the page — this is what flags handwritten_style.png) → all fields null, `readable: false`, text_en "Medicine: unreadable — see image". Also fixed in N7: RapidOCR is now fed BGR (it assumes ndarrays are BGR).
 - [S11/S18] Live-verified with real OCR: cbc/rx photos processed in 1–2 s, 3 LOW labs + pinned doc, report drugs grouped `found_in_documents`, handwritten → 2 unreadable placeholders; on-disk files encrypted; A1+A2 erase → image 410. S7 stays unticked only for the gated ASR model (voice path live-checked up to the 503).
 - [S19] `tests/test_auth_guards.py` walks EVERY /api route (via the OpenAPI schema — FastAPI 0.141 keeps included routers nested, so `app.routes` misses them) and asserts anonymous → 400/401 and wrong role → 403; a new route fails the test until it is classified there. conftest has `kiosk_headers` and `staff_headers(role)` fixtures. Three contract-level security gaps (unauthenticated WS, no PIN lockout, spoofable kiosk header) are proposals in docs/contract-change-requests.md.
+- [D2] `make demo-reset` (≈5 s, offline-capable) drives the REAL API in-process: Kamla A-001 (ayurveda, full joint-pain + AYUSH history, read-back, CBC sample stored encrypted + 5 lab facts, submitted), Rahul A-002 (general, triaged), Sita A-003 (priority recheck reserved for D1). Refuses non-local DBs; `--yes` skips the RESET prompt (Makefile passes it). Also clears data/patients and data/his. Restart `make server` after a reset only if content YAML changed (graph is cached). `make web` and `make test` (all suites) now work.
