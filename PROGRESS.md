@@ -50,7 +50,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 ## Phase 3 — Safety
 - [ ] S8 · Red-flag rules engine — Needs: S6, C2
 - [ ] S9 · Alerts API and escalation — Needs: S8
-- [ ] S10 · Alarm relay service — Needs: F1
+- [x] S10 · Alarm relay service — Needs: F1
 - [ ] W9 · Triage / alert station — Needs: W2, S9, S10
 - [ ] A12 · Emergency flow and kiosk beacon — Needs: A2, S9, S10
   - **Milestone:** red flags and the emergency button work — even with the API down.
@@ -116,3 +116,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S4] `GET /api/queue` = waiting preview (§10.2 order) **followed by** today's `called`/`in` tokens so W3 can still press In / No-show; `/next` and display `next` use waiting only. Department param optional: defaults to the staff member's department (nurse with none → all). Calling (via `/next` or `/call`) sets `token.doctor_id` = caller so the display board knows doctor + room — reuse `services.queue.mark_called()` and `routers.queue.called_payload()` in S5.
 - [S5] Outcome is allowed from `in` or `called`. `refer` also sets `session.department` to the new department. `admit: true` is stored as an "Admit: yes." prefix on `outcome_note` (no column for it in §3). Outcome `out` calls `services.fhir.enqueue_bundle(db, session)` automatically once `app/services/fhir.py` exists (S15: just create it — the router checks with `find_spec`, then delete the helper's TODO). Wrong-state actions → 409 `invalid_state`.
 - [S6] `graph.apply_answer(db, session, question, value, source, raw_text, confidence, status, actor)` validates + stores + replaces that slot's answer-sourced facts + runs `redflags.evaluate_and_alert` with all slots, and **commits**; returns `(answer, alerts)`. It does NOT emit `alert.created` — S8's `evaluate_and_alert` must emit. Answer facts have `value={"value": v}` (dict, so read-back can add `patient_disputed`/`patient_unsure`); drugs from answers are one fact per medicine with the §3 drugs shape, `found_in_documents: false`. Only `status=confident` answers count as answered. `graph.render()` choices = `{value, label, en, hi, icon}` and never include `doctor_note`. Tests install a graph with `graph.set_graph(Graph.from_docs([...]))`. Helpers in `routers/intake.py`: `question_for`, `next_response`, `answer_public`, `language_for`, `require_answerable` (S7 reuses them).
+- [S10] Relay: `cd relay && uv run pytest -q`; `GET /alarms` returns newest first (max 50); alarms are validated against the §2 `reason_code` enum (422 `validation_error` otherwise); dedupe only covers the last 200 ids kept in memory.
