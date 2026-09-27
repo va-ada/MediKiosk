@@ -69,7 +69,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] N8 · Grounded summarisation (`/summarize`) — Needs: N3
 - [x] S12 · Summary builder and submit — Needs: S11, N8
 - [x] S13 · Read-back — Needs: S6
-- [ ] A11 · Read-back screen and submit — Needs: A10, S13, S12
+- [x] A11 · Read-back screen and submit — Needs: A10, S13, S12
 - [x] S14 · Verification endpoints — Needs: S12
 - [x] W5 · Wire patient view to the API — Needs: W4, S14
 - [x] W7 · Outcome bar — Needs: W5, S5
@@ -173,3 +173,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A8] Mic shows only when `question.allow_voice` (so never in English) and hides per question after 503 `nlp_unavailable`. Upload via `KioskRepository.answerAudio(...)` (data/KioskRepository.kt; `uploadDocument` helper is there too); clip deleted in `finally`. Uncertain → `DidYouMeanScreen` inside the history scaffold. Debug-only hook: `/sdcard/Android/data/org.neural.medikiosk/files/debug/voice.m4a` replaces the recording. Live: Lekha "तीन महीने से" → duration_days 90 (voice, conf 0.85, ~11 s first call); "हम्म" → Did-you-mean. The 503 path is untested live (NLP must stay up).
 - [A12] Emergency network is `data/EmergencyRepository` (server + relay in parallel, each `withTimeoutOrNull(3000)`, failures ignored; `watch(id)` = OkHttp WS on `/ws?channel=alerts`, stops the beacon on `alert.updated` for that id). `emergency/Beacon` = ToneGenerator on STREAM_ALARM at max + torch 1 Hz; the screen flashes red/white itself. Staff hold 3 s = hand-off → wipe. Live: API up → server ✓ relay ✓, nurse ack stopped the beacon; API URL dead → relay ✓ only. The screen shows server/relay ✓/✗ for staff.
 - [A10] Pages are cache-dir JPEGs listed in `vm.docPages` (wiped with the session); each is deleted right after its upload succeeds (`KioskRepository.uploadDocument`, page_no = position); JPEGs over 9.5 MB are downscaled first. After sending, the screen polls `GET /api/documents/{id}` (≤ 30 s) to show read ✓ / not read. Debug-only hook: `.../files/debug/doc.png` (or doc.jpg) → "DEBUG: add" button. Live: emulated-camera photo + CBC sample → 2 processed docs, 6 lab facts from_report.
+- [A11] Read-back: intro (`sys_readback_intro`) → one item per screen spoken via TTS (`KioskScaffold(speech = item.text)`), Yes/No/Not sure → POST readback; after the last → POST submit → Done. The recorded intro says "say or tap" but read-back is tap-only (no voice endpoint for it). A resumed session reaches Done without a token number (no kiosk GET for tokens). Live: full kiosk journey → submitted; doctor summary shows allergy strip, LOW labs, patient_disputed / patient_unsure flags.

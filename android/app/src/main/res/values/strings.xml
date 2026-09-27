@@ -172,4 +172,15 @@
     <string name="docs_read">read ✓</string>
     <string name="docs_not_read">could not be read — the doctor will look at the photo</string>
     <string name="docs_reading">being read…</string>
+
+    <!-- Read-back (A11) -->
+    <string name="rb_title">Let\'s check what you told us</string>
+    <string name="rb_intro">I will now repeat what you told me. For each one, tap yes, no, or not sure.</string>
+    <string name="rb_start">Start</string>
+    <string name="rb_send">Send to the doctor</string>
+    <string name="rb_n_of_m">%1$d of %2$d</string>
+    <string name="rb_is_this_right">Is this right?</string>
+    <string name="rb_yes">Yes, right</string>
+    <string name="rb_no">No, wrong</string>
+    <string name="rb_not_sure">Not sure</string>
 </resources>

@@ -170,4 +170,15 @@
     <string name="docs_read">पढ़ लिया ✓</string>
     <string name="docs_not_read">पढ़ा नहीं जा सका — डॉक्टर फ़ोटो देखेंगे</string>
     <string name="docs_reading">पढ़ा जा रहा है…</string>
+
+    <!-- Read-back (A11) -->
+    <string name="rb_title">आइए, आपकी बताई बातें जाँच लें</string>
+    <string name="rb_intro">अब मैं आपकी बताई बातें दोहराऊँगी। हर बात पर हाँ, नहीं, या पता नहीं दबाइए।</string>
+    <string name="rb_start">शुरू करें</string>
+    <string name="rb_send">डॉक्टर को भेजें</string>
+    <string name="rb_n_of_m">%1$d / %2$d</string>
+    <string name="rb_is_this_right">क्या यह सही है?</string>
+    <string name="rb_yes">हाँ, सही है</string>
+    <string name="rb_no">नहीं, गलत है</string>
+    <string name="rb_not_sure">पता नहीं</string>
 </resources>
