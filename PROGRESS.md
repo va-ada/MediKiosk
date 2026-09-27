@@ -42,7 +42,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
 - [ ] N4 · Negation double-check — Needs: N3
 - [ ] S7 · Voice answers via NLP — Needs: S6, N3
-- [ ] C4 · Render audio prompts — Needs: C1, C2
+- [x] C4 · Render audio prompts — Needs: C1, C2
 - [ ] A9 · Audio prompt playback — Needs: A2, C4
 - [ ] A8 · Voice answers (hold to talk) — Needs: A7, S7
   - **Milestone:** answers by voice in Hindi.
@@ -126,3 +126,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N1] BLOCKED: HF gated model — owner must accept terms + hf auth login; skeleton committed, live /asr check pending.
 - [S17] Terminology search: WRatio ≥ 60 as the card says, but word-prefix/substring hits are ranked above pure fuzzy ones ("sandhi" → Sandhigata first). `system` must be NAMASTE | ICD11_TM2 | ICD10 (else 422). Blank `q` → `[]`.
 - [C3] ayush.yaml = 14 history items + 6 Prakriti items (20 questions); an ayurveda joint-pain session is ~35 questions end to end — consider it for demo timing. Dosha pointers (e.g. "thin → Vata") live only in `doctor_note` (doctor-side W8 may show them). Re-run `render_audio.py` (C4) after any question text change.
+- [C4] `python3 scripts/render_audio.py` (system python has PyYAML) renders 49 keys × hi/en = 98 WAVs (Lekha / Rishi, 22.05 kHz mono s16, ~12 MB, committed). Hash cache skips unchanged texts; WAVs for deleted keys are removed. System phrase texts live in the script (`SYSTEM_PHRASES`). A9 copies `content/audio` into Android assets.
