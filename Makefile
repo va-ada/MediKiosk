@@ -13,10 +13,10 @@ nlp:
 	@echo "nlp: not created yet (task N1)"
 
 relay:
-	@echo "relay: not created yet (task S10)"
+	cd relay && uv run uvicorn main:app --host 0.0.0.0 --port 8003
 
 his:
-	@echo "his: not created yet (task D1)"
+	cd mock_his && uv run uvicorn main:app --host 0.0.0.0 --port 8002
 
 web:
 	@echo "web: not created yet (task W1)"

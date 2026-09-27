@@ -50,13 +50,13 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 ## Phase 3 — Safety
 - [x] S8 · Red-flag rules engine — Needs: S6, C2
 - [x] S9 · Alerts API and escalation — Needs: S8
-- [ ] S10 · Alarm relay service — Needs: F1
+- [x] S10 · Alarm relay service — Needs: F1
 - [ ] W9 · Triage / alert station — Needs: W2, S9, S10
 - [ ] A12 · Emergency flow and kiosk beacon — Needs: A2, S9, S10
   - **Milestone:** red flags and the emergency button work — even with the API down.
 
 ## Phase 4 — Documents
-- [ ] C5 · Sample documents for OCR — Needs: F1
+- [x] C5 · Sample documents for OCR — Needs: F1
 - [ ] N5 · OCR and document classification (`/document`) — Needs: N1, C5
 - [ ] N6 · Lab value extraction — Needs: N5
 - [ ] N7 · Prescription extraction — Needs: N5, C6
@@ -76,7 +76,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
   - **Milestone:** the doctor verifies a summary and closes the visit.
 
 ## Phase 6 — Integration and AYUSH
-- [ ] D1 · Mock HIS — Needs: F1
+- [x] D1 · Mock HIS — Needs: F1
 - [ ] S15 · FHIR bundle builder — Needs: S14, D1
 - [ ] S16 · Outbox worker, island mode, admin health — Needs: S15
 - [ ] W11 · Admin console — Needs: W2, S16
@@ -120,3 +120,6 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S8] `redflags.evaluate_and_alert` creates at most ONE alert per (session, rule_id) ever — stricter than the card (open/acknowledged only) so a confirmed/downgraded alert is not re-raised on every later answer. It emits `alert.created` via a session `after_commit` hook (never before the row is committed) and does not commit itself. Tests install rules with `redflags.set_rules([...])`.
 - [S9] Background loops use a router-level `lifespan=` (FastAPI merges it into the app) — see `services/escalation.py`; do DB work in `asyncio.to_thread`, publish on the loop. S16 outbox worker should copy this pattern. Emergency button: idempotent on client `id`, unknown `session_id` is stored as null (never fails). Resolve changes the lane only for a waiting/called token; resolving from `open` also fills acknowledged_by/at.
 - [S13] Read-back templates use extra placeholders beyond §9.6 (`{label_en|hi}`, `{yesno_en|hi}`, `{duration_en|hi}` → "3 months"/"3 महीने"); unknown keys fall back to `text_en`. GET readback moves the session to `verifying` and omits facts already answered or marked unsure. A new response replaces the previous flag (no→yes clears `patient_disputed`).
+- [S10] Relay: `cd relay && uv run pytest -q`; `GET /alarms` returns newest first (max 50); alarms are validated against the §2 `reason_code` enum (422 `validation_error` otherwise); dedupe only covers the last 200 ids kept in memory.
+- [D1] Mock HIS: `POST /fhir` → 400 `missing_idempotency_key` / `invalid_bundle` (body must have `resourceType: "Bundle"`); bundles persist as `data/his/<id>.json` and are reloaded on start, so a re-send after restart is still `duplicate: true` (D2 reset should delete `data/his/*.json`). `GET /bundles` = `[{id, idempotency_key, received_at, bundle}]` newest first; `GET /` shows Patient `name[0].text` or given+family.
+- [C5] Samples (A4 1240x1754, English only, Arial): lab_report_cbc (Kamla Devi, 12/08/2026, ref ranges use an en dash `12.0–15.0`, units like `x10^3/uL`), lab_report_diabetes (Rahul Verma, 05/07/2026: FBS 142, PPBS 198 mg/dL, HbA1c 7.4 %), rx_allopathic, rx_ayurveda, discharge_summary, handwritten_style (Bradley Hand — N7 should mark it unreadable/low-conf), plus *_photo.png variants of cbc and rx_allopathic. Regenerate: `uv run --with pillow python scripts/make_samples.py` (deterministic).
