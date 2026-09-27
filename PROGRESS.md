@@ -92,7 +92,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] A15 · Accessibility settings and hall-station mode — Needs: A13
 - [ ] W10 · Display board — Needs: W1, S5
 - [x] D2 · Demo reset — Needs: S16
-- [ ] D3 · End-to-end smoke test — Needs: S19, S16, D1
+- [x] D3 · End-to-end smoke test — Needs: S19, S16, D1
 - [ ] D4 · Demo script and checklist — Needs: D2
   - **Milestone:** demo-ready.
 
@@ -149,3 +149,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S11/S18] Live-verified with real OCR: cbc/rx photos processed in 1–2 s, 3 LOW labs + pinned doc, report drugs grouped `found_in_documents`, handwritten → 2 unreadable placeholders; on-disk files encrypted; A1+A2 erase → image 410. S7 stays unticked only for the gated ASR model (voice path live-checked up to the 503).
 - [S19] `tests/test_auth_guards.py` walks EVERY /api route (via the OpenAPI schema — FastAPI 0.141 keeps included routers nested, so `app.routes` misses them) and asserts anonymous → 400/401 and wrong role → 403; a new route fails the test until it is classified there. conftest has `kiosk_headers` and `staff_headers(role)` fixtures. Three contract-level security gaps (unauthenticated WS, no PIN lockout, spoofable kiosk header) are proposals in docs/contract-change-requests.md.
 - [D2] `make demo-reset` (≈5 s, offline-capable) drives the REAL API in-process: Kamla A-001 (ayurveda, full joint-pain + AYUSH history, read-back, CBC sample stored encrypted + 5 lab facts, submitted), Rahul A-002 (general, triaged), Sita A-003 (priority recheck reserved for D1). Refuses non-local DBs; `--yes` skips the RESET prompt (Makefile passes it). Also clears data/patients and data/his. Restart `make server` after a reset only if content YAML changed (graph is cached). `make web` and `make test` (all suites) now work.
+- [D3] `cd server && uv run python ../scripts/smoke.py` → 16 steps PASS in ~9 s on the live stack (35 tap answers, real OCR + AI summary, 7 sections approved, bundle sent to HIS in ~3 s, audit valid). Calls its own token instead of `/queue/next` (after a demo reset "next" is correctly someone else). Needs island mode OFF; NLP optional (upload step skips). Exit 1 on any failure.
