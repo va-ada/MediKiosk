@@ -62,6 +62,9 @@ async def run_forever() -> None:
 
 @asynccontextmanager
 async def lifespan(_: Any) -> AsyncIterator[None]:
+    if not settings.run_workers:
+        yield
+        return
     task = asyncio.create_task(run_forever())
     try:
         yield

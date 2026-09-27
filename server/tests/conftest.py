@@ -7,7 +7,14 @@ from sqlmodel import Session, SQLModel, create_engine
 
 from app import db as app_db
 from app import models  # noqa: F401
+from app.config import settings
 from app.main import app
+
+
+@pytest.fixture(autouse=True)
+def _no_background_workers(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Outbox/escalation loops would share the in-memory DB connection with the test; test them directly."""
+    monkeypatch.setattr(settings, "run_workers", False)
 
 
 @pytest.fixture
