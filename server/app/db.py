@@ -1,5 +1,7 @@
 from collections.abc import Iterator
+from typing import Annotated
 
+from fastapi import Depends
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, SQLModel, create_engine
 
@@ -19,3 +21,6 @@ def get_session() -> Iterator[Session]:
     """FastAPI dependency: one DB session per request."""
     with Session(engine) as db:
         yield db
+
+
+DbSession = Annotated[Session, Depends(get_session)]
