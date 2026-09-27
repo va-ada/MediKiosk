@@ -57,9 +57,9 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 4 — Documents
 - [x] C5 · Sample documents for OCR — Needs: F1
-- [ ] N5 · OCR and document classification (`/document`) — Needs: N1, C5
-- [ ] N6 · Lab value extraction — Needs: N5
-- [ ] N7 · Prescription extraction — Needs: N5, C6
+- [x] N5 · OCR and document classification (`/document`) — Needs: N1, C5
+- [x] N6 · Lab value extraction — Needs: N5
+- [x] N7 · Prescription extraction — Needs: N5, C6
 - [ ] S11 · Document upload and facts — Needs: S6, S7, N5
 - [ ] A10 · Document capture — Needs: A7, S11
 - [x] W6 · Documents panel and source highlight — Needs: W4
@@ -143,3 +143,6 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S15] FHIR bundles use fhir.resources R4B models (v8 installed) and are validated with `Bundle.model_validate` before queuing; systems are `urn:medikiosk:*` placeholders (swap for official ABDM/NAMASTE URIs later). `build_bundle` refreshes the summary first and drops rejected facts AND the raw QuestionnaireResponse answers behind them. `enqueue_bundle` is idempotent per `{session_id}:v{summary_version}` and audited as `outbox.create`. Live: mock HIS accepted a real bundle; repeat → duplicate.
 - [S16] Outbox worker + escalation loop are gated by `settings.run_workers` (env RUN_WORKERS, default true); tests/conftest.py turns them off (they would share the in-memory SQLite connection) — test workers via `outbox.drain_once(db, client, now=…)` / `escalation.escalate_once(db, now)`. Rows stay `pending` while retrying (§10.6 backoff 10,20,40…300 s); `failed` is unused. `GET /api/admin/outbox` omits `payload` unless `?include_payload=true` (adds `resource_count`). Health probes run concurrently (2 s each). Live: island on held the bundle; off → sent to HIS in ~4 s.
 - [S18] Files are AES-256-GCM with a per-patient DEK (AAD = "<patient_id>:<relpath>", so a file copied to another path fails). DEK creation uses its own DB session (never rolls back the caller). Erase = caller admin + DIFFERENT admin id/PIN (same → 403, wrong PIN → 401 `invalid_pin` audited as `patient.erase_denied`, non-admin approver → 403). Limitation: erasure crypto-shreds FILES only; DB rows (name, facts, answers) remain — propose DB redaction if the pitch claims full erasure.
+- [N5] `/document`: OCR loads lazily on the first call (~1 s; `/health.ocr_loaded` false until then); bboxes are ints in original pixels AFTER EXIF rotation; photos >2400 px are downscaled for OCR only. Undecodable upload → 422 `invalid_image`; OCR load failure → 503 `model_loading`. Helpers `group_rows`/`union_bbox`/`parse_date` in `app/document.py`; lines carry an internal `quad` for skew (dropped from the response).
+- [N6] Lab entity value = §3 shape; `flag` is `low|high|normal|unknown` (lowercase; text_en appends LOW/HIGH only). Unknown test names are kept as written only for clean rows with unit + range (e.g. MCV, RBC count). Unreadable (conf < 0.6 or digit/letter confusions like `1O.2`) → `value: null`, `flag: unknown`, `readable: false` inside value too, text_en "<test>: unreadable — see image".
+- [N7] Drug entity value = §3 shape (`name` = drugs.csv generic, `name_as_written` = OCR text, e.g. brand "Glycomet"); frequency joins codes/phrases ("twice daily, after food"); a following "before breakfast x 14 days" row is merged into the medicine above. Unreadable (conf < 0.6, Tab/Cap with no csv match, or ANY digit/letter confusion like "4o mg" in a medicine line on the page — this is what flags handwritten_style.png) → all fields null, `readable: false`, text_en "Medicine: unreadable — see image". Also fixed in N7: RapidOCR is now fed BGR (it assumes ndarrays are BGR).

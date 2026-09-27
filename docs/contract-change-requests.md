@@ -16,3 +16,7 @@ Proposals to change `CONTRACTS.md`. Each entry: date, task ID, what changes, why
 ## 2026-09-27 · N1 · New NLP error code `invalid_audio` (informational — already implemented)
 - **What:** `POST /asr` returns `422 {"error":{"code":"invalid_audio"}}` when ffmpeg cannot decode the upload (empty/corrupt file).
 - **Why:** §6 only defines `503 model_loading`; a corrupt upload is a client error, not "model loading". The server (S7) maps any NLP error to `503 nlp_unavailable` for the kiosk anyway, so kiosks never see this code.
+
+## 2026-09-27 · N5 · New NLP error code `invalid_image` (informational — already implemented)
+- **What:** `POST /document` returns `422 {"error":{"code":"invalid_image"}}` when the upload cannot be decoded as an image; `503 model_loading` if the OCR engine failed to load.
+- **Why:** §6 defines no errors for `/document`. S11 already validates type/size before calling NLP and marks the document `failed` on any NLP error, so kiosks never see this code.
