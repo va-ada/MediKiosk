@@ -49,7 +49,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 3 — Safety
 - [x] S8 · Red-flag rules engine — Needs: S6, C2
-- [ ] S9 · Alerts API and escalation — Needs: S8
+- [x] S9 · Alerts API and escalation — Needs: S8
 - [ ] S10 · Alarm relay service — Needs: F1
 - [ ] W9 · Triage / alert station — Needs: W2, S9, S10
 - [ ] A12 · Emergency flow and kiosk beacon — Needs: A2, S9, S10
@@ -118,3 +118,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S6] `graph.apply_answer(db, session, question, value, source, raw_text, confidence, status, actor)` validates + stores + replaces that slot's answer-sourced facts + runs `redflags.evaluate_and_alert` with all slots, and **commits**; returns `(answer, alerts)`. It does NOT emit `alert.created` — S8's `evaluate_and_alert` must emit. Answer facts have `value={"value": v}` (dict, so read-back can add `patient_disputed`/`patient_unsure`); drugs from answers are one fact per medicine with the §3 drugs shape, `found_in_documents: false`. Only `status=confident` answers count as answered. `graph.render()` choices = `{value, label, en, hi, icon}` and never include `doctor_note`. Tests install a graph with `graph.set_graph(Graph.from_docs([...]))`. Helpers in `routers/intake.py`: `question_for`, `next_response`, `answer_public`, `language_for`, `require_answerable` (S7 reuses them).
 - [C2] redflags.yaml has 2 extra DRAFT rules beyond the card (`chest_pain_only`, `breathless_only`, both urgent, mutually exclusive with `chest_pain_breathless`) — flag for clinician review. Rules use `is: false` conditions, so the engine must treat a slot answered `false` as a real value (and a missing slot as "condition fails"). festivals.yaml dates are all `null` until copied from the official Government of India holiday list. Lexicon numbers include डेढ़/dedh 1.5 and ढाई/dhai 2.5 (round days when normalising).
 - [S8] `redflags.evaluate_and_alert` creates at most ONE alert per (session, rule_id) ever — stricter than the card (open/acknowledged only) so a confirmed/downgraded alert is not re-raised on every later answer. It emits `alert.created` via a session `after_commit` hook (never before the row is committed) and does not commit itself. Tests install rules with `redflags.set_rules([...])`.
+- [S9] Background loops use a router-level `lifespan=` (FastAPI merges it into the app) — see `services/escalation.py`; do DB work in `asyncio.to_thread`, publish on the loop. S16 outbox worker should copy this pattern. Emergency button: idempotent on client `id`, unknown `session_id` is stored as null (never fails). Resolve changes the lane only for a waiting/called token; resolving from `open` also fills acknowledged_by/at.
