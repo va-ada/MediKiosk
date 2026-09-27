@@ -50,8 +50,8 @@ SYSTEM_PHRASES: dict[str, dict[str, str]] = {
         "hi": "धन्यवाद। कृपया अपना टोकन नंबर बुलाए जाने तक इंतज़ार कीजिए।",
     },
     "sys_readback_intro": {
-        "en": "I will now repeat what you told me. For each one, say or tap yes, no, or not sure.",
-        "hi": "अब मैं आपकी बताई बातें दोहराऊँगी। हर बात पर हाँ, नहीं, या पता नहीं — बोलिए या दबाइए।",
+        "en": "I will now repeat what you told me. For each one, tap yes, no, or not sure.",
+        "hi": "अब मैं आपकी बताई बातें दोहराऊँगी। हर बात पर हाँ, नहीं, या पता नहीं दबाइए।",
     },
     "sys_did_you_mean": {
         "en": "Sorry, I did not understand. Did you mean one of these?",
