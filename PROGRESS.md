@@ -15,7 +15,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] C6 · Data files: drugs, terminology, mock ABHA — Needs: F1
 - [x] C1 · Triage config and joint-pain question graph — Needs: F1
 - [x] S1 · Patients: register and mock ABHA — Needs: F6, C6
-- [ ] S2 · Sessions and consent — Needs: S1
+- [x] S2 · Sessions and consent — Needs: S1
 - [ ] S3 · Triage and token issue — Needs: S2, C1, F5
 - [ ] S4 · Queue selector, queue list, display state — Needs: S3
 - [ ] S5 · Token actions and outcomes — Needs: S4
@@ -111,3 +111,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [C6] `mock_abha.json` has 2 profiles (Kamla Devi 12345678901234, Rahul Verma 98765432109876): §9.7 shows only one, and the card says "two … plus Rahul" — treated as two total. drugs.csv multi-value cells (brands, strengths) are `; `-separated. All terminology codes are `SAMPLE-*` placeholders.
 - [C1] joint_pain slots: site, side, duration_days, onset, character, swelling, swelling_where, morning_stiffness, worse_with, better_with, severity (scale_0_10), fever, injury, other_joints, current_medicines (list_string, section drugs), allergy (bool), allergy_detail (string, section allergies). Free questions carry tap-fallback choices (`none`, `not_sure`) — S6 must accept a choice value for free questions (e.g. `current_medicines: []` for `none`, fact flagged unsure for `not_sure`). `jp_duration` has numeric fallback choices (3/14/90/365 days).
 - [S1] `app/auth.py` also has `kiosk_or_staff` (dependency for "K or S" routes; returns the audit actor string) and `actor_for(kiosk, staff)` — added here because S2/S11/S12 need the same check. `patient_public(p)` and `create_patient(...)` live in `app/routers/patients.py`. ABHA input may contain spaces/hyphens (stripped before the 14-digit check).
+- [S2] `session_public`, `consent_public`, `get_session_or_404(db, id)` live in `app/routers/sessions.py`. `informant_relation` is kept only for proxy. Re-posting consent adds a new Consent row but never moves status backwards; the latest Consent row (by created_at) is the one to re-check at send time (S16).
