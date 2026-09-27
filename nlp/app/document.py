@@ -266,7 +266,7 @@ def ocr_lines(img: Any, ocr: OcrEngine | None = None) -> list[dict]:
         scale = max(img.size) / MAX_SIDE
         work = img.resize((round(img.width / scale), round(img.height / scale)))
     lines = []
-    for quad, text, conf in ocr.read(np.asarray(work)):
+    for quad, text, conf in ocr.read(np.ascontiguousarray(np.asarray(work)[:, :, ::-1])):  # RapidOCR wants BGR
         text = text.strip()
         if not text:
             continue

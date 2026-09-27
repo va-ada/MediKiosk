@@ -59,7 +59,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] C5 · Sample documents for OCR — Needs: F1
 - [x] N5 · OCR and document classification (`/document`) — Needs: N1, C5
 - [x] N6 · Lab value extraction — Needs: N5
-- [ ] N7 · Prescription extraction — Needs: N5, C6
+- [x] N7 · Prescription extraction — Needs: N5, C6
 - [ ] S11 · Document upload and facts — Needs: S6, S7, N5
 - [ ] A10 · Document capture — Needs: A7, S11
 - [ ] W6 · Documents panel and source highlight — Needs: W4
@@ -126,3 +126,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N1] BLOCKED: HF gated model — owner must accept terms + hf auth login; skeleton committed, live /asr check pending.
 - [N5] `/document`: OCR loads lazily on the first call (~1 s; `/health.ocr_loaded` false until then); bboxes are ints in original pixels AFTER EXIF rotation; photos >2400 px are downscaled for OCR only. Undecodable upload → 422 `invalid_image`; OCR load failure → 503 `model_loading`. Helpers `group_rows`/`union_bbox`/`parse_date` in `app/document.py`; lines carry an internal `quad` for skew (dropped from the response).
 - [N6] Lab entity value = §3 shape; `flag` is `low|high|normal|unknown` (lowercase; text_en appends LOW/HIGH only). Unknown test names are kept as written only for clean rows with unit + range (e.g. MCV, RBC count). Unreadable (conf < 0.6 or digit/letter confusions like `1O.2`) → `value: null`, `flag: unknown`, `readable: false` inside value too, text_en "<test>: unreadable — see image".
+- [N7] Drug entity value = §3 shape (`name` = drugs.csv generic, `name_as_written` = OCR text, e.g. brand "Glycomet"); frequency joins codes/phrases ("twice daily, after food"); a following "before breakfast x 14 days" row is merged into the medicine above. Unreadable (conf < 0.6, Tab/Cap with no csv match, or ANY digit/letter confusion like "4o mg" in a medicine line on the page — this is what flags handwritten_style.png) → all fields null, `readable: false`, text_en "Medicine: unreadable — see image". Also fixed in N7: RapidOCR is now fed BGR (it assumes ndarrays are BGR).
