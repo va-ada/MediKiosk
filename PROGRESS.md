@@ -9,7 +9,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] F3 · Data models and database — Needs: F2
 - [x] F4 · Hash-chained audit log — Needs: F3
 - [x] F5 · WebSocket hub — Needs: F2
-- [ ] F6 · Seed data and staff login — Needs: F3, F4
+- [x] F6 · Seed data and staff login — Needs: F3, F4
 
 ## Phase 1 — Walking skeleton (typed answers end to end)
 - [ ] C6 · Data files: drugs, terminology, mock ABHA — Needs: F1
@@ -106,3 +106,5 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [F3] Tests: fixtures `engine` (in-memory SQLite, monkeypatched into `app.db.engine`), `db`, `client` (TestClient with lifespan). Use `app.ids.iso_z()` to serialise datetimes (SQLite returns naive UTC).
 - [F4] `audit.record(db, actor, action, entity, entity_id, details)` flushes but does NOT commit — commit it with your change. Postgres uses `pg_advisory_xact_lock` to keep the chain linear. Routes use `db: DbSession` (Annotated dependency in `app/db.py`); put it before params with defaults.
 - [F5] `from app.ws import hub`; call `hub.emit(["queue","display"], "token.created", data)` from sync or async code. The `/ws` router is included explicitly in `main.py` (it lives in `app/ws.py`, not `app/routers/`).
+- [F6] Auth: `Depends(current_staff(["doctor"]))` → Staff; `Depends(kiosk_id)` → str. Login upper-cases `staff_id`, returns the same `invalid_pin` for unknown id or wrong PIN, and audits failures as `staff.login_failed`. Seed: `cd server && uv run python ../scripts/seed.py`; `seed(db)` is importable for tests (see `tests/test_login.py::_seed`).
+- [F6] TODO(S19): 4-digit PINs have no attempt limit yet — consider a per-staff lockout when wiring auth guards (not in the contract; propose it in docs/contract-change-requests.md if needed).
