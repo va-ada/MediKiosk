@@ -117,4 +117,7 @@
     <string name="resume_title">मेरे टोकन से आगे बढ़ें</string>
     <string name="resume_hint">टोकन की पर्ची वाला कोड कैमरे के सामने रखिए।</string>
     <string name="resume_allow_camera">कैमरा चालू करने दें</string>
+
+    <!-- Audio (A9) -->
+    <string name="listen_again">फिर से सुनें</string>
 </resources>

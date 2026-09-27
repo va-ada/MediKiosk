@@ -52,7 +52,7 @@ fun InformantScreen(vm: IntakeViewModel, onDone: () -> Unit, onBack: () -> Unit)
         }
     }
 
-    KioskScaffold(audioKey = null) {
+    KioskScaffold(audioKey = null, speech = tr(if (proxy) R.string.inf_relation else R.string.inf_who_answers)) {
         ScreenBody {
             Text(tr(R.string.hello_name, patient.name), style = MaterialTheme.typography.titleLarge)
             ErrorCard(error)

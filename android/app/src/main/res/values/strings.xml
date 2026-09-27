@@ -119,4 +119,7 @@
     <string name="resume_title">Continue with my token</string>
     <string name="resume_hint">Hold the code on your token slip in front of the camera.</string>
     <string name="resume_allow_camera">Allow the camera</string>
+
+    <!-- Audio (A9) -->
+    <string name="listen_again">Listen again</string>
 </resources>

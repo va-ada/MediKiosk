@@ -43,7 +43,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] N4 · Negation double-check — Needs: N3
 - [x] S7 · Voice answers via NLP — Needs: S6, N3
 - [x] C4 · Render audio prompts — Needs: C1, C2
-- [ ] A9 · Audio prompt playback — Needs: A2, C4
+- [x] A9 · Audio prompt playback — Needs: A2, C4
 - [ ] A8 · Voice answers (hold to talk) — Needs: A7, S7
   - **Milestone:** answers by voice in Hindi.
 
@@ -169,3 +169,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A6] `tokenQrPayload(token)` / `qrBitmap(text)` / `QrImage` / `TokenBadge` / `NurseInformedBanner` live in `ui/TokenScreen.kt`; TokenScreen takes an optional `statusCard` slot for the patient app (A14). Verified the on-screen QR decodes (OpenCV) to exactly `{"session_id","token_id"}`.
 - [A7] History state lives in `vm.question` + `vm.previousQuestions` ("Previous question" re-shows the last one; re-answering replaces it server-side). `AnswerInput(q)` dispatches by type to `ui/answers/*` (multi: none/dont_know/not_sure are exclusive; duration sends days = n × 1/7/30/365; number/duration show the question's choices as quick picks). Answer `alerts` are appended to `vm.triageAlerts` (banner). Live: full joint-pain+AYUSH run by tapping = 38 facts, session → documents.
 - [A13] Wipe = `LocalWipe` (nav host: `vm.clear()` + back to the start route; clears cacheDir + externalCacheDir — verified). `KioskScaffold(inactivity = true)` wraps `InactivityWatcher` (60 s → `sys_still_there` + 30 s overlay → wipe); text fields call `LocalActivityPing` since IME typing isn't a touch. Resume: `ResumeScanner` → `navigation.resumeRoute(status)`; calls reactivate best-effort (only an `absent` token changes; otherwise vm.token stays null — no kiosk GET for a token). Debug-only test hook: push a QR image to `/sdcard/Android/data/org.neural.medikiosk/files/debug/qr.png` → a DEBUG button decodes it with the same ZXing code (hidden when the file is absent).
+- [A9] `copyAudio` (app/build.gradle.kts, runs before preBuild) copies content/audio/{hi,en}/*.wav into app/src/main/assets/audio (gitignored). `AssetAudioPrompter` (MediaPlayer) + TextToSpeech fallback: `KioskScaffold(audioKey, speech = heading)` speaks screens that have no WAV; a "Listen again" row sits under the top bar; leaving a screen calls `stopIfPlaying(key)` so it never cuts the next screen's prompt. Handset = MODE_IN_COMMUNICATION + earpiece + USAGE_VOICE_COMMUNICATION; slow = speed 0.85 (verified via dumpsys audio / logcat tag MediKioskAudio).

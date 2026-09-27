@@ -34,3 +34,4 @@ captures/
 .claude/worktrees/
 android/.kotlin/
 android/app/release/
+android/app/src/main/assets/audio/

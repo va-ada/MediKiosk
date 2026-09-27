@@ -119,7 +119,7 @@ fun TokenScreen(
     BackHandler { if (hallQr) hallQr = false }  // triage is done: never go back into it
     val payload = tokenQrPayload(token)
 
-    KioskScaffold(audioKey = null) {
+    KioskScaffold(audioKey = null, speech = "${tr(R.string.your_token)}: ${token.display.replace("-", " ")}") {
         ScreenBody {
             if (vm.triageAlerts.isNotEmpty()) NurseInformedBanner()
             if (!hallQr) {

@@ -107,7 +107,12 @@ fun TriageScreen(vm: IntakeViewModel, onDone: () -> Unit, onBack: () -> Unit) {
     val flagIndex = step - STEP_FIRST_FLAG
     val audioKey = if (flagIndex in REDFLAG_QUESTIONS.indices) REDFLAG_QUESTIONS[flagIndex].slot else null
 
-    KioskScaffold(audioKey = audioKey) {
+    val speech = when (step) {
+        STEP_COMPLAINT -> tr(R.string.triage_what_problem)
+        STEP_BODY -> tr(R.string.triage_where_pain)
+        else -> null
+    }
+    KioskScaffold(audioKey = audioKey, speech = speech) {
         ScreenBody {
             when {
                 step == STEP_COMPLAINT -> {

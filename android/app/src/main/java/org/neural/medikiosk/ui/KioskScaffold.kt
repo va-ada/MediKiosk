@@ -55,14 +55,16 @@ fun KioskScaffold(
     bilingual: Boolean = false,
     showHelp: Boolean = true,
     inactivity: Boolean = true,
+    speech: String? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) = InactivityWatcher(enabled = inactivity) {
-    KioskFrame(audioKey, modifier, bilingual, showHelp, content)
+    KioskFrame(audioKey, speech, modifier, bilingual, showHelp, content)
 }
 
 @Composable
 private fun KioskFrame(
     audioKey: String?,
+    speech: String?,
     modifier: Modifier,
     bilingual: Boolean,
     showHelp: Boolean,
@@ -71,10 +73,16 @@ private fun KioskFrame(
     val nav = LocalNavController.current
     val lang = LocalLang.current
     val audio = LocalAudioPrompter.current
-    if (audioKey != null) {
-        LaunchedEffect(audioKey, lang) { audio.play(audioKey, lang) }
+    // Every screen speaks: its recorded prompt, else its heading via text-to-speech. Leaving stops only our own prompt.
+    LaunchedEffect(audioKey, speech, lang) {
+        when {
+            audioKey != null -> audio.play(audioKey, lang)
+            speech != null -> audio.speak(speech, lang)
+        }
     }
-    DisposableEffect(Unit) { onDispose { audio.stop() } }
+    DisposableEffect(audioKey, speech) {
+        onDispose { (audioKey ?: speech?.let { "tts:$it" })?.let(audio::stopIfPlaying) }
+    }
 
     Column(modifier.fillMaxSize()) {
         Row(
@@ -102,6 +110,9 @@ private fun KioskFrame(
                 content = Color.White,
                 modifier = Modifier.weight(1f),
             )
+        }
+        if (audioKey != null || speech != null) {
+            ReplayAudioButton(audioKey, speech, Modifier.fillMaxWidth().padding(horizontal = 12.dp).padding(bottom = 8.dp))
         }
         HorizontalDivider()
         Column(Modifier.fillMaxWidth().weight(1f), content = content)

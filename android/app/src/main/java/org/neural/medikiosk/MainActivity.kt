@@ -18,7 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.neural.medikiosk.audio.LocalAudioPrompter
-import org.neural.medikiosk.audio.NoopAudioPrompter
+import org.neural.medikiosk.audio.AssetAudioPrompter
 import org.neural.medikiosk.navigation.KioskNavHost
 import org.neural.medikiosk.net.DeviceMode
 import org.neural.medikiosk.ui.theme.MediKioskTheme
@@ -26,6 +26,12 @@ import org.neural.medikiosk.ui.theme.MediKioskTheme
 /** Single activity (CLAUDE.md §8): theme + audio + the kiosk navigation graph. */
 class MainActivity : ComponentActivity() {
     private val vm: IntakeViewModel by viewModels()
+    private val audio by lazy { AssetAudioPrompter(this) }
+
+    override fun onDestroy() {
+        audio.release()
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +40,8 @@ class MainActivity : ComponentActivity() {
             val settings by vm.settings.collectAsStateWithLifecycle()
             val s = settings ?: return@setContent  // wait for DataStore (start screen depends on the device mode)
             LaunchedEffect(s.deviceMode) { applyKioskLock(s.deviceMode == DeviceMode.KIOSK) }
-            CompositionLocalProvider(LocalAudioPrompter provides NoopAudioPrompter) {
+            LaunchedEffect(s.handsetMode, s.slowPrompts) { audio.handset = s.handsetMode; audio.slow = s.slowPrompts }
+            CompositionLocalProvider(LocalAudioPrompter provides audio) {
                 MediKioskTheme(highContrast = s.highContrast, largeText = s.largeText) {
                     Surface(Modifier.fillMaxSize().safeDrawingPadding(), color = MaterialTheme.colorScheme.background) {
                         KioskNavHost(vm, s)

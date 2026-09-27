@@ -82,7 +82,15 @@ fun IdentifyScreen(vm: IntakeViewModel, onIdentified: (Patient) -> Unit, onExit:
         }
     }
 
-    KioskScaffold(audioKey = null) {
+    val heading = tr(when (step) {
+        IdStep.CHOOSE -> R.string.identify_title
+        IdStep.ABHA -> R.string.id_enter_abha
+        IdStep.OTP -> R.string.id_enter_otp
+        IdStep.NAME -> R.string.id_your_name
+        IdStep.AGE -> R.string.id_your_age
+        IdStep.SEX -> R.string.id_your_sex
+    })
+    KioskScaffold(audioKey = null, speech = heading) {
         ScreenBody {
             when (step) {
                 IdStep.CHOOSE -> {

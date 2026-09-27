@@ -30,6 +30,15 @@ android {
     }
 }
 
+// A9: patient audio prompts come from content/audio (rendered by scripts/render_audio.py); copied into the
+// assets before every build so the APK always carries the current prompts. The copy is gitignored.
+val copyAudio by tasks.registering(Copy::class) {
+    from(rootProject.file("../content/audio"))
+    into(layout.projectDirectory.dir("src/main/assets/audio"))
+    include("hi/*.wav", "en/*.wav")
+}
+tasks.named("preBuild") { dependsOn(copyAudio) }
+
 dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

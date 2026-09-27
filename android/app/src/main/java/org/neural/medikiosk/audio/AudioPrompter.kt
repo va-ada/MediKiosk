@@ -9,9 +9,15 @@ import androidx.compose.runtime.staticCompositionLocalOf
 interface AudioPrompter {
     fun play(key: String, lang: String)
     fun stop()
+
+    /** Speak text that has no recorded prompt (text-to-speech). */
+    fun speak(text: String, lang: String) = Unit
+
+    /** Stop only if [key] (or `tts:<text>`) is what is playing — a screen leaving must not cut the next screen's prompt. */
+    fun stopIfPlaying(key: String) = stop()
 }
 
-/** Silent stand-in (tests, previews, and until A9). */
+/** Silent stand-in (tests, previews). */
 object NoopAudioPrompter : AudioPrompter {
     override fun play(key: String, lang: String) = Unit
     override fun stop() = Unit

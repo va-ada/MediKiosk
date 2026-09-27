@@ -124,7 +124,7 @@ fun ResumeScanner(vm: IntakeViewModel, onResumed: (Session) -> Unit, onBack: () 
         }
     }
 
-    KioskScaffold(audioKey = null) {
+    KioskScaffold(audioKey = null, speech = tr(R.string.resume_hint)) {
         ScreenBody {
             Heading(tr(R.string.resume_title))
             Text(tr(R.string.resume_hint), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
