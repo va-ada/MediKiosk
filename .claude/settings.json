@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run pytest:*)",
+      "Bash(uv run python:*)",
+      "Bash(uv add:*)",
+      "Bash(uv sync:*)",
+      "Bash(uv init:*)",
+      "Bash(python3 scripts/*:*)",
+      "Bash(npm run:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(./gradlew:*)",
+      "Bash(docker compose:*)",
+      "Bash(make:*)",
+      "Bash(curl:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Read(./.env)"
+    ]
+  }
+}
