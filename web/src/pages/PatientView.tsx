@@ -17,6 +17,7 @@ import CriticalStrip from '../components/CriticalStrip'
 import DocumentViewer from '../components/DocumentViewer'
 import DocumentsPanel from '../components/DocumentsPanel'
 import NewSinceBanner from '../components/NewSinceBanner'
+import OutcomeBar from '../components/OutcomeBar'
 import PatientHeader from '../components/PatientHeader'
 import SectionAccordion from '../components/SectionAccordion'
 import { useChannel } from '../ws/useChannel'
@@ -267,20 +268,11 @@ export default function PatientView() {
         </aside>
       </div>
 
-      <footer className="sticky bottom-0 z-10 flex flex-wrap items-center gap-2 border-t border-slate-200 bg-white px-4 py-2">
-        <span className="mr-auto text-sm text-slate-500">Outcome</span>
-        {['Out', 'Recheck', 'Refer', 'Follow-up'].map((label) => (
-          <button
-            key={label}
-            type="button"
-            disabled
-            title="Outcome actions arrive in a later task"
-            className="rounded-md bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500"
-          >
-            {label}
-          </button>
-        ))}
-      </footer>
+      <OutcomeBar
+        sessionId={summary.session_id}
+        department={summary.token.department}
+        tokenDisplay={summary.token.display}
+      />
 
       {viewer && <DocumentViewer document={viewer.doc} bbox={viewer.bbox} onClose={closeViewer} />}
     </div>
