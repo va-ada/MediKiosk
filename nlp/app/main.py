@@ -6,7 +6,7 @@ import httpx
 from fastapi import FastAPI, File, Form, UploadFile
 from pydantic import BaseModel
 
-from app import asr
+from app import asr, extract
 from app.config import settings
 from app.errors import ApiError, register_error_handlers
 
@@ -57,3 +57,8 @@ def transcribe(audio: Annotated[UploadFile, File()], language: Annotated[Literal
         raise ApiError(422, "invalid_audio", str(exc)) from exc
     text = engine.transcribe(wav, language) if duration > 0 else ""
     return AsrOut(text=text, confidence=asr.confidence(text, duration, language), duration_sec=round(duration, 2))
+
+
+@app.post("/extract", response_model=extract.ExtractOut)
+async def extract_slots(body: extract.ExtractIn) -> extract.ExtractOut:
+    return await extract.extract(body)

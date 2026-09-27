@@ -39,7 +39,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] N1 · NLP service skeleton and speech recognition — Needs: F1
 - [x] C2 · Red-flag rules, lexicon, festivals — Needs: C1
 - [x] N2 · Normalisation: folk terms and time phrases — Needs: N1, C2
-- [ ] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
+- [x] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
 - [ ] N4 · Negation double-check — Needs: N3
 - [ ] S7 · Voice answers via NLP — Needs: S6, N3
 - [ ] C4 · Render audio prompts — Needs: C1, C2
@@ -125,3 +125,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [C5] Samples (A4 1240x1754, English only, Arial): lab_report_cbc (Kamla Devi, 12/08/2026, ref ranges use an en dash `12.0–15.0`, units like `x10^3/uL`), lab_report_diabetes (Rahul Verma, 05/07/2026: FBS 142, PPBS 198 mg/dL, HbA1c 7.4 %), rx_allopathic, rx_ayurveda, discharge_summary, handwritten_style (Bradley Hand — N7 should mark it unreadable/low-conf), plus *_photo.png variants of cbc and rx_allopathic. Regenerate: `uv run --with pillow python scripts/make_samples.py` (deterministic).
 - [N1] BLOCKED: HF gated model — owner must accept terms + hf auth login; skeleton committed, live /asr check pending.
 - [N2] `normalize(text, language, today=None)` (today defaults to Asia/Kolkata date); durations = number(word|digit, incl. dedh/dhai)+unit with optional for/since/pichhle before and se/ago/pehle after, plus relative (kal 1, parson 2, pichhle hafte/mahine/saal, last week…) and festivals (only dated entries ≤ today). Days round half up (2.5 yr = 913). Terms are whole-token, longest-first.
+- [N3] `/extract` never 5xx for Ollama trouble: Ollama down/HTTP error → 200 `uncertain` + note `language model unavailable` (S7 shows fallback choices). Also `uncertain` when every slot is null (`nothing extracted`). Rule-based `normalize()` duration **overrides** the model's (the 3B model says 15/30 for "teen mahine"), with a note. Prompt adds choice labels (en, hi) looked up by slot name from content/questions/*.yaml — the 3B model maps "ghutne"→knee only with them; it is reliable single-slot (~0.5 s warm), weaker multi-slot Devanagari. Manual: `python3 scripts/try_extract.py [--question jp_x] "text"` (re-execs via `uv run --project nlp`).
