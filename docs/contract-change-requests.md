@@ -20,3 +20,13 @@ Proposals to change `CONTRACTS.md`. Each entry: date, task ID, what changes, why
 ## 2026-09-27 · N5 · New NLP error code `invalid_image` (informational — already implemented)
 - **What:** `POST /document` returns `422 {"error":{"code":"invalid_image"}}` when the upload cannot be decoded as an image; `503 model_loading` if the OCR engine failed to load.
 - **Why:** §6 defines no errors for `/document`. S11 already validates type/size before calling NLP and marks the document `failed` on any NLP error, so kiosks never see this code.
+
+## 2026-09-27 · S19 · Security gaps the contract leaves open (proposals — NOT implemented)
+Everything §4 marks is enforced (a test walks every route). These three are outside §4 and need a team decision:
+
+1. **WebSocket channels are unauthenticated (§5).** `queue`, `alerts` and `admin` broadcast patient names, complaints and alert details to anyone on the LAN who opens `ws://…/ws?channel=queue`.
+   *Proposal:* require `?token=<staff jwt>` for `queue|alerts|admin` (close 1008 if missing/invalid or wrong role); `display` stays public (tokens + doctor/room only). Web `useChannel` would pass the token.
+2. **Staff PINs are 4 digits with no attempt limit (§4.1).** 10,000 combinations can be tried in minutes.
+   *Proposal:* after 5 wrong PINs for a staff id, `429 too_many_attempts` for 5 minutes (audited). Kept server-side in the DB so restarts don't reset it.
+3. **The kiosk header is only an identifier (§1 "K").** Any LAN device can send `X-Kiosk-Id: KIOSK-01` and register patients, answer questions or raise alarms.
+   *Proposal:* per-device secret `X-Kiosk-Key` provisioned in the hidden settings screen and checked against a `kiosk_device` list in `.env`/settings. (Demo-acceptable as is on an isolated hotspot; required before any real deployment.)

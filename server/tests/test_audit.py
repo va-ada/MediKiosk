@@ -33,9 +33,19 @@ def test_tampered_details_breaks_chain_at_row_2(db: Session) -> None:
     assert audit.verify_chain(db) == (False, 2, 2)
 
 
-def test_routes(client: TestClient, db: Session) -> None:
-    assert client.get("/api/admin/audit/verify").json() == {"valid": True, "checked": 0, "first_bad_id": None}
+def test_routes(client: TestClient, db: Session, staff_headers) -> None:
+    h = staff_headers("admin")
+    assert client.get("/api/admin/audit").status_code == 401
+    assert client.get("/api/admin/audit/verify", headers=h).json() == {
+        "valid": True,
+        "checked": 0,
+        "first_bad_id": None,
+    }
     _three(db)
-    listed = client.get("/api/admin/audit?limit=2").json()
+    listed = client.get("/api/admin/audit?limit=2", headers=h).json()
     assert [r["id"] for r in listed] == [3, 2]
-    assert client.get("/api/admin/audit/verify").json() == {"valid": True, "checked": 3, "first_bad_id": None}
+    assert client.get("/api/admin/audit/verify", headers=h).json() == {
+        "valid": True,
+        "checked": 3,
+        "first_bad_id": None,
+    }

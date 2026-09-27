@@ -87,7 +87,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 7 — Security, modes and demo
 - [x] S18 · Per-patient encryption and erasure — Needs: S11, S7
-- [ ] S19 · Auth guards everywhere — Needs: S5, S9, S11, S14, S16, S17, S18
+- [x] S19 · Auth guards everywhere — Needs: S5, S9, S11, S14, S16, S17, S18
 - [ ] A14 · Patient app mode (Z Fold) — Needs: A7, S4
 - [ ] A15 · Accessibility settings and hall-station mode — Needs: A13
 - [ ] W10 · Display board — Needs: W1, S5
@@ -147,3 +147,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N6] Lab entity value = §3 shape; `flag` is `low|high|normal|unknown` (lowercase; text_en appends LOW/HIGH only). Unknown test names are kept as written only for clean rows with unit + range (e.g. MCV, RBC count). Unreadable (conf < 0.6 or digit/letter confusions like `1O.2`) → `value: null`, `flag: unknown`, `readable: false` inside value too, text_en "<test>: unreadable — see image".
 - [N7] Drug entity value = §3 shape (`name` = drugs.csv generic, `name_as_written` = OCR text, e.g. brand "Glycomet"); frequency joins codes/phrases ("twice daily, after food"); a following "before breakfast x 14 days" row is merged into the medicine above. Unreadable (conf < 0.6, Tab/Cap with no csv match, or ANY digit/letter confusion like "4o mg" in a medicine line on the page — this is what flags handwritten_style.png) → all fields null, `readable: false`, text_en "Medicine: unreadable — see image". Also fixed in N7: RapidOCR is now fed BGR (it assumes ndarrays are BGR).
 - [S11/S18] Live-verified with real OCR: cbc/rx photos processed in 1–2 s, 3 LOW labs + pinned doc, report drugs grouped `found_in_documents`, handwritten → 2 unreadable placeholders; on-disk files encrypted; A1+A2 erase → image 410. S7 stays unticked only for the gated ASR model (voice path live-checked up to the 503).
+- [S19] `tests/test_auth_guards.py` walks EVERY /api route (via the OpenAPI schema — FastAPI 0.141 keeps included routers nested, so `app.routes` misses them) and asserts anonymous → 400/401 and wrong role → 403; a new route fails the test until it is classified there. conftest has `kiosk_headers` and `staff_headers(role)` fixtures. Three contract-level security gaps (unauthenticated WS, no PIN lockout, spoofable kiosk header) are proposals in docs/contract-change-requests.md.
