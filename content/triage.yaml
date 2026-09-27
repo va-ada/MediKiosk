@@ -1,0 +1,20 @@
+# DRAFT — clinician review required
+# Triage config (CONTRACTS.md §9.2). complaint_code → icon, labels, department, pathway.
+# Pathway null → the session goes straight to documents after triage (MVP builds only joint_pain).
+complaints:
+  - {code: joint_pain, icon: joint,     en: "Joint pain",            hi: "जोड़ों का दर्द",      department: ayurveda, pathway: joint_pain}
+  - {code: fever,      icon: fever,     en: "Fever",                 hi: "बुखार",              department: general,  pathway: null}
+  - {code: cough,      icon: cough,     en: "Cough or cold",         hi: "खाँसी या ज़ुकाम",     department: general,  pathway: null}
+  - {code: stomach,    icon: stomach,   en: "Stomach problem",       hi: "पेट की तकलीफ़",       department: general,  pathway: null}
+  - {code: headache,   icon: headache,  en: "Headache",              hi: "सिर दर्द",            department: general,  pathway: null}
+  - {code: chest_pain, icon: chest,     en: "Chest pain",            hi: "सीने में दर्द",        department: general,  pathway: null}
+  - {code: breathing,  icon: breathing, en: "Breathing problem",     hi: "साँस की तकलीफ़",      department: general,  pathway: null}
+  - {code: skin,       icon: skin,      en: "Skin problem",          hi: "त्वचा की तकलीफ़",      department: general,  pathway: null}
+  - {code: other,      icon: other,     en: "Something else",        hi: "कुछ और",             department: general,  pathway: null}
+
+redflag_questions:  # always asked, in this order; slots are bool
+  - {slot: chest_pain,     en: "Do you have chest pain now?",                        hi: "क्या अभी सीने में दर्द है?"}
+  - {slot: breathless,     en: "Are you finding it hard to breathe?",                 hi: "क्या साँस लेने में तकलीफ़ है?"}
+  - {slot: stroke_signs,   en: "Sudden weakness, face drooping or slurred speech?",   hi: "क्या अचानक कमज़ोरी, चेहरा टेढ़ा या बोलने में दिक्कत है?"}
+  - {slot: heavy_bleeding, en: "Are you bleeding heavily?",                           hi: "क्या बहुत ज़्यादा खून बह रहा है?"}
+  - {slot: fainted,        en: "Did you faint today?",                                hi: "क्या आज आप बेहोश हुए?"}

@@ -1,0 +1,208 @@
+# DRAFT — clinician review required
+# Joint-pain history pathway (CONTRACTS.md §9.1). Everyday Hindi only — no Sanskrit clinical terms.
+id: joint_pain
+title_en: Joint pain
+start: jp_site
+questions:
+  - id: jp_site
+    type: choice
+    section: complaint
+    text_en: "Which joint hurts the most?"
+    text_hi: "सबसे ज़्यादा दर्द किस जोड़ में है?"
+    slot: {name: site, type: enum}
+    choices:
+      - {value: knee,     en: Knee,             hi: "घुटना",            icon: knee}
+      - {value: back,     en: Lower back,       hi: "कमर",              icon: back}
+      - {value: hip,      en: Hip,              hi: "कूल्हा",            icon: hip}
+      - {value: shoulder, en: Shoulder,         hi: "कंधा",             icon: shoulder}
+      - {value: hands,    en: Hands or fingers, hi: "हाथ या उंगलियाँ",    icon: hands}
+      - {value: ankle,    en: Ankle or foot,    hi: "टखना या पैर",       icon: ankle}
+      - {value: neck,     en: Neck,             hi: "गर्दन",             icon: neck}
+    next: jp_side
+
+  - id: jp_side
+    type: choice
+    section: complaint
+    text_en: "Which side is the pain on?"
+    text_hi: "दर्द किस तरफ़ है?"
+    slot: {name: side, type: enum}
+    choices:
+      - {value: left,  en: Left,       hi: "बाईं तरफ़",   icon: side_left}
+      - {value: right, en: Right,      hi: "दाईं तरफ़",   icon: side_right}
+      - {value: both,  en: Both sides, hi: "दोनों तरफ़",  icon: side_both}
+    next: jp_duration
+
+  - id: jp_duration
+    type: duration
+    section: hpi
+    text_en: "How long have you had this pain?"
+    text_hi: "कितने समय से दर्द है?"
+    slot: {name: duration_days, type: duration_days}
+    choices:
+      - {value: 3,   en: A few days,       hi: "कुछ दिन से",       icon: days}
+      - {value: 14,  en: A couple of weeks, hi: "दो-एक हफ़्ते से",   icon: weeks}
+      - {value: 90,  en: A few months,     hi: "कुछ महीनों से",     icon: months}
+      - {value: 365, en: A year or more,   hi: "एक साल या ज़्यादा",  icon: years}
+    next: jp_onset
+
+  - id: jp_onset
+    type: choice
+    section: hpi
+    text_en: "How did the pain start?"
+    text_hi: "दर्द कैसे शुरू हुआ?"
+    slot: {name: onset, type: enum}
+    choices:
+      - {value: sudden,  en: Suddenly,   hi: "अचानक",     icon: sudden}
+      - {value: gradual, en: Slowly, over time, hi: "धीरे-धीरे", icon: gradual}
+    next: jp_character
+
+  - id: jp_character
+    type: choice
+    section: hpi
+    text_en: "What does the pain feel like?"
+    text_hi: "दर्द कैसा महसूस होता है?"
+    slot: {name: character, type: enum}
+    choices:
+      - {value: aching,    en: Dull ache,           hi: "लगातार हल्का-हल्का दर्द", icon: ache}
+      - {value: sharp,     en: Sharp or stabbing,   hi: "चुभने वाला दर्द",        icon: sharp}
+      - {value: burning,   en: Burning,             hi: "जलन वाला दर्द",          icon: burning}
+      - {value: throbbing, en: Throbbing,           hi: "टपक-टपक कर दर्द",        icon: throbbing}
+    next: jp_swelling
+
+  - id: jp_swelling
+    type: yesno
+    section: hpi
+    text_en: "Is the joint swollen?"
+    text_hi: "क्या जोड़ में सूजन है?"
+    slot: {name: swelling, type: bool}
+    next:
+      - if: {slot: swelling, is: true}
+        goto: jp_swelling_where
+      - goto: jp_stiffness
+
+  - id: jp_swelling_where
+    type: multi
+    section: hpi
+    text_en: "Where is the swelling?"
+    text_hi: "सूजन कहाँ-कहाँ है?"
+    slot: {name: swelling_where, type: list_enum}
+    choices:
+      - {value: knee,     en: Knee,             hi: "घुटना",          icon: knee}
+      - {value: ankle,    en: Ankle or foot,    hi: "टखना या पैर",     icon: ankle}
+      - {value: hands,    en: Hands or fingers, hi: "हाथ या उंगलियाँ",  icon: hands}
+      - {value: wrist,    en: Wrist,            hi: "कलाई",           icon: wrist}
+      - {value: elbow,    en: Elbow,            hi: "कोहनी",          icon: elbow}
+      - {value: shoulder, en: Shoulder,         hi: "कंधा",           icon: shoulder}
+    next: jp_stiffness
+
+  - id: jp_stiffness
+    type: choice
+    section: hpi
+    text_en: "After waking up, how long does the joint stay stiff?"
+    text_hi: "सुबह उठने के बाद जोड़ कितनी देर तक जकड़ा रहता है?"
+    slot: {name: morning_stiffness, type: enum}
+    choices:
+      - {value: none,     en: Not stiff,             hi: "जकड़न नहीं होती",     icon: none}
+      - {value: under_30, en: Less than half an hour, hi: "आधे घंटे से कम",     icon: clock_short}
+      - {value: over_30,  en: More than half an hour, hi: "आधे घंटे से ज़्यादा", icon: clock_long}
+    next: jp_worse
+
+  - id: jp_worse
+    type: multi
+    section: hpi
+    text_en: "When does the pain get worse?"
+    text_hi: "दर्द कब बढ़ जाता है?"
+    slot: {name: worse_with, type: list_enum}
+    choices:
+      - {value: stairs,  en: Climbing stairs, hi: "सीढ़ियाँ चढ़ने पर", icon: stairs}
+      - {value: walking, en: Walking,         hi: "चलने पर",          icon: walking}
+      - {value: cold,    en: Cold weather,    hi: "ठंड में",           icon: cold}
+      - {value: rest,    en: After resting,   hi: "आराम करने के बाद",   icon: rest}
+      - {value: morning, en: In the morning,  hi: "सुबह के समय",       icon: morning}
+    next: jp_better
+
+  - id: jp_better
+    type: multi
+    section: hpi
+    text_en: "What makes the pain better?"
+    text_hi: "दर्द किससे कम होता है?"
+    slot: {name: better_with, type: list_enum}
+    choices:
+      - {value: rest,     en: Rest,           hi: "आराम से",          icon: rest}
+      - {value: heat,     en: Warm compress,  hi: "गरम सेंक से",       icon: heat}
+      - {value: movement, en: Moving it,      hi: "हिलाने-डुलाने से",   icon: movement}
+      - {value: medicine, en: Medicine,       hi: "दवा से",           icon: medicine}
+    next: jp_severity
+
+  - id: jp_severity
+    type: scale
+    section: hpi
+    text_en: "From 0 to 10, how bad is the pain? 0 means no pain, 10 means the worst pain."
+    text_hi: "0 से 10 में दर्द कितना है? 0 मतलब बिल्कुल नहीं, 10 मतलब सबसे ज़्यादा।"
+    slot: {name: severity, type: scale_0_10}
+    next: jp_fever
+
+  - id: jp_fever
+    type: yesno
+    section: ros
+    text_en: "Do you have fever these days?"
+    text_hi: "क्या आजकल बुखार आता है?"
+    slot: {name: fever, type: bool}
+    next: jp_injury
+
+  - id: jp_injury
+    type: yesno
+    section: hpi
+    text_en: "Was this joint ever injured?"
+    text_hi: "क्या इस जोड़ में कभी चोट लगी थी?"
+    slot: {name: injury, type: bool}
+    next: jp_other_joints
+
+  - id: jp_other_joints
+    type: multi
+    section: hpi
+    text_en: "Do any other joints hurt too?"
+    text_hi: "क्या किसी और जोड़ में भी दर्द है?"
+    slot: {name: other_joints, type: list_enum}
+    choices:
+      - {value: none,     en: No other joint,   hi: "किसी और में नहीं",  icon: none}
+      - {value: knee,     en: Knee,             hi: "घुटना",           icon: knee}
+      - {value: back,     en: Lower back,       hi: "कमर",             icon: back}
+      - {value: hip,      en: Hip,              hi: "कूल्हा",           icon: hip}
+      - {value: shoulder, en: Shoulder,         hi: "कंधा",            icon: shoulder}
+      - {value: hands,    en: Hands or fingers, hi: "हाथ या उंगलियाँ",   icon: hands}
+      - {value: ankle,    en: Ankle or foot,    hi: "टखना या पैर",      icon: ankle}
+      - {value: neck,     en: Neck,             hi: "गर्दन",            icon: neck}
+    next: jp_medicines
+
+  - id: jp_medicines
+    type: free
+    section: drugs
+    text_en: "Which medicines are you taking now? Say their names, or show the strip later."
+    text_hi: "आप अभी कौन-कौन सी दवाइयाँ ले रहे हैं? नाम बताइए, या बाद में पत्ता दिखाइए।"
+    slot: {name: current_medicines, type: list_string}
+    choices:  # tap fallback
+      - {value: none,     en: No medicines,     hi: "कोई दवा नहीं लेते", icon: none}
+      - {value: not_sure, en: I don't remember, hi: "याद नहीं है",      icon: not_sure}
+    next: jp_allergy
+
+  - id: jp_allergy
+    type: yesno
+    section: allergies
+    text_en: "Are you allergic to any medicine or food — for example itching, rash or swelling?"
+    text_hi: "क्या किसी दवा या खाने की चीज़ से आपको एलर्जी है — जैसे खुजली, दाने या सूजन?"
+    slot: {name: allergy, type: bool}
+    next:
+      - if: {slot: allergy, is: true}
+        goto: jp_allergy_detail
+      - goto: end
+
+  - id: jp_allergy_detail
+    type: free
+    section: allergies
+    text_en: "Which medicine or food, and what happened?"
+    text_hi: "किस दवा या चीज़ से एलर्जी है, और क्या हुआ था?"
+    slot: {name: allergy_detail, type: string}
+    choices:  # tap fallback
+      - {value: not_sure, en: I don't remember the name, hi: "नाम याद नहीं है", icon: not_sure}
+    next: end

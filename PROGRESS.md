@@ -13,7 +13,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 1 — Walking skeleton (typed answers end to end)
 - [x] C6 · Data files: drugs, terminology, mock ABHA — Needs: F1
-- [ ] C1 · Triage config and joint-pain question graph — Needs: F1
+- [x] C1 · Triage config and joint-pain question graph — Needs: F1
 - [ ] S1 · Patients: register and mock ABHA — Needs: F6, C6
 - [ ] S2 · Sessions and consent — Needs: S1
 - [ ] S3 · Triage and token issue — Needs: S2, C1, F5
@@ -109,3 +109,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [F6] Auth: `Depends(current_staff(["doctor"]))` → Staff; `Depends(kiosk_id)` → str. Login upper-cases `staff_id`, returns the same `invalid_pin` for unknown id or wrong PIN, and audits failures as `staff.login_failed`. Seed: `cd server && uv run python ../scripts/seed.py`; `seed(db)` is importable for tests (see `tests/test_login.py::_seed`).
 - [F6] TODO(S19): 4-digit PINs have no attempt limit yet — consider a per-staff lockout when wiring auth guards (not in the contract; propose it in docs/contract-change-requests.md if needed).
 - [C6] `mock_abha.json` has 2 profiles (Kamla Devi 12345678901234, Rahul Verma 98765432109876): §9.7 shows only one, and the card says "two … plus Rahul" — treated as two total. drugs.csv multi-value cells (brands, strengths) are `; `-separated. All terminology codes are `SAMPLE-*` placeholders.
+- [C1] joint_pain slots: site, side, duration_days, onset, character, swelling, swelling_where, morning_stiffness, worse_with, better_with, severity (scale_0_10), fever, injury, other_joints, current_medicines (list_string, section drugs), allergy (bool), allergy_detail (string, section allergies). Free questions carry tap-fallback choices (`none`, `not_sure`) — S6 must accept a choice value for free questions (e.g. `current_medicines: []` for `none`, fact flagged unsure for `not_sure`). `jp_duration` has numeric fallback choices (3/14/90/365 days).
