@@ -51,7 +51,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] S8 · Red-flag rules engine — Needs: S6, C2
 - [x] S9 · Alerts API and escalation — Needs: S8
 - [x] S10 · Alarm relay service — Needs: F1
-- [ ] W9 · Triage / alert station — Needs: W2, S9, S10
+- [x] W9 · Triage / alert station — Needs: W2, S9, S10
 - [ ] A12 · Emergency flow and kiosk beacon — Needs: A2, S9, S10
   - **Milestone:** red flags and the emergency button work — even with the API down.
 
@@ -71,8 +71,8 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] S13 · Read-back — Needs: S6
 - [ ] A11 · Read-back screen and submit — Needs: A10, S13, S12
 - [x] S14 · Verification endpoints — Needs: S12
-- [ ] W5 · Wire patient view to the API — Needs: W4, S14
-- [ ] W7 · Outcome bar — Needs: W5, S5
+- [x] W5 · Wire patient view to the API — Needs: W4, S14
+- [x] W7 · Outcome bar — Needs: W5, S5
   - **Milestone:** the doctor verifies a summary and closes the visit.
 
 ## Phase 6 — Integration and AYUSH
@@ -82,7 +82,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] W11 · Admin console — Needs: W2, S16
 - [x] C3 · AYUSH question set — Needs: C1
 - [x] S17 · Terminology search — Needs: F6, C6
-- [ ] W8 · AYUSH tab and diagnosis coding — Needs: W5, S17
+- [x] W8 · AYUSH tab and diagnosis coding — Needs: W5, S17
   - **Milestone:** FHIR to HIS, island mode, AYUSH tab.
 
 ## Phase 7 — Security, modes and demo
@@ -90,7 +90,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] S19 · Auth guards everywhere — Needs: S5, S9, S11, S14, S16, S17, S18
 - [ ] A14 · Patient app mode (Z Fold) — Needs: A7, S4
 - [ ] A15 · Accessibility settings and hall-station mode — Needs: A13
-- [ ] W10 · Display board — Needs: W1, S5
+- [x] W10 · Display board — Needs: W1, S5
 - [x] D2 · Demo reset — Needs: S16
 - [x] D3 · End-to-end smoke test — Needs: S19, S16, D1
 - [ ] D4 · Demo script and checklist — Needs: D2
@@ -150,3 +150,8 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S19] `tests/test_auth_guards.py` walks EVERY /api route (via the OpenAPI schema — FastAPI 0.141 keeps included routers nested, so `app.routes` misses them) and asserts anonymous → 400/401 and wrong role → 403; a new route fails the test until it is classified there. conftest has `kiosk_headers` and `staff_headers(role)` fixtures. Three contract-level security gaps (unauthenticated WS, no PIN lockout, spoofable kiosk header) are proposals in docs/contract-change-requests.md.
 - [D2] `make demo-reset` (≈5 s, offline-capable) drives the REAL API in-process: Kamla A-001 (ayurveda, full joint-pain + AYUSH history, read-back, CBC sample stored encrypted + 5 lab facts, submitted), Rahul A-002 (general, triaged), Sita A-003 (priority recheck reserved for D1). Refuses non-local DBs; `--yes` skips the RESET prompt (Makefile passes it). Also clears data/patients and data/his. Restart `make server` after a reset only if content YAML changed (graph is cached). `make web` and `make test` (all suites) now work.
 - [D3] `cd server && uv run python ../scripts/smoke.py` → 16 steps PASS in ~9 s on the live stack (35 tap answers, real OCR + AI summary, 7 sections approved, bundle sent to HIS in ~3 s, audit valid). Calls its own token instead of `/queue/next` (after a demo reset "next" is correctly someone else). Needs island mode OFF; NLP optional (upload step skips). Exit 1 on any failure.
+- [W5] PatientView: sections start collapsed; expanding POSTs `open` (once per view) and only then enables "Approve section" (server requires THIS doctor's open; `opened` in the summary means any doctor). Re-fetch on `summary.ready` for this session (open/approve/verify all emit it) + on WS reconnect. Types: `RedFlagItem`, `NewSinceItem`, `narrative_ai`, `doctor_note` added; CriticalStrip renders alert-shaped red flags (it crashed on them before).
+- [W7] The summary has no token id, so OutcomeBar finds the session's `called`/`in` token via `GET /api/queue?department=<summary.token.department>` (buttons disabled if none). Confirm dialog states the §10.3 consequence; follow-up date must be ≥ tomorrow; success → `/doctor`. Live-checked all 5 variants (out, recheck, recheck+results_tomorrow → day+1 token, refer → new priority token in other dept, followup).
+- [W8] PatientView shows Summary | AYUSH tabs for ayurveda tokens; DiagnosisBox sits under the sections (all depts; default system NAMASTE for ayurveda, ICD10 otherwise). Summary items carry no fact `key`, so AyushTab splits exam findings from patient answers by the server's text prefix (`Nadi:`, `Jihva:`, `Pramana:`…) — keep those labels stable in `review.ayush_exam`. No GET for a saved diagnosis exists, so the box can't show earlier saves after reload. New-since banner skips doctor_verified facts (the doctor's own exam).
+- [W9] /triage keeps every server alert it has seen (also loads `status=confirmed,downgraded`) so relay copies of resolved alerts stay hidden; a relay alarm whose id the server doesn't know shows "via relay — server not confirmed" with only a local "Hide (handled)" (localStorage) — after a DB reset the relay's in-memory alarms reappear this way until hidden/relay restart. Beep = Web Audio (double 1.1 kHz for emergency) every 1.5 s while any card is `open`; "Sound is off" button when the AudioContext is suspended. 15 s poll backs up the WS (escalation from another server process still shows). TODO: StaffLayout's 5-min AutoLock covers this station — consider exempting /triage. Verified in headless Chrome (card+beep <0.2 s, ack/confirm/downgrade, escalated badge, API down → relay card).
+- [W10] /display: department picker (All/General/Ayurveda) in localStorage `mk.display.department`; reloads on any `token.*` on `display` (+15 s poll). `token.called` for the chosen dept → yellow card for 10 s, ding-dong chime, then speech: Hindi (only if a hi-IN voice exists — macOS has Lekha) "टोकन A 17, Dr. Mehta, कमरा नंबर 1" then English "Token A 17, Dr. Mehta, Room 1". Verified in Chrome: board updated 0.3 s and speech queued 1.1 s after Call on /doctor.

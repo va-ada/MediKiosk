@@ -444,6 +444,21 @@ export interface SummaryItem {
   flags: FactFlag[]
   found_in_documents?: boolean
   source?: { document_id: string; bbox: Bbox | null }
+  /** Server extra (S12): Sanskrit/clinical term on AYUSH answer facts — doctor side only. */
+  doctor_note?: string | null
+}
+/** Server extra (S12): `critical.red_flags` items come from alerts, not facts. */
+export interface RedFlagItem {
+  alert_id: string
+  text: string
+  level: AlertLevel
+  status: AlertStatus
+}
+/** Server extra (S12): `new_since_opened` items. */
+export interface NewSinceItem {
+  fact_id: string
+  section: Section
+  text: string
 }
 export interface SummarySection {
   key: Section
@@ -451,6 +466,8 @@ export interface SummarySection {
   opened: boolean
   approved: boolean
   narrative?: string | null
+  /** Server extra (S12, hpi only): true when the narrative was written by the LLM — label it in the UI. */
+  narrative_ai?: boolean
   items: SummaryItem[]
 }
 export interface SummaryDocument {
@@ -470,12 +487,12 @@ export interface Summary {
   token: { display: string; department: Department }
   critical: {
     allergies: CriticalItem[]
-    red_flags: CriticalItem[]
+    red_flags: RedFlagItem[]
     abnormal_labs: CriticalItem[]
   }
   sections: SummarySection[]
   documents: SummaryDocument[]
-  new_since_opened: string[]
+  new_since_opened: NewSinceItem[]
 }
 
 // ---------- §4.7 doctor review ----------
@@ -487,13 +504,15 @@ export interface VerifyFactRequest {
   value?: JsonValue
   text_en?: string
 }
+/** Server extra (S14): each exam field accepts a plain string or `{value, note}`. */
+export type AyushFinding = string | { value: string; note?: string }
 export interface AyushExamRequest {
-  nadi?: string
-  jihva?: string
+  nadi?: AyushFinding
+  jihva?: AyushFinding
   pramana?: { height_cm: number; weight_kg: number }
-  sara?: string
-  samhanana?: string
-  vikriti?: string
+  sara?: AyushFinding
+  samhanana?: AyushFinding
+  vikriti?: AyushFinding
   notes?: string
 }
 export interface TermCode {
