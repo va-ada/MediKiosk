@@ -82,7 +82,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] W11 · Admin console — Needs: W2, S16
 - [x] C3 · AYUSH question set — Needs: C1
 - [x] S17 · Terminology search — Needs: F6, C6
-- [ ] W8 · AYUSH tab and diagnosis coding — Needs: W5, S17
+- [x] W8 · AYUSH tab and diagnosis coding — Needs: W5, S17
   - **Milestone:** FHIR to HIS, island mode, AYUSH tab.
 
 ## Phase 7 — Security, modes and demo
@@ -142,3 +142,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S12] Live-verified with real `/summarize` (qwen2.5:3b): narrative generated at submit (~3 s), reused by doctor GET (~0.02 s) while HPI facts are unchanged. Known limitation: the model can mis-attribute facts (e.g. "swelling relieved by heat" when heat relieves pain) — the faithfulness check only catches unsupported numbers/terms, so the UI must keep the "AI-drafted — verify" label next to the narrative.
 - [W5] PatientView: sections start collapsed; expanding POSTs `open` (once per view) and only then enables "Approve section" (server requires THIS doctor's open; `opened` in the summary means any doctor). Re-fetch on `summary.ready` for this session (open/approve/verify all emit it) + on WS reconnect. Types: `RedFlagItem`, `NewSinceItem`, `narrative_ai`, `doctor_note` added; CriticalStrip renders alert-shaped red flags (it crashed on them before).
 - [W7] The summary has no token id, so OutcomeBar finds the session's `called`/`in` token via `GET /api/queue?department=<summary.token.department>` (buttons disabled if none). Confirm dialog states the §10.3 consequence; follow-up date must be ≥ tomorrow; success → `/doctor`. Live-checked all 5 variants (out, recheck, recheck+results_tomorrow → day+1 token, refer → new priority token in other dept, followup).
+- [W8] PatientView shows Summary | AYUSH tabs for ayurveda tokens; DiagnosisBox sits under the sections (all depts; default system NAMASTE for ayurveda, ICD10 otherwise). Summary items carry no fact `key`, so AyushTab splits exam findings from patient answers by the server's text prefix (`Nadi:`, `Jihva:`, `Pramana:`…) — keep those labels stable in `review.ayush_exam`. No GET for a saved diagnosis exists, so the box can't show earlier saves after reload. New-since banner skips doctor_verified facts (the doctor's own exam).

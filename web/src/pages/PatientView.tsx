@@ -13,7 +13,9 @@ import {
   type VerifyFactRequest,
   type WsMessage,
 } from '../api/types'
+import AyushTab from '../components/AyushTab'
 import CriticalStrip from '../components/CriticalStrip'
+import DiagnosisBox from '../components/DiagnosisBox'
 import DocumentViewer from '../components/DocumentViewer'
 import DocumentsPanel from '../components/DocumentsPanel'
 import NewSinceBanner from '../components/NewSinceBanner'
@@ -166,13 +168,18 @@ export default function PatientView() {
   }
 
   const [dismissedNew, setDismissedNew] = useState<ReadonlySet<string>>(new Set())
-  const newItems = useMemo(
-    () => (summary?.new_since_opened ?? []).filter((n) => !dismissedNew.has(n.fact_id)),
-    [summary, dismissedNew],
-  )
+  // Banner = new facts still needing review (skip ones already doctor-verified, e.g. this doctor's own AYUSH exam).
+  const newItems = useMemo(() => {
+    const verified = new Set(
+      (summary?.sections ?? []).flatMap((s) => s.items.filter((i) => i.trust === 'doctor_verified').map((i) => i.fact_id)),
+    )
+    return (summary?.new_since_opened ?? []).filter((n) => !dismissedNew.has(n.fact_id) && !verified.has(n.fact_id))
+  }, [summary, dismissedNew])
   const newFactIds = useMemo(() => new Set((summary?.new_since_opened ?? []).map((n) => n.fact_id)), [summary])
   const sectionTitle = (key: Section): string => sections.find((s) => s.key === key)?.title ?? key
+  const [tab, setTab] = useState<'summary' | 'ayush'>('summary')
   const jumpTo = (key: Section): void => {
+    setTab('summary')
     expand([key])
     requestAnimationFrame(() => document.getElementById(`sec-${key}`)?.scrollIntoView({ behavior: 'smooth' }))
   }
@@ -206,6 +213,7 @@ export default function PatientView() {
     )
   }
 
+  const isAyurveda = summary.token.department === 'ayurveda'
   const unopened = sections.filter((s) => !expanded.has(s.key)).map((s) => s.key)
 
   return (
@@ -231,32 +239,61 @@ export default function PatientView() {
             onJump={jumpTo}
             onDismiss={() => setDismissedNew(new Set(summary.new_since_opened.map((n) => n.fact_id)))}
           />
-          <div className="flex items-center justify-between gap-2 text-sm text-slate-600">
-            <span>Open a section to review it; approve marks all its facts doctor-verified.</span>
-            {unopened.length > 0 && (
-              <button
-                type="button"
-                onClick={() => expand(unopened)}
-                className="shrink-0 rounded-md px-3 py-1 font-semibold text-navy ring-1 ring-navy/40 hover:bg-navy/5"
-              >
-                Open all
-              </button>
-            )}
-          </div>
-          {sections.map((s) => (
-            <SectionAccordion
-              key={s.key}
-              section={s}
-              open={expanded.has(s.key)}
-              onToggle={() => toggle(s.key)}
-              newFactIds={newFactIds}
-              onSourceClick={openSource}
-              openedByMe={openedByMe.has(s.key)}
-              onApprove={() => void approve(s.key)}
-              onVerify={verify}
-              busy={busy}
+          {isAyurveda && (
+            <div role="tablist" aria-label="Patient view" className="flex gap-1 border-b border-slate-200">
+              {(['summary', 'ayush'] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === t}
+                  onClick={() => setTab(t)}
+                  className={`-mb-px border-b-2 px-4 py-2 font-semibold ${
+                    tab === t ? 'border-navy text-navy' : 'border-transparent text-slate-500 hover:text-navy'
+                  }`}
+                >
+                  {t === 'summary' ? 'Summary' : 'AYUSH'}
+                </button>
+              ))}
+            </div>
+          )}
+          {tab === 'ayush' && isAyurveda ? (
+            <AyushTab
+              sessionId={summary.session_id}
+              section={sections.find((s) => s.key === 'ayush')}
+              onSaved={() => void load()}
             />
-          ))}
+          ) : (
+            <>
+              <div className="flex items-center justify-between gap-2 text-sm text-slate-600">
+                <span>Open a section to review it; approve marks all its facts doctor-verified.</span>
+                {unopened.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => expand(unopened)}
+                    className="shrink-0 rounded-md px-3 py-1 font-semibold text-navy ring-1 ring-navy/40 hover:bg-navy/5"
+                  >
+                    Open all
+                  </button>
+                )}
+              </div>
+              {sections.map((s) => (
+                <SectionAccordion
+                  key={s.key}
+                  section={s}
+                  open={expanded.has(s.key)}
+                  onToggle={() => toggle(s.key)}
+                  newFactIds={newFactIds}
+                  onSourceClick={openSource}
+                  openedByMe={openedByMe.has(s.key)}
+                  onApprove={() => void approve(s.key)}
+                  onVerify={verify}
+                  busy={busy}
+                />
+              ))}
+              <DiagnosisBox sessionId={summary.session_id} defaultSystem={isAyurveda ? 'NAMASTE' : 'ICD10'} />
+            </>
+          )}
           <p className="text-xs text-slate-500">
             Summary v{summary.version} · generated {new Date(summary.generated_at).toLocaleString()} ·{' '}
             {USE_FIXTURES ? 'fixtures' : connected ? 'live' : 'reconnecting…'}

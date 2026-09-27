@@ -504,13 +504,15 @@ export interface VerifyFactRequest {
   value?: JsonValue
   text_en?: string
 }
+/** Server extra (S14): each exam field accepts a plain string or `{value, note}`. */
+export type AyushFinding = string | { value: string; note?: string }
 export interface AyushExamRequest {
-  nadi?: string
-  jihva?: string
+  nadi?: AyushFinding
+  jihva?: AyushFinding
   pramana?: { height_cm: number; weight_kg: number }
-  sara?: string
-  samhanana?: string
-  vikriti?: string
+  sara?: AyushFinding
+  samhanana?: AyushFinding
+  vikriti?: AyushFinding
   notes?: string
 }
 export interface TermCode {
