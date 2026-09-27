@@ -1,10 +1,12 @@
 import importlib
 import pkgutil
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app import routers
+from app import db, routers
 from app.errors import register_error_handlers
 
 VERSION = "0.1.0"
@@ -19,8 +21,14 @@ def include_routers(app: FastAPI) -> None:
             app.include_router(router)
 
 
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    db.init_db()
+    yield
+
+
 def create_app() -> FastAPI:
-    app = FastAPI(title="MediKiosk API", version=VERSION)
+    app = FastAPI(title="MediKiosk API", version=VERSION, lifespan=lifespan)
     app.add_middleware(
         CORSMiddleware, allow_origins=["*"], allow_credentials=False, allow_methods=["*"], allow_headers=["*"]
     )
