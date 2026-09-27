@@ -1,6 +1,8 @@
 package org.neural.medikiosk.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -126,4 +128,60 @@ fun <T> Grid(items: List<T>, columns: Int, modifier: Modifier = Modifier, spacin
             }
         }
     }
+}
+
+/** Large numeric keypad (1–9, ⌫, 0). Keys ≥ 72 dp. */
+@Composable
+fun NumericKeypad(onDigit: (Char) -> Unit, onBackspace: () -> Unit, modifier: Modifier = Modifier) {
+    val keys = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "")
+    Grid(keys, columns = 3, modifier = modifier, spacing = 8.dp) { key, m ->
+        if (key.isEmpty()) {
+            Spacer(m)
+        } else {
+            OutlinedButton(
+                onClick = { if (key == "⌫") onBackspace() else onDigit(key[0]) },
+                modifier = m.heightIn(min = 72.dp),
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+            ) {
+                Text(key, style = MaterialTheme.typography.headlineMedium)
+            }
+        }
+    }
+}
+
+/** Big read-only display of digits being typed on the keypad. */
+@Composable
+fun DigitDisplay(text: String, placeholder: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier.fillMaxWidth().heightIn(min = 80.dp),
+        shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+    ) {
+        Text(
+            text.ifEmpty { placeholder },
+            style = MaterialTheme.typography.headlineLarge,
+            color = if (text.isEmpty()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+        )
+    }
+}
+
+/** Screen heading (question / instruction). */
+@Composable
+fun Heading(text: String, modifier: Modifier = Modifier) {
+    Text(text, style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center, modifier = modifier.fillMaxWidth())
+}
+
+/** Standard padded, scrolling body for kiosk screens. */
+@Composable
+fun ScreenBody(modifier: Modifier = Modifier, content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) {
+    Column(
+        modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        content = content,
+    )
 }

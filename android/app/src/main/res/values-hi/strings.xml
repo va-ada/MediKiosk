@@ -9,4 +9,34 @@
     <string name="back">वापस</string>
     <string name="choose_language">अपनी भाषा चुनिए</string>
     <string name="identify_title">आप कौन हैं?</string>
+
+    <!-- Identify (A3) -->
+    <string name="next">आगे</string>
+    <string name="id_have_abha">मेरे पास ABHA नंबर है</string>
+    <string name="id_new_patient">मैं नया मरीज़ हूँ</string>
+    <string name="id_enter_abha">अपना 14 अंकों का ABHA नंबर डालिए</string>
+    <string name="id_enter_otp">आपके फ़ोन पर आया 6 अंकों का OTP डालिए</string>
+    <string name="id_otp_hint">(डेमो: OTP 123456 है)</string>
+    <string name="id_your_name">आपका नाम</string>
+    <string name="id_name_hint">नाम लिखिए, या कीबोर्ड का माइक दबाकर बोलिए</string>
+    <string name="id_your_age">आपकी उम्र (साल में)</string>
+    <string name="id_age_years">साल</string>
+    <string name="id_your_sex">आप महिला हैं, पुरुष हैं, या अन्य?</string>
+    <string name="sex_female">महिला</string>
+    <string name="sex_male">पुरुष</string>
+    <string name="sex_other">अन्य</string>
+
+    <!-- Errors (§1 codes) -->
+    <string name="err_invalid_otp">OTP सही नहीं है। फिर से डालिए।</string>
+    <string name="err_abha_not_found">इस नंबर का ABHA नहीं मिला। नंबर जाँचिए, या नए मरीज़ की तरह आगे बढ़िए।</string>
+    <string name="err_invalid_abha">ABHA नंबर 14 अंकों का होना चाहिए।</string>
+    <string name="err_consent_required">पहले अनुमति वाला हिस्सा पूरा कीजिए।</string>
+    <string name="err_nlp_unavailable">अभी आवाज़ समझ नहीं पा रहे। कृपया जवाब छूकर चुनिए।</string>
+    <string name="err_network">अस्पताल के सर्वर से जुड़ नहीं पा रहे। थोड़ी देर में फिर कोशिश कीजिए, या मदद माँगिए।</string>
+    <string name="err_validation">यह सही नहीं लग रहा। कृपया देखकर फिर से कोशिश कीजिए।</string>
+    <string name="err_not_found">यह जानकारी नहीं मिली। कृपया मदद माँगिए।</string>
+    <string name="err_invalid_state">यह कदम अभी नहीं हो सकता। कृपया मदद माँगिए।</string>
+    <string name="err_forbidden">इसकी अनुमति नहीं है। कृपया मदद माँगिए।</string>
+    <string name="err_too_large">फ़ोटो बहुत बड़ी है। कृपया फिर से खींचिए।</string>
+    <string name="err_unknown">कुछ गड़बड़ हो गई। फिर से कोशिश कीजिए, या मदद माँगिए।</string>
 </resources>

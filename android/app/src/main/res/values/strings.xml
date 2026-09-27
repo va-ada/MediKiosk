@@ -11,4 +11,34 @@
     <string name="back">Back</string>
     <string name="choose_language">Choose your language</string>
     <string name="identify_title">Who are you?</string>
+
+    <!-- Identify (A3) -->
+    <string name="next">Next</string>
+    <string name="id_have_abha">I have an ABHA number</string>
+    <string name="id_new_patient">I am a new patient</string>
+    <string name="id_enter_abha">Enter your 14-digit ABHA number</string>
+    <string name="id_enter_otp">Enter the 6-digit OTP sent to your phone</string>
+    <string name="id_otp_hint">(Demo: the OTP is 123456)</string>
+    <string name="id_your_name">Your name</string>
+    <string name="id_name_hint">Type your name, or press the mic on the keyboard and say it</string>
+    <string name="id_your_age">Your age (in years)</string>
+    <string name="id_age_years">years</string>
+    <string name="id_your_sex">Are you a woman, a man, or other?</string>
+    <string name="sex_female">Woman</string>
+    <string name="sex_male">Man</string>
+    <string name="sex_other">Other</string>
+
+    <!-- Errors (§1 codes) -->
+    <string name="err_invalid_otp">That OTP is not right. Please try again.</string>
+    <string name="err_abha_not_found">No ABHA record for this number. Check the number, or continue as a new patient.</string>
+    <string name="err_invalid_abha">The ABHA number must have 14 digits.</string>
+    <string name="err_consent_required">Please finish the permission step first.</string>
+    <string name="err_nlp_unavailable">We can\'t understand speech right now. Please tap your answer.</string>
+    <string name="err_network">Can\'t reach the hospital server. Try again in a moment, or ask for help.</string>
+    <string name="err_validation">That doesn\'t look right. Please check and try again.</string>
+    <string name="err_not_found">We couldn\'t find that. Please ask for help.</string>
+    <string name="err_invalid_state">This step can\'t be done right now. Please ask for help.</string>
+    <string name="err_forbidden">This isn\'t allowed. Please ask for help.</string>
+    <string name="err_too_large">The photo is too large. Please take it again.</string>
+    <string name="err_unknown">Something went wrong. Please try again, or ask for help.</string>
 </resources>

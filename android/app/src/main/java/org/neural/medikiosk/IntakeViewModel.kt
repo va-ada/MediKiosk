@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import org.neural.medikiosk.data.DeviceSettings
+import org.neural.medikiosk.data.KioskRepository
 import org.neural.medikiosk.data.SettingsRepository
 import org.neural.medikiosk.net.Patient
 import org.neural.medikiosk.net.QueueItem
@@ -24,6 +25,8 @@ class IntakeViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Device settings (null until DataStore has loaded once). */
     val settings: StateFlow<DeviceSettings?> = settingsRepo.settings.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    val repo = KioskRepository { settings.value ?: DeviceSettings() }
 
     var language by mutableStateOf("hi")
     var patient by mutableStateOf<Patient?>(null)
