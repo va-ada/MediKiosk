@@ -56,7 +56,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
   - **Milestone:** red flags and the emergency button work — even with the API down.
 
 ## Phase 4 — Documents
-- [ ] C5 · Sample documents for OCR — Needs: F1
+- [x] C5 · Sample documents for OCR — Needs: F1
 - [ ] N5 · OCR and document classification (`/document`) — Needs: N1, C5
 - [ ] N6 · Lab value extraction — Needs: N5
 - [ ] N7 · Prescription extraction — Needs: N5, C6
@@ -118,3 +118,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [S6] `graph.apply_answer(db, session, question, value, source, raw_text, confidence, status, actor)` validates + stores + replaces that slot's answer-sourced facts + runs `redflags.evaluate_and_alert` with all slots, and **commits**; returns `(answer, alerts)`. It does NOT emit `alert.created` — S8's `evaluate_and_alert` must emit. Answer facts have `value={"value": v}` (dict, so read-back can add `patient_disputed`/`patient_unsure`); drugs from answers are one fact per medicine with the §3 drugs shape, `found_in_documents: false`. Only `status=confident` answers count as answered. `graph.render()` choices = `{value, label, en, hi, icon}` and never include `doctor_note`. Tests install a graph with `graph.set_graph(Graph.from_docs([...]))`. Helpers in `routers/intake.py`: `question_for`, `next_response`, `answer_public`, `language_for`, `require_answerable` (S7 reuses them).
 - [S10] Relay: `cd relay && uv run pytest -q`; `GET /alarms` returns newest first (max 50); alarms are validated against the §2 `reason_code` enum (422 `validation_error` otherwise); dedupe only covers the last 200 ids kept in memory.
 - [D1] Mock HIS: `POST /fhir` → 400 `missing_idempotency_key` / `invalid_bundle` (body must have `resourceType: "Bundle"`); bundles persist as `data/his/<id>.json` and are reloaded on start, so a re-send after restart is still `duplicate: true` (D2 reset should delete `data/his/*.json`). `GET /bundles` = `[{id, idempotency_key, received_at, bundle}]` newest first; `GET /` shows Patient `name[0].text` or given+family.
+- [C5] Samples (A4 1240x1754, English only, Arial): lab_report_cbc (Kamla Devi, 12/08/2026, ref ranges use an en dash `12.0–15.0`, units like `x10^3/uL`), lab_report_diabetes (Rahul Verma, 05/07/2026: FBS 142, PPBS 198 mg/dL, HbA1c 7.4 %), rx_allopathic, rx_ayurveda, discharge_summary, handwritten_style (Bradley Hand — N7 should mark it unreadable/low-conf), plus *_photo.png variants of cbc and rx_allopathic. Regenerate: `uv run --with pillow python scripts/make_samples.py` (deterministic).
