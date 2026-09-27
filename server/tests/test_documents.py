@@ -8,6 +8,7 @@ from app import audit
 from app.auth import create_jwt, hash_pin
 from app.config import settings
 from app.models import Document, Fact, Staff
+from app.services.files import load_file
 
 K = {"X-Kiosk-Id": "KIOSK-01"}
 NO_FLAGS = {"chest_pain": False, "breathless": False, "stroke_signs": False, "heavy_bleeding": False, "fainted": False}
@@ -105,7 +106,8 @@ def test_upload_process_and_facts(client: TestClient, db: Session, tmp_path) -> 
         True,
     )
     assert stored.ocr_json["lines"][0]["bbox"] == [120, 340, 400, 28]
-    assert (tmp_path / "patients" / stored.patient_id / "docs" / f"{doc['id']}.bin").read_bytes() == PNG
+    on_disk = (tmp_path / "patients" / stored.patient_id / "docs" / f"{doc['id']}.bin").read_bytes()
+    assert on_disk != PNG and load_file(stored.patient_id, stored.file_path) == PNG  # encrypted at rest (S18)
 
     facts = {f.text_en: f for f in db.exec(select(Fact).where(Fact.source_id == doc["id"]))}
     hb = facts["Haemoglobin 10.2 g/dL (ref 12.0–15.0) LOW"]
