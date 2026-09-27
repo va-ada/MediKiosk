@@ -5,7 +5,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 0 — Foundation
 - [x] F1 · Repo skeleton, Postgres and environment — Needs: —
-- [ ] F2 · Server skeleton — Needs: F1
+- [x] F2 · Server skeleton — Needs: F1
 - [ ] F3 · Data models and database — Needs: F2
 - [ ] F4 · Hash-chained audit log — Needs: F3
 - [ ] F5 · WebSocket hub — Needs: F2
@@ -101,3 +101,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 <!-- One line per note: `- [ID] note`. Decisions, gotchas, TODOs left for later tasks. -->
 - [F1] Docker Postgres is mapped to host port **5433** (not 5432): this Mac's Homebrew postgresql@18 already owns localhost:5432. `DATABASE_URL` in `.env`/`.env.example` uses 5433; inside the container it is still 5432.
 - [F1] Python 3.11 comes from `uv python install 3.11` (system python3 is 3.14) — use `uv run`, never bare `python3`, for service code.
+- [F2] Server is pinned to Python 3.11 (`server/.python-version`); tests run from `server/` with `pythonpath=["."]` so imports are `from app.x import …`. `ApiError(status, code, message)` in `app/errors.py`; 404s also return the §1 body with code `not_found`.

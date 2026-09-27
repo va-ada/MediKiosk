@@ -7,7 +7,7 @@ db-down:
 	docker compose down
 
 server:
-	@echo "server: not created yet (task F2)"
+	cd server && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 nlp:
 	@echo "nlp: not created yet (task N1)"
@@ -22,4 +22,4 @@ web:
 	@echo "web: not created yet (task W1)"
 
 test:
-	@echo "test: no test suites yet"
+	cd server && uv run pytest -q
