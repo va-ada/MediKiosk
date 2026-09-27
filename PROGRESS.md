@@ -70,7 +70,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] S12 · Summary builder and submit — Needs: S11, N8
 - [x] S13 · Read-back — Needs: S6
 - [ ] A11 · Read-back screen and submit — Needs: A10, S13, S12
-- [ ] S14 · Verification endpoints — Needs: S12
+- [x] S14 · Verification endpoints — Needs: S12
 - [ ] W5 · Wire patient view to the API — Needs: W4, S14
 - [ ] W7 · Outcome bar — Needs: W5, S5
   - **Milestone:** the doctor verifies a summary and closes the visit.
@@ -134,3 +134,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [W6] `DocumentsPanel` exports `useDocumentImage(path)` (cached object URL per path) and `sortDocuments`; `DocumentViewer` takes `{document, bbox, onClose}` and exports `bboxToPercent`. PatientView already wires `onSourceClick` → viewer with highlight; W5 only needs to swap the fixture for `GET /api/sessions/{id}/summary`. Placeholder images show only with `VITE_USE_FIXTURES=true`.
 - [W12] `/desk` uses `web/src/api/kiosk.ts` (`registerWalkIn(input, progress)` resumes a half-finished registration from the same `progress` object, so a retry never duplicates the patient/session). Desk requires all 5 danger-sign answers and a "consent explained" tick; today’s list lives in sessionStorage (per IST date). QR payload is exactly `{"session_id","token_id"}`.
 - [S12] Code + tests committed and live-checked on Postgres with the NLP fallback narrative; NOT ticked until the AI narrative path is checked against real `/summarize` (N8). Summary extras beyond §11.1: hpi `narrative_ai` (bool — label AI text in the UI), item `doctor_note` on AYUSH answer facts, red_flags items `{alert_id, text, level, status}`, new_since_opened items `{fact_id, section, text}`. Empty sections are omitted. `routers/summary.rebuild(db, session, actor)` = store-if-changed + commit + emit `summary.ready` — S14 should call it after every change. Allergy strip: detail facts win over the yes/no fact; "No known allergies (patient said)" for a no.
+- [S14] Every review change calls `routers.summary.rebuild()` (store-if-changed + commit + `summary.ready`). Approve requires that THIS doctor opened the section. ayush-exam fields accept a string or `{value, note}`; re-saving replaces earlier doctor facts with the same `exam_<field>` key. Diagnosis `system` must be NAMASTE | ICD11_TM2 | ICD10. `fact_public()` lives in `routers/review.py`.
