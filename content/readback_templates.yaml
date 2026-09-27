@@ -1,0 +1,22 @@
+# DRAFT — clinician review required
+# Read-back templates (CONTRACTS.md §9.6), keyed by slot name. Patients confirm only what they can judge.
+# Placeholders: {value} raw value · {label_en}/{label_hi} choice label(s), joined with ", " for multi-choice
+# · {yesno_en}/{yesno_hi} Yes/No · {duration_en}/{duration_hi} human duration (e.g. "3 months" / "3 महीने").
+# Only complaint and hpi facts are read back — never medicines, doses or lab values.
+chief_complaint:   {en: "Main problem: {label_en}",                  hi: "मुख्य तकलीफ़: {label_hi}"}
+site:              {en: "Pain in the {label_en}",                    hi: "{label_hi} में दर्द"}
+side:              {en: "Pain on the {label_en}",                    hi: "दर्द {label_hi}"}
+duration_days:     {en: "Problem for {duration_en}",                 hi: "{duration_hi} से तकलीफ़"}
+onset:             {en: "The pain started {label_en}",               hi: "दर्द {label_hi} शुरू हुआ"}
+character:         {en: "The pain feels like: {label_en}",           hi: "दर्द ऐसा है: {label_hi}"}
+swelling:          {en: "Swelling in the joint: {yesno_en}",         hi: "जोड़ में सूजन: {yesno_hi}"}
+swelling_where:    {en: "Swelling in: {label_en}",                   hi: "सूजन यहाँ है: {label_hi}"}
+morning_stiffness: {en: "Stiffness after waking up: {label_en}",     hi: "सुबह उठने के बाद जकड़न: {label_hi}"}
+worse_with:        {en: "Pain gets worse: {label_en}",               hi: "दर्द बढ़ता है: {label_hi}"}
+better_with:       {en: "Pain gets better with: {label_en}",         hi: "दर्द कम होता है: {label_hi}"}
+severity:          {en: "Pain level {value} out of 10",              hi: "दर्द 10 में से {value}"}
+fever:             {en: "Fever these days: {yesno_en}",              hi: "आजकल बुखार: {yesno_hi}"}
+injury:            {en: "Injury to this joint before: {yesno_en}",   hi: "इस जोड़ में पहले चोट: {yesno_hi}"}
+other_joints:      {en: "Other joints that hurt: {label_en}",        hi: "और जोड़ों में दर्द: {label_hi}"}
+allergy:           {en: "Allergy to a medicine or food: {yesno_en}", hi: "किसी दवा या चीज़ से एलर्जी: {yesno_hi}"}
+allergy_detail:    {en: "Allergy: {value}",                          hi: "एलर्जी: {value}"}

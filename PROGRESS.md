@@ -68,7 +68,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 ## Phase 5 — Summary and doctor review
 - [ ] N8 · Grounded summarisation (`/summarize`) — Needs: N3
 - [ ] S12 · Summary builder and submit — Needs: S11, N8
-- [ ] S13 · Read-back — Needs: S6
+- [x] S13 · Read-back — Needs: S6
 - [ ] A11 · Read-back screen and submit — Needs: A10, S13, S12
 - [ ] S14 · Verification endpoints — Needs: S12
 - [ ] W5 · Wire patient view to the API — Needs: W4, S14
@@ -119,3 +119,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [C2] redflags.yaml has 2 extra DRAFT rules beyond the card (`chest_pain_only`, `breathless_only`, both urgent, mutually exclusive with `chest_pain_breathless`) — flag for clinician review. Rules use `is: false` conditions, so the engine must treat a slot answered `false` as a real value (and a missing slot as "condition fails"). festivals.yaml dates are all `null` until copied from the official Government of India holiday list. Lexicon numbers include डेढ़/dedh 1.5 and ढाई/dhai 2.5 (round days when normalising).
 - [S8] `redflags.evaluate_and_alert` creates at most ONE alert per (session, rule_id) ever — stricter than the card (open/acknowledged only) so a confirmed/downgraded alert is not re-raised on every later answer. It emits `alert.created` via a session `after_commit` hook (never before the row is committed) and does not commit itself. Tests install rules with `redflags.set_rules([...])`.
 - [S9] Background loops use a router-level `lifespan=` (FastAPI merges it into the app) — see `services/escalation.py`; do DB work in `asyncio.to_thread`, publish on the loop. S16 outbox worker should copy this pattern. Emergency button: idempotent on client `id`, unknown `session_id` is stored as null (never fails). Resolve changes the lane only for a waiting/called token; resolving from `open` also fills acknowledged_by/at.
+- [S13] Read-back templates use extra placeholders beyond §9.6 (`{label_en|hi}`, `{yesno_en|hi}`, `{duration_en|hi}` → "3 months"/"3 महीने"); unknown keys fall back to `text_en`. GET readback moves the session to `verifying` and omits facts already answered or marked unsure. A new response replaces the previous flag (no→yes clears `patient_disputed`).
