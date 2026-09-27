@@ -10,7 +10,7 @@ server:
 	cd server && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 nlp:
-	@echo "nlp: not created yet (task N1)"
+	cd nlp && uv run uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 relay:
 	@echo "relay: not created yet (task S10)"
