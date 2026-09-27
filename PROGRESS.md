@@ -71,7 +71,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] S13 · Read-back — Needs: S6
 - [ ] A11 · Read-back screen and submit — Needs: A10, S13, S12
 - [x] S14 · Verification endpoints — Needs: S12
-- [ ] W5 · Wire patient view to the API — Needs: W4, S14
+- [x] W5 · Wire patient view to the API — Needs: W4, S14
 - [ ] W7 · Outcome bar — Needs: W5, S5
   - **Milestone:** the doctor verifies a summary and closes the visit.
 
@@ -140,3 +140,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N4] `negation.check(text, slots, slot_keywords=None)` only touches slots the model set to `true` that are in the keyword map (fever, swelling, injury, chest_pain, breathless, fainted); window = 3 tokens either side; conservative ("haan bukhar hai, sujan nahi" also drops fever → uncertain → tap). Note text: `fever=true dropped: negation 'nahi hai' near 'bukhar'`.
 - [N8] `/summarize` always 200: `{narrative, unsupported_terms, fallback_used}`; S12 should send only complaint+hpi facts (allergies/drugs/labs are templated, rule 4). Checks per sentence: numbers (digits + two..hundred words), clinical/diagnosis/advice words (list + lexicon concept words), and asserting a symptom the facts only deny ("No fever" → "has fever" dropped). ~2–3 s warm for 10 facts; Ollama down / nothing left → facts `text_en` joined "; ", `fallback_used: true`; no facts → narrative "".
 - [S12] Live-verified with real `/summarize` (qwen2.5:3b): narrative generated at submit (~3 s), reused by doctor GET (~0.02 s) while HPI facts are unchanged. Known limitation: the model can mis-attribute facts (e.g. "swelling relieved by heat" when heat relieves pain) — the faithfulness check only catches unsupported numbers/terms, so the UI must keep the "AI-drafted — verify" label next to the narrative.
+- [W5] PatientView: sections start collapsed; expanding POSTs `open` (once per view) and only then enables "Approve section" (server requires THIS doctor's open; `opened` in the summary means any doctor). Re-fetch on `summary.ready` for this session (open/approve/verify all emit it) + on WS reconnect. Types: `RedFlagItem`, `NewSinceItem`, `narrative_ai`, `doctor_note` added; CriticalStrip renders alert-shaped red flags (it crashed on them before).
