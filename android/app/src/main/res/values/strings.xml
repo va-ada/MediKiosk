@@ -135,4 +135,21 @@
     <string name="dym_heard">We heard: “%1$s”</string>
     <string name="dym_speak_again">Speak again</string>
     <string name="dym_tap_instead">Show all answers to tap</string>
+
+    <!-- Emergency (A12) -->
+    <string name="em_what_happening">What is happening? Tap one.</string>
+    <string name="reason_chest_pain">Chest pain</string>
+    <string name="reason_breathing">Can\'t breathe properly</string>
+    <string name="reason_bleeding">Bleeding</string>
+    <string name="reason_unconscious">Fainted or not waking up</string>
+    <string name="reason_seizure">Fits or shaking</string>
+    <string name="reason_stroke_signs">Face drooping or sudden weakness</string>
+    <string name="reason_severe_pain">Very bad pain</string>
+    <string name="reason_pregnancy">Pregnancy problem</string>
+    <string name="reason_other">Something else</string>
+    <string name="em_help_coming">Help is coming</string>
+    <string name="em_stay_here">Please stay here.</string>
+    <string name="em_nurse_seen">A nurse has seen your alarm and is on the way.</string>
+    <string name="em_sent_station">Alarm sent</string>
+    <string name="em_staff_hold">Staff: hold here for 3 seconds to finish</string>
 </resources>

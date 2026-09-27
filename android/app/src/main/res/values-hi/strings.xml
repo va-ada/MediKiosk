@@ -133,4 +133,21 @@
     <string name="dym_heard">हमने सुना: “%1$s”</string>
     <string name="dym_speak_again">फिर से बोलें</string>
     <string name="dym_tap_instead">सभी जवाब छूकर चुनें</string>
+
+    <!-- Emergency (A12) -->
+    <string name="em_what_happening">क्या हो रहा है? एक चुनिए।</string>
+    <string name="reason_chest_pain">सीने में दर्द</string>
+    <string name="reason_breathing">साँस लेने में दिक्कत</string>
+    <string name="reason_bleeding">खून बह रहा है</string>
+    <string name="reason_unconscious">बेहोश हो गए</string>
+    <string name="reason_seizure">दौरा या झटके</string>
+    <string name="reason_stroke_signs">चेहरा टेढ़ा या अचानक कमज़ोरी</string>
+    <string name="reason_severe_pain">बहुत तेज़ दर्द</string>
+    <string name="reason_pregnancy">गर्भ से जुड़ी तकलीफ़</string>
+    <string name="reason_other">कुछ और</string>
+    <string name="em_help_coming">मदद आ रही है</string>
+    <string name="em_stay_here">कृपया यहीं रहिए।</string>
+    <string name="em_nurse_seen">नर्स ने आपका अलार्म देख लिया है, वे आ रही हैं।</string>
+    <string name="em_sent_station">अलार्म भेजा गया</string>
+    <string name="em_staff_hold">स्टाफ़: खत्म करने के लिए यहाँ 3 सेकंड दबाकर रखें</string>
 </resources>

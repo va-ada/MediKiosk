@@ -27,6 +27,7 @@ import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.ui.BigButton
 import org.neural.medikiosk.ui.DeviceSettingsScreen
 import org.neural.medikiosk.ui.DoneScreen
+import org.neural.medikiosk.ui.EmergencyScreen
 import org.neural.medikiosk.ui.ResumeScanner
 import org.neural.medikiosk.ui.ConsentScreen
 import org.neural.medikiosk.ui.HistoryScreen
@@ -66,7 +67,7 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
                 )
             }
             composable(Routes.HELP) { NeedHelpScreen(onBack = { nav.popBackStack() }) }
-            composable(Routes.EMERGENCY) { Placeholder(R.string.emergency) }
+            composable(Routes.EMERGENCY) { EmergencyScreen(vm, settings, onBack = { nav.popBackStack() }) }
             composable(Routes.IDENTIFY) {
                 IdentifyScreen(vm, onIdentified = { nav.forward(Routes.INFORMANT) }, onExit = { vm.clear(); nav.toStart(startRoute) })
             }
