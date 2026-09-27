@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hindi patient-facing strings: everyday Hindi only (CLAUDE.md §7). -->
+<resources>
+    <!-- Scaffold (A2) -->
+    <string name="emergency">इमरजेंसी</string>
+    <string name="need_help">मदद चाहिए</string>
+    <string name="help_staff_coming">अस्पताल का कोई कर्मचारी आपके पास आ रहा है</string>
+    <string name="help_wait_here">कृपया यहीं रुकिए।</string>
+    <string name="back">वापस</string>
+    <string name="choose_language">अपनी भाषा चुनिए</string>
+    <string name="identify_title">आप कौन हैं?</string>
+</resources>

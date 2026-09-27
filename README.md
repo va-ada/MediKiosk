@@ -17,3 +17,10 @@ python scripts/seed.py
 ```
 
 Android: set the server URL (Mac's hotspot IP) in the hidden settings screen (long-press the logo 3 s).
+
+### Android kiosk: screen pinning
+In device mode `KIOSK` the app pins itself (`startLockTask`) so patients cannot leave it.
+On a normal (non device-owner) phone first enable **Settings → Security → App pinning** (a.k.a. *Screen pinning*);
+the app then asks "App is pinned" on start — tap **Got it**. Staff unpin by holding **Back + Overview**
+(gesture navigation: swipe up and hold). Switching the device mode to `HALL` or `PATIENT_APP` in the hidden
+settings (long-press the logo 3 s) unpins automatically.

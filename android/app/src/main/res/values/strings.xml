@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- English patient-facing strings. Hindi (everyday words, no Sanskrit terms) lives in values-hi/. -->
 <resources>
     <string name="app_name">MediKiosk</string>
+
+    <!-- Scaffold (A2) -->
+    <string name="emergency">Emergency</string>
+    <string name="need_help">Need help</string>
+    <string name="help_staff_coming">A staff member is coming to you</string>
+    <string name="help_wait_here">Please wait here.</string>
+    <string name="back">Back</string>
+    <string name="choose_language">Choose your language</string>
+    <string name="identify_title">Who are you?</string>
 </resources>
