@@ -6,7 +6,7 @@ import httpx
 from fastapi import FastAPI, File, Form, UploadFile
 from pydantic import BaseModel
 
-from app import asr, extract
+from app import asr, extract, summarize
 from app.config import settings
 from app.errors import ApiError, register_error_handlers
 
@@ -62,3 +62,8 @@ def transcribe(audio: Annotated[UploadFile, File()], language: Annotated[Literal
 @app.post("/extract", response_model=extract.ExtractOut)
 async def extract_slots(body: extract.ExtractIn) -> extract.ExtractOut:
     return await extract.extract(body)
+
+
+@app.post("/summarize", response_model=summarize.SummarizeOut)
+async def summarize_facts(body: summarize.SummarizeIn) -> summarize.SummarizeOut:
+    return await summarize.summarize(body)
