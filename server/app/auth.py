@@ -79,3 +79,25 @@ def kiosk_id(x_kiosk_id: Annotated[str | None, Header()] = None) -> str:
     if not x_kiosk_id or not x_kiosk_id.strip():
         raise ApiError(400, "missing_kiosk_id", "Header X-Kiosk-Id is required")
     return x_kiosk_id.strip()
+
+
+def actor_for(kiosk: str | None = None, staff: Staff | None = None) -> str:
+    """Audit actor string (§10.7)."""
+    if staff is not None:
+        return f"staff:{staff.id}"
+    if kiosk:
+        return f"kiosk:{kiosk}"
+    return "system"
+
+
+def kiosk_or_staff(
+    db: DbSession,
+    x_kiosk_id: Annotated[str | None, Header()] = None,
+    authorization: Annotated[str | None, Header()] = None,
+) -> str:
+    """Dependency for "K or S" routes: a valid staff Bearer token or an `X-Kiosk-Id`. Returns the audit actor."""
+    if authorization:
+        return actor_for(staff=current_staff()(db, authorization))
+    if x_kiosk_id and x_kiosk_id.strip():
+        return actor_for(kiosk=x_kiosk_id.strip())
+    raise ApiError(400, "missing_kiosk_id", "Header X-Kiosk-Id (or a staff login) is required")
