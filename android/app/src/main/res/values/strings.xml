@@ -152,4 +152,24 @@
     <string name="em_nurse_seen">A nurse has seen your alarm and is on the way.</string>
     <string name="em_sent_station">Alarm sent</string>
     <string name="em_staff_hold">Staff: hold here for 3 seconds to finish</string>
+
+    <!-- Documents (A10) -->
+    <string name="docs_question">Do you have old reports or prescriptions with you?</string>
+    <string name="docs_explain">Take a photo of each page. Your doctor will see them before meeting you.</string>
+    <string name="docs_take_photo">Take a photo</string>
+    <string name="docs_no_papers">I have no papers</string>
+    <string name="docs_place_paper">Place one page flat inside the white box</string>
+    <string name="docs_capture">Take photo</string>
+    <string name="docs_pages">%1$d page(s) ready</string>
+    <string name="docs_page_n">Page %1$d</string>
+    <string name="docs_retake">Retake</string>
+    <string name="docs_delete">Remove</string>
+    <string name="docs_add_page">Add another page</string>
+    <string name="docs_send">Send to the doctor</string>
+    <string name="docs_sending">Sending page %1$d of %2$d…</string>
+    <string name="docs_sent">Your papers have been sent</string>
+    <string name="docs_page_status">Page %1$d: %2$s</string>
+    <string name="docs_read">read ✓</string>
+    <string name="docs_not_read">could not be read — the doctor will look at the photo</string>
+    <string name="docs_reading">being read…</string>
 </resources>

@@ -150,4 +150,24 @@
     <string name="em_nurse_seen">नर्स ने आपका अलार्म देख लिया है, वे आ रही हैं।</string>
     <string name="em_sent_station">अलार्म भेजा गया</string>
     <string name="em_staff_hold">स्टाफ़: खत्म करने के लिए यहाँ 3 सेकंड दबाकर रखें</string>
+
+    <!-- Documents (A10) -->
+    <string name="docs_question">क्या आपके पास पुरानी रिपोर्ट या डॉक्टर की पर्ची है?</string>
+    <string name="docs_explain">हर पन्ने की फ़ोटो लीजिए। डॉक्टर आपसे मिलने से पहले इन्हें देखेंगे।</string>
+    <string name="docs_take_photo">फ़ोटो लें</string>
+    <string name="docs_no_papers">मेरे पास कोई कागज़ नहीं है</string>
+    <string name="docs_place_paper">एक पन्ना सीधा रखकर सफ़ेद डिब्बे के अंदर लाइए</string>
+    <string name="docs_capture">फ़ोटो खींचें</string>
+    <string name="docs_pages">%1$d पन्ने तैयार हैं</string>
+    <string name="docs_page_n">पन्ना %1$d</string>
+    <string name="docs_retake">दोबारा लें</string>
+    <string name="docs_delete">हटाएँ</string>
+    <string name="docs_add_page">एक और पन्ना जोड़ें</string>
+    <string name="docs_send">डॉक्टर को भेजें</string>
+    <string name="docs_sending">पन्ना %1$d / %2$d भेज रहे हैं…</string>
+    <string name="docs_sent">आपके कागज़ भेज दिए गए हैं</string>
+    <string name="docs_page_status">पन्ना %1$d: %2$s</string>
+    <string name="docs_read">पढ़ लिया ✓</string>
+    <string name="docs_not_read">पढ़ा नहीं जा सका — डॉक्टर फ़ोटो देखेंगे</string>
+    <string name="docs_reading">पढ़ा जा रहा है…</string>
 </resources>

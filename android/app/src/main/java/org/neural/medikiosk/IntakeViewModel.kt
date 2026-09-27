@@ -41,6 +41,9 @@ class IntakeViewModel(app: Application) : AndroidViewModel(app) {
     var question by mutableStateOf<Question?>(null)
     val previousQuestions = mutableStateListOf<Question>()
 
+    /** Photographed document pages not yet uploaded (paths in the cache dir). */
+    val docPages = mutableStateListOf<String>()
+
     /** Forget the patient: memory state and every cache file (photos, voice clips, QR images). */
     fun clear() {
         language = settings.value?.defaultLanguage ?: "hi"
@@ -50,6 +53,7 @@ class IntakeViewModel(app: Application) : AndroidViewModel(app) {
         triageAlerts = emptyList()
         question = null
         previousQuestions.clear()
+        docPages.clear()
         wipeCacheFiles()
     }
 

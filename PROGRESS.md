@@ -61,7 +61,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] N6 · Lab value extraction — Needs: N5
 - [x] N7 · Prescription extraction — Needs: N5, C6
 - [x] S11 · Document upload and facts — Needs: S6, S7, N5
-- [ ] A10 · Document capture — Needs: A7, S11
+- [x] A10 · Document capture — Needs: A7, S11
 - [x] W6 · Documents panel and source highlight — Needs: W4
   - **Milestone:** old reports become facts with highlighted sources.
 
@@ -172,3 +172,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [A9] `copyAudio` (app/build.gradle.kts, runs before preBuild) copies content/audio/{hi,en}/*.wav into app/src/main/assets/audio (gitignored). `AssetAudioPrompter` (MediaPlayer) + TextToSpeech fallback: `KioskScaffold(audioKey, speech = heading)` speaks screens that have no WAV; a "Listen again" row sits under the top bar; leaving a screen calls `stopIfPlaying(key)` so it never cuts the next screen's prompt. Handset = MODE_IN_COMMUNICATION + earpiece + USAGE_VOICE_COMMUNICATION; slow = speed 0.85 (verified via dumpsys audio / logcat tag MediKioskAudio).
 - [A8] Mic shows only when `question.allow_voice` (so never in English) and hides per question after 503 `nlp_unavailable`. Upload via `KioskRepository.answerAudio(...)` (data/KioskRepository.kt; `uploadDocument` helper is there too); clip deleted in `finally`. Uncertain → `DidYouMeanScreen` inside the history scaffold. Debug-only hook: `/sdcard/Android/data/org.neural.medikiosk/files/debug/voice.m4a` replaces the recording. Live: Lekha "तीन महीने से" → duration_days 90 (voice, conf 0.85, ~11 s first call); "हम्म" → Did-you-mean. The 503 path is untested live (NLP must stay up).
 - [A12] Emergency network is `data/EmergencyRepository` (server + relay in parallel, each `withTimeoutOrNull(3000)`, failures ignored; `watch(id)` = OkHttp WS on `/ws?channel=alerts`, stops the beacon on `alert.updated` for that id). `emergency/Beacon` = ToneGenerator on STREAM_ALARM at max + torch 1 Hz; the screen flashes red/white itself. Staff hold 3 s = hand-off → wipe. Live: API up → server ✓ relay ✓, nurse ack stopped the beacon; API URL dead → relay ✓ only. The screen shows server/relay ✓/✗ for staff.
+- [A10] Pages are cache-dir JPEGs listed in `vm.docPages` (wiped with the session); each is deleted right after its upload succeeds (`KioskRepository.uploadDocument`, page_no = position); JPEGs over 9.5 MB are downscaled first. After sending, the screen polls `GET /api/documents/{id}` (≤ 30 s) to show read ✓ / not read. Debug-only hook: `.../files/debug/doc.png` (or doc.jpg) → "DEBUG: add" button. Live: emulated-camera photo + CBC sample → 2 processed docs, 6 lab facts from_report.

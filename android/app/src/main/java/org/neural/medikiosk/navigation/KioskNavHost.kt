@@ -26,6 +26,7 @@ import org.neural.medikiosk.R
 import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.ui.BigButton
 import org.neural.medikiosk.ui.DeviceSettingsScreen
+import org.neural.medikiosk.ui.DocumentsScreen
 import org.neural.medikiosk.ui.DoneScreen
 import org.neural.medikiosk.ui.EmergencyScreen
 import org.neural.medikiosk.ui.ResumeScanner
@@ -84,7 +85,7 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
                 TokenScreen(vm, onContinueHere = { nav.forward(Routes.HISTORY) }, onFinishHere = { nav.forward(Routes.DONE) })
             }
             composable(Routes.HISTORY) { HistoryScreen(vm, onDone = { nav.forward(Routes.DOCUMENTS) }) }
-            composable(Routes.DOCUMENTS) { Placeholder(R.string.docs_title) }
+            composable(Routes.DOCUMENTS) { DocumentsScreen(vm, onDone = { nav.forward(Routes.READBACK) }) }
             composable(Routes.READBACK) { Placeholder(R.string.done) }
             composable(Routes.DONE) { DoneScreen(vm) }
             composable(Routes.RESUME) {
