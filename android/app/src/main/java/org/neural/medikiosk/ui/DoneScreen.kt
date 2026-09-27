@@ -28,11 +28,12 @@ const val DONE_SECONDS = 10
 
 /** Done: thanks + token; after 10 s the kiosk wipes itself and returns to Start (§10.9). */
 @Composable
-fun DoneScreen(vm: IntakeViewModel) {
+fun DoneScreen(vm: IntakeViewModel, autoWipe: Boolean = true, statusCard: (@Composable () -> Unit)? = null) {
     val wipe = LocalWipe.current
     var left by remember { mutableIntStateOf(DONE_SECONDS) }
     BackHandler { }  // nothing to go back to
-    LaunchedEffect(Unit) {
+    LaunchedEffect(autoWipe) {
+        if (!autoWipe) return@LaunchedEffect  // patient app: keep showing the live status until they finish
         while (left > 0) { delay(1000); left -= 1 }
         wipe()
     }
@@ -40,9 +41,9 @@ fun DoneScreen(vm: IntakeViewModel) {
         ScreenBody {
             Icon(Icons.Filled.CheckCircle, null, Modifier.size(120.dp), tint = Green)
             Heading(tr(R.string.done_thanks))
-            vm.token?.let { TokenBadge(it) }
+            if (statusCard != null) statusCard() else vm.token?.let { TokenBadge(it) }
             Text(tr(R.string.done_wait), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
-            Text(tr(R.string.done_clearing, left), style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+            if (autoWipe) Text(tr(R.string.done_clearing, left), style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
             BigOutlinedButton(tr(R.string.done_finish_now), Icons.Filled.Home, wipe, Modifier.fillMaxWidth())
         }
     }

@@ -150,7 +150,7 @@ fun ResumeScanner(vm: IntakeViewModel, onResumed: (Session) -> Unit, onBack: () 
 
 /** Back-camera preview that reports the first decoded QR text (then keeps scanning until the screen leaves). */
 @Composable
-private fun QrCamera(onText: (String) -> Unit, modifier: Modifier) {
+fun QrCamera(onText: (String) -> Unit, modifier: Modifier) {
     val context = LocalContext.current
     val owner = LocalLifecycleOwner.current
     val executor = remember { Executors.newSingleThreadExecutor() }

@@ -183,4 +183,17 @@
     <string name="rb_yes">Yes, right</string>
     <string name="rb_no">No, wrong</string>
     <string name="rb_not_sure">Not sure</string>
+
+    <!-- Patient app (A14) -->
+    <string name="pa_home_title">Check in at the hospital</string>
+    <string name="pa_scan">Scan the hospital QR code</string>
+    <string name="pa_scan_hint">Point the camera at the QR code near the entrance.</string>
+    <string name="pa_demo_checkin">Demo check-in</string>
+    <string name="pa_status_title">Your place in the line</string>
+    <string name="pa_status_loading">Checking the line…</string>
+    <string name="pa_your_turn">It is your turn! Please go to %1$s.</string>
+    <string name="pa_place">You are number %1$d in line</string>
+    <string name="pa_waiting">Please wait — more than 5 people are ahead of you.</string>
+    <string name="pa_now_serving">Now being seen: %1$s</string>
+    <string name="pa_now_none">The doctor has not called anyone yet.</string>
 </resources>

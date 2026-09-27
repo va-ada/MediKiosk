@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.neural.medikiosk.audio.LocalAudioPrompter
@@ -44,7 +45,7 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(LocalAudioPrompter provides audio) {
                 MediKioskTheme(highContrast = s.highContrast, largeText = s.largeText) {
                     Surface(Modifier.fillMaxSize().safeDrawingPadding(), color = MaterialTheme.colorScheme.background) {
-                        KioskNavHost(vm, s)
+                        key(s.deviceMode) { KioskNavHost(vm, s) }  // a mode change rebuilds the graph (new start screen)
                     }
                 }
             }

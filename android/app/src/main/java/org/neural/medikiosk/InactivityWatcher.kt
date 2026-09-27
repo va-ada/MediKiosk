@@ -42,6 +42,9 @@ val LocalWipe = staticCompositionLocalOf<() -> Unit> { {} }
 /** Report activity that isn't a touch on our window (typing on the soft keyboard). */
 val LocalActivityPing = staticCompositionLocalOf<() -> Unit> { {} }
 
+/** False in the patient app: it is the patient's own phone, which may sit on the token screen for a long time. */
+val LocalInactivityEnabled = staticCompositionLocalOf { true }
+
 const val IDLE_MS = 60_000L
 const val COUNTDOWN_S = 30
 
@@ -51,7 +54,7 @@ const val COUNTDOWN_S = 30
  */
 @Composable
 fun InactivityWatcher(enabled: Boolean, content: @Composable () -> Unit) {
-    if (!enabled) return content()
+    if (!enabled || !LocalInactivityEnabled.current) return content()
     val wipe = LocalWipe.current
     val audio = LocalAudioPrompter.current
     val lang = LocalLang.current

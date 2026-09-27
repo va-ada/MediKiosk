@@ -181,4 +181,17 @@
     <string name="rb_yes">हाँ, सही है</string>
     <string name="rb_no">नहीं, गलत है</string>
     <string name="rb_not_sure">पता नहीं</string>
+
+    <!-- Patient app (A14) -->
+    <string name="pa_home_title">अस्पताल में अपना नाम लिखवाइए</string>
+    <string name="pa_scan">अस्पताल का QR कोड स्कैन करें</string>
+    <string name="pa_scan_hint">कैमरे को गेट के पास लगे QR कोड की तरफ़ कीजिए।</string>
+    <string name="pa_demo_checkin">डेमो चेक-इन</string>
+    <string name="pa_status_title">लाइन में आपकी जगह</string>
+    <string name="pa_status_loading">लाइन देख रहे हैं…</string>
+    <string name="pa_your_turn">आपकी बारी है! कृपया %1$s में जाइए।</string>
+    <string name="pa_place">लाइन में आपका नंबर %1$d है</string>
+    <string name="pa_waiting">कृपया इंतज़ार कीजिए — आपसे पहले 5 से ज़्यादा लोग हैं।</string>
+    <string name="pa_now_serving">अभी देखे जा रहे हैं: %1$s</string>
+    <string name="pa_now_none">डॉक्टर ने अभी किसी को नहीं बुलाया है।</string>
 </resources>

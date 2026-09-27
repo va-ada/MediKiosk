@@ -113,6 +113,7 @@ fun TokenScreen(
     onContinueHere: () -> Unit,
     onFinishHere: () -> Unit,
     statusCard: (@Composable () -> Unit)? = null,
+    showHallOption: Boolean = true,
 ) {
     val token = vm.token ?: return
     var hallQr by rememberSaveable { mutableStateOf(false) }
@@ -123,12 +124,13 @@ fun TokenScreen(
         ScreenBody {
             if (vm.triageAlerts.isNotEmpty()) NurseInformedBanner()
             if (!hallQr) {
-                TokenBadge(token)
-                statusCard?.invoke()
+                if (statusCard != null) statusCard() else TokenBadge(token)
                 QrImage(payload, Modifier.fillMaxWidth(0.5f))
                 Text(tr(R.string.token_qr_hint), style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
                 BigButton(tr(R.string.token_continue_here), Icons.Filled.EditNote, onContinueHere, Modifier.fillMaxWidth(), minHeight = 96.dp)
-                BigOutlinedButton(tr(R.string.token_continue_hall), Icons.Filled.QrCode2, { hallQr = true }, Modifier.fillMaxWidth())
+                if (showHallOption) {
+                    BigOutlinedButton(tr(R.string.token_continue_hall), Icons.Filled.QrCode2, { hallQr = true }, Modifier.fillMaxWidth())
+                }
             } else {
                 Heading(tr(R.string.token_hall_title, token.display))
                 QrImage(payload, Modifier.fillMaxWidth(0.9f))

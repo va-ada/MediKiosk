@@ -8,7 +8,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import org.neural.medikiosk.IntakeViewModel
+import org.neural.medikiosk.LocalInactivityEnabled
 import org.neural.medikiosk.LocalWipe
+import org.neural.medikiosk.net.DeviceMode
+import org.neural.medikiosk.ui.patientapp.LiveStatusCard
+import org.neural.medikiosk.ui.patientapp.LocalTwoPane
+import org.neural.medikiosk.ui.patientapp.PatientAppFrame
+import org.neural.medikiosk.ui.patientapp.PatientHomeScreen
 import org.neural.medikiosk.data.DeviceSettings
 import org.neural.medikiosk.ui.DeviceSettingsScreen
 import org.neural.medikiosk.ui.DocumentsScreen
@@ -31,12 +37,25 @@ import org.neural.medikiosk.ui.TriageScreen
 fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
     val nav = rememberNavController()
     val scope = rememberCoroutineScope()
-    val startRoute = Routes.START
+    val patientApp = settings.deviceMode == DeviceMode.PATIENT_APP
+    val startRoute = if (patientApp) Routes.PATIENT_HOME else Routes.START
+    // Patient app: the live status card sits in the left pane when unfolded, else inside the token/done screens.
+    val statusCard: (@Composable () -> Unit)? = if (patientApp) ({ if (!LocalTwoPane.current) LiveStatusCard(vm) }) else null
 
     val wipe: () -> Unit = { vm.clear(); nav.toStart(startRoute) }
 
-    CompositionLocalProvider(LocalNavController provides nav, LocalLang provides vm.language, LocalWipe provides wipe) {
+    CompositionLocalProvider(
+        LocalNavController provides nav, LocalLang provides vm.language, LocalWipe provides wipe,
+        LocalInactivityEnabled provides !patientApp,
+    ) { PatientAppFrameIf(patientApp, vm) {
         NavHost(navController = nav, startDestination = startRoute) {
+            composable(Routes.PATIENT_HOME) {
+                PatientHomeScreen(
+                    onLanguage = { vm.language = it },
+                    onCheckIn = { val lang = vm.language; vm.clear(); vm.language = lang; nav.forward(Routes.IDENTIFY) },
+                    onOpenSettings = { nav.forward(Routes.DEVICE_SETTINGS) },
+                )
+            }
             composable(Routes.START) {
                 StartScreen(
                     onLanguage = { lang -> vm.clear(); vm.language = lang; nav.forward(Routes.IDENTIFY) },
@@ -66,18 +85,24 @@ fun KioskNavHost(vm: IntakeViewModel, settings: DeviceSettings) {
                 TriageScreen(vm, onDone = { nav.forward(Routes.TOKEN) }, onBack = { nav.popBackStack() })
             }
             composable(Routes.TOKEN) {
-                TokenScreen(vm, onContinueHere = { nav.forward(Routes.HISTORY) }, onFinishHere = { nav.forward(Routes.DONE) })
+                TokenScreen(vm, onContinueHere = { nav.forward(Routes.HISTORY) }, onFinishHere = { nav.forward(Routes.DONE) },
+                    statusCard = statusCard, showHallOption = !patientApp)
             }
             composable(Routes.HISTORY) { HistoryScreen(vm, onDone = { nav.forward(Routes.DOCUMENTS) }) }
             composable(Routes.DOCUMENTS) { DocumentsScreen(vm, onDone = { nav.forward(Routes.READBACK) }) }
             composable(Routes.READBACK) { ReadbackScreen(vm, onDone = { nav.forward(Routes.DONE) }) }
-            composable(Routes.DONE) { DoneScreen(vm) }
+            composable(Routes.DONE) { DoneScreen(vm, autoWipe = !patientApp, statusCard = statusCard) }
             composable(Routes.RESUME) {
                 ResumeScanner(vm, onResumed = { nav.forward(resumeRoute(it.status)) }, onBack = { nav.popBackStack() })
             }
         }
-    }
+    } }
 }
+
+/** Wrap in the patient-app two-pane frame only in PATIENT_APP mode. */
+@Composable
+private fun PatientAppFrameIf(patientApp: Boolean, vm: IntakeViewModel, content: @Composable () -> Unit) =
+    if (patientApp) PatientAppFrame(vm, content) else content()
 
 /** Where a scanned token slip continues, by session status (§2 session_status). */
 fun resumeRoute(status: String): String = when (status) {
