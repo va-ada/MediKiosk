@@ -1,8 +1,8 @@
 # MediKiosk — 6-minute live demo
 
-> **Status:** web, server and NLP parts are built and verified. The Android kiosk / patient app (tasks A1–A15) is
-> **not built yet** — every kiosk beat below has a **Fallback** that works today (assisted desk page or a one-line
-> API call). Re-read this script once the Android app exists and delete the fallbacks you no longer need.
+> **Status (2026-09-28):** every part is built. Server, web and NLP are verified live; the Android app (A1–A15) is
+> verified on the emulator against the live server. Still to do on **real phones** before the finale: the checklist in
+> "Real-phone checks" below. The **Fallback** rows remain as a backup if a phone misbehaves on stage.
 
 ## Cast
 
@@ -68,6 +68,18 @@
 | Phone can't reach server | Check hotspot + IP in the hidden settings; otherwise switch to the `/desk` fallback. |
 | A board looks wrong | `make demo-reset` (≈5 s) and restart from the doctor beat with Kamla A-001. |
 | Anything worse | Play the backup video; keep narrating. |
+
+## Real-phone checks (once, before rehearsal)
+
+Install: plug the phone in (USB debugging on) → `cd android && ANDROID_HOME=~/Library/Android/sdk ./gradlew installDebug`.
+
+- [ ] Camera: scan a printed token slip (resume) and photograph the printed CBC report (Documents)
+- [ ] Mic: hold-to-talk in Hindi ("तीन महीने से" → next question); mumble → "Did you mean…?"; English shows no mic
+- [ ] Handset mode routes prompts to the earpiece; loudspeaker volume is enough in a noisy room
+- [ ] Emergency: alarm tone loud, screen flashes, torch blinks; nurse "On my way" stops it; staff hold 3 s ends it
+- [ ] Screen pinning (Settings → Security → App pinning ON) keeps patients inside the app
+- [ ] Z Fold: fold/unfold during history keeps the question; scan the `{"hospital":"DEMO"}` QR on the Home screen
+- [ ] Hindi text-to-speech voice sounds right for read-back items
 
 ## Pre-demo checklist
 
