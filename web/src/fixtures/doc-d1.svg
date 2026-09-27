@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#fbfaf5"/>
+  <text x="400" y="80" font-family="Georgia, serif" font-size="30" text-anchor="middle" fill="#222">City Clinic (sample)</text>
+  <text x="400" y="115" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#555">Prescription · 12 Aug 2026</text>
+  <line x1="60" y1="140" x2="740" y2="140" stroke="#999" stroke-width="2"/>
+  <text x="120" y="200" font-family="Arial, sans-serif" font-size="18" fill="#333">Patient: Kamla Devi, 62 F</text>
+  <text x="120" y="290" font-family="Georgia, serif" font-size="40" fill="#222">Rx</text>
+  <text x="120" y="361" font-family="Arial, sans-serif" font-size="22" fill="#111">1. Tab Metformin 500 mg — twice daily</text>
+  <path d="M122 420 q20 -14 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#333" stroke-width="2.5" fill="none"/>
+  <text x="120" y="520" font-family="Arial, sans-serif" font-size="18" fill="#333">Review after 1 month.</text>
+  <text x="560" y="880" font-family="Georgia, serif" font-size="18" fill="#333">Signature</text>
+  <text x="400" y="960" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#C0392B">SAMPLE — NOT A REAL REPORT</text>
+</svg>

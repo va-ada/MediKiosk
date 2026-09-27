@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#ffffff"/>
+  <text x="400" y="80" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="#1F497D">Pathology Lab (sample)</text>
+  <text x="400" y="112" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#555">Complete Blood Count · 01 Sep 2026</text>
+  <line x1="60" y1="140" x2="740" y2="140" stroke="#1F497D" stroke-width="2"/>
+  <text x="80" y="200" font-family="Arial, sans-serif" font-size="18" fill="#333">Patient: Kamla Devi, 62 F</text>
+  <text x="80" y="270" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">Test</text>
+  <text x="360" y="270" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">Result</text>
+  <text x="520" y="270" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">Reference</text>
+  <text x="80" y="322" font-family="Arial, sans-serif" font-size="20" fill="#111">Haemoglobin</text>
+  <text x="360" y="322" font-family="Arial, sans-serif" font-size="20" fill="#111">10.2 g/dL  L</text>
+  <text x="520" y="322" font-family="Arial, sans-serif" font-size="20" fill="#111">12.0 – 15.0</text>
+  <text x="80" y="372" font-family="Arial, sans-serif" font-size="20" fill="#111">WBC</text>
+  <text x="360" y="372" font-family="Arial, sans-serif" font-size="20" fill="#111">7,400 /µL</text>
+  <text x="520" y="372" font-family="Arial, sans-serif" font-size="20" fill="#111">4,000 – 11,000</text>
+  <text x="80" y="422" font-family="Arial, sans-serif" font-size="20" fill="#111">Platelets</text>
+  <text x="360" y="422" font-family="Arial, sans-serif" font-size="20" fill="#111">2.6 lakh /µL</text>
+  <text x="520" y="422" font-family="Arial, sans-serif" font-size="20" fill="#111">1.5 – 4.5</text>
+  <text x="400" y="960" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#C0392B">SAMPLE — NOT A REAL REPORT</text>
+</svg>

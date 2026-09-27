@@ -20,11 +20,11 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] S4 · Queue selector, queue list, display state — Needs: S3
 - [x] S5 · Token actions and outcomes — Needs: S4
 - [x] S6 · Question graph and tap answers — Needs: S3, C1
-- [ ] W1 · Web app skeleton — Needs: F1
-- [ ] W2 · Staff login and auto-lock — Needs: W1, F6
-- [ ] W3 · Doctor queue board — Needs: W2
-- [ ] W4 · Patient view layout (fixtures) — Needs: W1
-- [ ] W12 · Assisted desk: walk-in registration — Needs: W2, S3
+- [x] W1 · Web app skeleton — Needs: F1
+- [x] W2 · Staff login and auto-lock — Needs: W1, F6
+- [x] W3 · Doctor queue board — Needs: W2
+- [x] W4 · Patient view layout (fixtures) — Needs: W1
+- [x] W12 · Assisted desk: walk-in registration — Needs: W2, S3
 - [ ] A1 · Android project skeleton and settings — Needs: —
 - [ ] A2 · Start screen and kiosk scaffold — Needs: A1
 - [ ] A3 · Identify: ABHA or new patient — Needs: A2, S1
@@ -62,7 +62,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] N7 · Prescription extraction — Needs: N5, C6
 - [ ] S11 · Document upload and facts — Needs: S6, S7, N5
 - [ ] A10 · Document capture — Needs: A7, S11
-- [ ] W6 · Documents panel and source highlight — Needs: W4
+- [x] W6 · Documents panel and source highlight — Needs: W4
   - **Milestone:** old reports become facts with highlighted sources.
 
 ## Phase 5 — Summary and doctor review
@@ -129,3 +129,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [C4] `python3 scripts/render_audio.py` (system python has PyYAML) renders 49 keys × hi/en = 98 WAVs (Lekha / Rishi, 22.05 kHz mono s16, ~12 MB, committed). Hash cache skips unchanged texts; WAVs for deleted keys are removed. System phrase texts live in the script (`SYSTEM_PHRASES`). A9 copies `content/audio` into Android assets.
 - [S7] Code + respx tests committed; NOT ticked until a live pass against the real NLP `/extract` (N3). Uncertain rule: ASR confidence < 0.6, extract `uncertain`, null value, or a value that fails slot validation → Answer `uncertain` + same question + `fallback_choices` (yes/no synthesised for yesno). Audio stored via `files.store_file(patient_id, "audio/<session>/<uuid>.<ext>")` under `DATA_DIR/patients/<patient_id>/` (path traversal guarded).
 - [S11] Code + respx tests committed; NOT ticked until a live pass against the real NLP `/document` (N5). Upload needs the latest consent `scan=true` (else 403 `forbidden`) and real JPEG/PNG magic bytes; `/image` already requires any staff login (S19 can tighten roles). Document wire shape = §3 fields minus file_path, plus `image_url`; `ocr_json = {lines, entities}`. Drug facts from reports get `found_in_documents: true`; unreadable entities → text_en "Unreadable — see image" + `value.readable=false` + bbox.
+- [W1] Web: `api<T>(method, path, body?, {auth?, headers?})` in `web/src/api/client.ts` (204 → `null`; 401 `unauthorized` clears the auth store); `apiBlobUrl(path)` for images; auth store in `web/src/auth/store.ts` (`useAuth`, `authStore`, `getToken`); `useChannel(channel, onMessage)`; fixtures in `web/src/fixtures/` (`VITE_USE_FIXTURES=true`, summary served for any session id; placeholder doc images d1/d2). React Router v7 (v6 had open advisories). Tailwind v4 via `@tailwindcss/vite`; brand colours `navy`, `brand-orange`, `brand-green`, `brand-red`.
+- [W2] Staff pages render inside `auth/StaffLayout` (header + logout + 5-min `AutoLock` PIN overlay); wrap pages with `<RequireRole roles={[...]}>` in `App.tsx`. `/display` is public (outside the layout). `/triage` allows nurse and doctor. Doctor logout calls `POST /api/doctors/signout` first (best effort). `auth/PinPad` is reusable.
+- [W6] `DocumentsPanel` exports `useDocumentImage(path)` (cached object URL per path) and `sortDocuments`; `DocumentViewer` takes `{document, bbox, onClose}` and exports `bboxToPercent`. PatientView already wires `onSourceClick` → viewer with highlight; W5 only needs to swap the fixture for `GET /api/sessions/{id}/summary`. Placeholder images show only with `VITE_USE_FIXTURES=true`.
+- [W12] `/desk` uses `web/src/api/kiosk.ts` (`registerWalkIn(input, progress)` resumes a half-finished registration from the same `progress` object, so a retry never duplicates the patient/session). Desk requires all 5 danger-sign answers and a "consent explained" tick; today’s list lives in sessionStorage (per IST date). QR payload is exactly `{"session_id","token_id"}`.

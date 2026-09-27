@@ -1,0 +1,5 @@
+{
+  "department": "ayurveda",
+  "now_serving": [{ "display": "A-016", "doctor_name": "Dr. Mehta", "room": "Room 1", "called_at": "2026-10-12T05:20:00Z" }],
+  "next": ["A-017", "A-018", "A-019"]
+}
