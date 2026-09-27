@@ -1,0 +1,35 @@
+[project]
+name = "medikiosk-nlp"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.141.1",
+    "httpx>=0.28.1",
+    "onnx>=1.23.0",
+    "onnxruntime>=1.30.0",
+    "pillow>=12.3.0",
+    "pydantic-settings>=2.15.0",
+    "python-multipart>=0.0.32",
+    "pyyaml>=6.0.3",
+    "rapidfuzz>=3.14.6",
+    "rapidocr-onnxruntime>=1.4.4",
+    "torch>=2.14.0",
+    "torchaudio>=2.11.0",
+    "transformers>=5.17.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "respx>=0.23.1",
+    "ruff>=0.16.9",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
