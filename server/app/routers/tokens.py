@@ -1,4 +1,3 @@
-import importlib.util
 from datetime import date, timedelta
 from typing import Annotated, Any
 
@@ -15,7 +14,7 @@ from app.errors import ApiError
 from app.ids import today_ist, utcnow
 from app.models import Session, Staff, Token
 from app.routers.queue import called_payload
-from app.services import queue, serialize, tokens
+from app.services import fhir, queue, serialize, tokens
 from app.ws import hub
 
 router = APIRouter(tags=["tokens"])
@@ -63,12 +62,9 @@ def _updated(db: DB, t: Token) -> dict[str, Any]:
     return item
 
 
-def _enqueue_bundle(db: DB, session: Session) -> None:
-    if importlib.util.find_spec("app.services.fhir") is None:
-        return  # TODO(S15): FHIR bundle builder not built yet
-    from app.services import fhir  # type: ignore[attr-defined]
-
-    fhir.enqueue_bundle(db, session)
+def _enqueue_bundle(db: DB, session: Session, actor: str) -> None:
+    ob = fhir.enqueue_bundle(db, session)
+    audit.record(db, actor, "outbox.create", "outbox", ob.id, {"session_id": session.id, "key": ob.idempotency_key})
 
 
 @router.post("/api/tokens/{token_id}/call")
@@ -197,7 +193,7 @@ def outcome(token_id: str, body: OutcomeIn, db: DbSession, doctor: Doctor) -> di
         },
     )
     if body.outcome == Outcome.out and session:
-        _enqueue_bundle(db, session)
+        _enqueue_bundle(db, session, f"staff:{doctor.id}")
     db.commit()
     item = _updated(db, t)
     if new_token:

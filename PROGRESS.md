@@ -77,7 +77,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 
 ## Phase 6 — Integration and AYUSH
 - [x] D1 · Mock HIS — Needs: F1
-- [ ] S15 · FHIR bundle builder — Needs: S14, D1
+- [x] S15 · FHIR bundle builder — Needs: S14, D1
 - [ ] S16 · Outbox worker, island mode, admin health — Needs: S15
 - [ ] W11 · Admin console — Needs: W2, S16
 - [x] C3 · AYUSH question set — Needs: C1
@@ -140,3 +140,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N4] `negation.check(text, slots, slot_keywords=None)` only touches slots the model set to `true` that are in the keyword map (fever, swelling, injury, chest_pain, breathless, fainted); window = 3 tokens either side; conservative ("haan bukhar hai, sujan nahi" also drops fever → uncertain → tap). Note text: `fever=true dropped: negation 'nahi hai' near 'bukhar'`.
 - [N8] `/summarize` always 200: `{narrative, unsupported_terms, fallback_used}`; S12 should send only complaint+hpi facts (allergies/drugs/labs are templated, rule 4). Checks per sentence: numbers (digits + two..hundred words), clinical/diagnosis/advice words (list + lexicon concept words), and asserting a symptom the facts only deny ("No fever" → "has fever" dropped). ~2–3 s warm for 10 facts; Ollama down / nothing left → facts `text_en` joined "; ", `fallback_used: true`; no facts → narrative "".
 - [S12] Live-verified with real `/summarize` (qwen2.5:3b): narrative generated at submit (~3 s), reused by doctor GET (~0.02 s) while HPI facts are unchanged. Known limitation: the model can mis-attribute facts (e.g. "swelling relieved by heat" when heat relieves pain) — the faithfulness check only catches unsupported numbers/terms, so the UI must keep the "AI-drafted — verify" label next to the narrative.
+- [S15] FHIR bundles use fhir.resources R4B models (v8 installed) and are validated with `Bundle.model_validate` before queuing; systems are `urn:medikiosk:*` placeholders (swap for official ABDM/NAMASTE URIs later). `build_bundle` refreshes the summary first and drops rejected facts AND the raw QuestionnaireResponse answers behind them. `enqueue_bundle` is idempotent per `{session_id}:v{summary_version}` and audited as `outbox.create`. Live: mock HIS accepted a real bundle; repeat → duplicate.
