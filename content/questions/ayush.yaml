@@ -42,7 +42,7 @@ questions:
     slot: {name: exercise_tolerance, type: enum}
     choices:
       - {value: under_10, en: Less than 10 minutes,  hi: "10 मिनट से कम",      icon: walk_short}
-      - {value: 10_30,    en: 10 to 30 minutes,      hi: "10 से 30 मिनट",      icon: walk_medium}
+      - {value: "10_30",    en: 10 to 30 minutes,      hi: "10 से 30 मिनट",      icon: walk_medium}
       - {value: over_30,  en: More than 30 minutes,  hi: "आधे घंटे से ज़्यादा", icon: walk_long}
     next: ay_suits
 

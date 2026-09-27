@@ -123,6 +123,9 @@ def check_questions(rep: Report) -> dict[str, dict]:
                                         "— quote labels that contain commas")
                         else:
                             values.append(c["value"])
+                            if slot.get("type") in {"enum", "list_enum"} and not isinstance(c["value"], str):
+                                # YAML 1.1 turns 10_30 into 1030 and yes/no/on/off into booleans
+                                rep.err(qw, f"choice value {c['value']!r} must be a quoted string for {slot['type']}")
                     if len(values) != len(set(map(str, values))):
                         rep.err(qw, "duplicate choice values")
             nxt = q.get("next")
