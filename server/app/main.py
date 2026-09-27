@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import db, routers
 from app.errors import register_error_handlers
+from app.ws import router as ws_router
 
 VERSION = "0.1.0"
 
@@ -38,6 +39,7 @@ def create_app() -> FastAPI:
     def health() -> dict[str, str]:
         return {"status": "ok", "version": VERSION}
 
+    app.include_router(ws_router)
     include_routers(app)
     return app
 

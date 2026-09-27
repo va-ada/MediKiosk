@@ -8,7 +8,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] F2 · Server skeleton — Needs: F1
 - [x] F3 · Data models and database — Needs: F2
 - [x] F4 · Hash-chained audit log — Needs: F3
-- [ ] F5 · WebSocket hub — Needs: F2
+- [x] F5 · WebSocket hub — Needs: F2
 - [ ] F6 · Seed data and staff login — Needs: F3, F4
 
 ## Phase 1 — Walking skeleton (typed answers end to end)
@@ -105,3 +105,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [F3] Enum columns are plain strings (compare with `== Lane.emergency` or `"emergency"`, both work). JSON columns are NOT mutation-tracked — reassign (`fact.value = {**fact.value, "k": v}`), never mutate in place.
 - [F3] Tests: fixtures `engine` (in-memory SQLite, monkeypatched into `app.db.engine`), `db`, `client` (TestClient with lifespan). Use `app.ids.iso_z()` to serialise datetimes (SQLite returns naive UTC).
 - [F4] `audit.record(db, actor, action, entity, entity_id, details)` flushes but does NOT commit — commit it with your change. Postgres uses `pg_advisory_xact_lock` to keep the chain linear. Routes use `db: DbSession` (Annotated dependency in `app/db.py`); put it before params with defaults.
+- [F5] `from app.ws import hub`; call `hub.emit(["queue","display"], "token.created", data)` from sync or async code. The `/ws` router is included explicitly in `main.py` (it lives in `app/ws.py`, not `app/routers/`).
