@@ -1,0 +1,114 @@
+{
+  "session_id": "5f0c-fixture",
+  "version": 3,
+  "generated_at": "2026-10-12T05:31:00Z",
+  "patient": {
+    "id": "a1b2-fixture",
+    "hospital_id": "MK-000123",
+    "name": "Kamla Devi",
+    "age": 62,
+    "sex": "F",
+    "language": "hi",
+    "abha_number": null
+  },
+  "informant": { "type": "self", "relation": null },
+  "token": { "display": "A-017", "department": "ayurveda" },
+  "critical": {
+    "allergies": [{ "fact_id": "f1", "text": "Penicillin — rash", "trust": "patient_said" }],
+    "red_flags": [],
+    "abnormal_labs": [
+      { "fact_id": "f9", "text": "Haemoglobin 10.2 g/dL (ref 12.0–15.0) LOW", "trust": "from_report" }
+    ]
+  },
+  "sections": [
+    {
+      "key": "complaint",
+      "title": "Chief complaint",
+      "opened": false,
+      "approved": false,
+      "items": [
+        { "fact_id": "f2", "text": "Knee pain", "trust": "patient_said", "patient_words": "ghutne mein dard", "flags": [] }
+      ]
+    },
+    {
+      "key": "hpi",
+      "title": "History of present illness",
+      "opened": false,
+      "approved": false,
+      "narrative": "Knee pain for 3 months, worse on climbing stairs; no fever.",
+      "items": [
+        { "fact_id": "f3", "text": "Duration: 90 days", "trust": "patient_said", "patient_words": "teen mahine se", "flags": [] },
+        { "fact_id": "f4", "text": "Worse with: climbing stairs", "trust": "patient_said", "patient_words": "seedhi chadhne par", "flags": [] },
+        { "fact_id": "f5", "text": "Fever: no", "trust": "patient_said", "patient_words": null, "flags": ["patient_unsure"] }
+      ]
+    },
+    {
+      "key": "allergies",
+      "title": "Allergies",
+      "opened": false,
+      "approved": false,
+      "items": [
+        { "fact_id": "f1", "text": "Penicillin — rash", "trust": "patient_said", "patient_words": "penicillin se daane", "flags": [] }
+      ]
+    },
+    {
+      "key": "drugs",
+      "title": "Medicines",
+      "opened": false,
+      "approved": false,
+      "items": [
+        { "fact_id": "f6", "text": "Paracetamol 500 mg when needed", "trust": "patient_said", "patient_words": "dard ki goli", "flags": [] },
+        {
+          "fact_id": "f7",
+          "text": "Metformin 500 mg twice daily",
+          "trust": "from_report",
+          "found_in_documents": true,
+          "source": { "document_id": "d1", "bbox": [120, 340, 400, 28] },
+          "flags": []
+        },
+        {
+          "fact_id": "f8",
+          "text": "Unreadable medicine line",
+          "trust": "from_report",
+          "found_in_documents": true,
+          "source": { "document_id": "d1", "bbox": [120, 400, 420, 28] },
+          "flags": ["unreadable"]
+        }
+      ]
+    },
+    {
+      "key": "labs",
+      "title": "Lab results",
+      "opened": false,
+      "approved": false,
+      "items": [
+        {
+          "fact_id": "f9",
+          "text": "Haemoglobin 10.2 g/dL (ref 12.0–15.0) LOW",
+          "trust": "from_report",
+          "source": { "document_id": "d2", "bbox": [80, 300, 640, 30] },
+          "flags": []
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "d1",
+      "doc_type": "prescription",
+      "doc_date": "2026-08-12",
+      "pinned": false,
+      "image_url": "/api/documents/d1/image",
+      "status": "processed"
+    },
+    {
+      "id": "d2",
+      "doc_type": "lab_report",
+      "doc_date": "2026-09-01",
+      "pinned": true,
+      "image_url": "/api/documents/d2/image",
+      "status": "processed"
+    }
+  ],
+  "new_since_opened": []
+}

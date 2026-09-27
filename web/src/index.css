@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+
+/* Brand colours (src/theme.ts has the same values for use in TS). */
+@theme {
+  --color-navy: #1f497d;
+  --color-brand-orange: #e07b24;
+  --color-brand-green: #1e8e6a;
+  --color-brand-red: #c0392b;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fa;
+  color: #1f2933;
+  font-family: system-ui, 'Segoe UI', Roboto, 'Noto Sans Devanagari', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

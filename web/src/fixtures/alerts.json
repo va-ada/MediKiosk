@@ -1,0 +1,12 @@
+[
+  {
+    "id": "b7e1-fixture", "kiosk_id": "KIOSK-01", "session_id": null, "level": "emergency", "reason_code": "chest_pain",
+    "rule_id": null, "reason_text": "Emergency button: chest pain", "source": "button", "status": "open",
+    "escalated": false, "created_at": "2026-10-12T05:02:11Z", "acknowledged_by": null, "resolved_by": null
+  },
+  {
+    "id": "c2d4-fixture", "kiosk_id": "KIOSK-01", "session_id": "s5", "level": "urgent", "reason_code": null,
+    "rule_id": "fainted_today", "reason_text": "Fainted today", "source": "rule", "status": "acknowledged",
+    "escalated": false, "created_at": "2026-10-12T05:25:40Z", "acknowledged_by": "N1", "resolved_by": null
+  }
+]
