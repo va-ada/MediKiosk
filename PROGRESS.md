@@ -80,7 +80,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [ ] S15 · FHIR bundle builder — Needs: S14, D1
 - [ ] S16 · Outbox worker, island mode, admin health — Needs: S15
 - [ ] W11 · Admin console — Needs: W2, S16
-- [ ] C3 · AYUSH question set — Needs: C1
+- [x] C3 · AYUSH question set — Needs: C1
 - [x] S17 · Terminology search — Needs: F6, C6
 - [ ] W8 · AYUSH tab and diagnosis coding — Needs: W5, S17
   - **Milestone:** FHIR to HIS, island mode, AYUSH tab.
@@ -125,3 +125,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [C5] Samples (A4 1240x1754, English only, Arial): lab_report_cbc (Kamla Devi, 12/08/2026, ref ranges use an en dash `12.0–15.0`, units like `x10^3/uL`), lab_report_diabetes (Rahul Verma, 05/07/2026: FBS 142, PPBS 198 mg/dL, HbA1c 7.4 %), rx_allopathic, rx_ayurveda, discharge_summary, handwritten_style (Bradley Hand — N7 should mark it unreadable/low-conf), plus *_photo.png variants of cbc and rx_allopathic. Regenerate: `uv run --with pillow python scripts/make_samples.py` (deterministic).
 - [N1] BLOCKED: HF gated model — owner must accept terms + hf auth login; skeleton committed, live /asr check pending.
 - [S17] Terminology search: WRatio ≥ 60 as the card says, but word-prefix/substring hits are ranked above pure fuzzy ones ("sandhi" → Sandhigata first). `system` must be NAMASTE | ICD11_TM2 | ICD10 (else 422). Blank `q` → `[]`.
+- [C3] ayush.yaml = 14 history items + 6 Prakriti items (20 questions); an ayurveda joint-pain session is ~35 questions end to end — consider it for demo timing. Dosha pointers (e.g. "thin → Vata") live only in `doctor_note` (doctor-side W8 may show them). Re-run `render_audio.py` (C4) after any question text change.

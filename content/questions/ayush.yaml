@@ -1,0 +1,282 @@
+# DRAFT — clinician review required; align Prakriti items with the Ministry of Ayush Prakriti Parikshan tool
+# AYUSH patient-reportable items (CONTRACTS.md §9.5). Asked after the complaint pathway in ayurveda OPDs.
+# Everyday Hindi only on the patient side; Sanskrit terms live only in `doctor_note` (never sent to the kiosk).
+# Examination items (Nadi, Jihva, Pramana, Sara, Samhanana, Vikriti) are NOT here — the doctor records them.
+id: ayush
+title_en: Ayurveda history
+start: ay_appetite
+questions:
+  - id: ay_appetite
+    type: choice
+    section: ayush
+    doctor_note: "Ahara Shakti — Abhyavaharana Shakti (appetite)"
+    text_en: "How is your appetite?"
+    text_hi: "आपको भूख कैसी लगती है?"
+    slot: {name: appetite, type: enum}
+    choices:
+      - {value: good,     en: Good,                    hi: "अच्छी लगती है",       icon: appetite_good}
+      - {value: low,      en: Low,                     hi: "कम लगती है",          icon: appetite_low}
+      - {value: variable, en: Sometimes more, sometimes less, hi: "कभी ज़्यादा, कभी कम", icon: appetite_variable}
+      - {value: none,     en: Hardly any,              hi: "लगभग नहीं लगती",       icon: appetite_none}
+    next: ay_quantity
+
+  - id: ay_quantity
+    type: choice
+    section: ayush
+    doctor_note: "Ahara Shakti — Jarana Shakti (quantity / digestion capacity)"
+    text_en: "Compared with before, how much do you eat now?"
+    text_hi: "पहले के मुकाबले अब आप कितना खाना खाते हैं?"
+    slot: {name: food_quantity, type: enum}
+    choices:
+      - {value: more, en: More than before, hi: "पहले से ज़्यादा", icon: more}
+      - {value: same, en: About the same,   hi: "पहले जितना",     icon: same}
+      - {value: less, en: Less than before, hi: "पहले से कम",     icon: less}
+    next: ay_exercise
+
+  - id: ay_exercise
+    type: choice
+    section: ayush
+    doctor_note: "Vyayama Shakti (exercise tolerance)"
+    text_en: "How long can you walk without getting tired?"
+    text_hi: "आप बिना थके कितनी देर चल लेते हैं?"
+    slot: {name: exercise_tolerance, type: enum}
+    choices:
+      - {value: under_10, en: Less than 10 minutes,  hi: "10 मिनट से कम",      icon: walk_short}
+      - {value: 10_30,    en: 10 to 30 minutes,      hi: "10 से 30 मिनट",      icon: walk_medium}
+      - {value: over_30,  en: More than 30 minutes,  hi: "आधे घंटे से ज़्यादा", icon: walk_long}
+    next: ay_suits
+
+  - id: ay_suits
+    type: multi
+    section: ayush
+    doctor_note: "Satmya — wholesome (suits the patient)"
+    text_en: "Which of these suit you — you feel well with them?"
+    text_hi: "इनमें से क्या आपको सूट करता है — जिससे आप ठीक महसूस करते हैं?"
+    slot: {name: suits, type: list_enum}
+    choices:
+      - {value: none,        en: None of these,  hi: "इनमें से कुछ नहीं", icon: none}
+      - {value: hot_weather, en: Hot weather,    hi: "गर्मी का मौसम",     icon: sun}
+      - {value: cold_weather, en: Cold weather,  hi: "ठंड का मौसम",       icon: snow}
+      - {value: warm_food,   en: Warm food,      hi: "गरम खाना",          icon: warm_food}
+      - {value: cold_food,   en: Cold food and drinks, hi: "ठंडा खाना-पीना", icon: cold_drink}
+      - {value: milk,        en: Milk,           hi: "दूध",               icon: milk}
+      - {value: curd,        en: Curd,           hi: "दही",               icon: curd}
+      - {value: spicy_food,  en: Spicy food,     hi: "तीखा खाना",         icon: chilli}
+    next: ay_upsets
+
+  - id: ay_upsets
+    type: multi
+    section: ayush
+    doctor_note: "Asatmya — unwholesome (upsets the patient)"
+    text_en: "Which of these upset you or make you feel worse?"
+    text_hi: "इनमें से किससे आपको तकलीफ़ होती है या तबियत बिगड़ती है?"
+    slot: {name: upsets, type: list_enum}
+    choices:
+      - {value: none,         en: None of these,  hi: "इनमें से कुछ नहीं", icon: none}
+      - {value: hot_weather,  en: Hot weather,    hi: "गर्मी का मौसम",     icon: sun}
+      - {value: cold_weather, en: Cold weather,   hi: "ठंड का मौसम",       icon: snow}
+      - {value: rainy_season, en: Rainy season,   hi: "बरसात का मौसम",     icon: rain}
+      - {value: spicy_food,   en: Spicy food,     hi: "तीखा खाना",         icon: chilli}
+      - {value: oily_food,    en: Oily or fried food, hi: "तला-भुना खाना", icon: fried}
+      - {value: sour_food,    en: Sour food,      hi: "खट्टा खाना",        icon: sour}
+      - {value: milk,         en: Milk,           hi: "दूध",               icon: milk}
+      - {value: curd,         en: Curd,           hi: "दही",               icon: curd}
+      - {value: cold_food,    en: Cold food and drinks, hi: "ठंडा खाना-पीना", icon: cold_drink}
+    next: ay_digestion
+
+  - id: ay_digestion
+    type: multi
+    section: ayush
+    doctor_note: "Agni (digestive fire) — Vishama / Tikshna / Manda pointers"
+    text_en: "After meals, do you get any of these?"
+    text_hi: "खाना खाने के बाद क्या इनमें से कुछ होता है?"
+    slot: {name: after_meals, type: list_enum}
+    choices:
+      - {value: none,      en: Nothing,              hi: "कुछ नहीं होता",      icon: none}
+      - {value: gas,       en: Gas or bloating,      hi: "गैस या पेट फूलना",   icon: gas}
+      - {value: acidity,   en: Acidity or burning,   hi: "खट्टी डकार या जलन",  icon: acidity}
+      - {value: heaviness, en: Heaviness or sleepiness, hi: "भारीपन या नींद आना", icon: heavy}
+    next: ay_bowel_freq
+
+  - id: ay_bowel_freq
+    type: choice
+    section: ayush
+    doctor_note: "Koshtha (bowel habit) — frequency"
+    text_en: "How often do you pass stool?"
+    text_hi: "आपका पेट कितनी बार साफ़ होता है?"
+    slot: {name: bowel_frequency, type: enum}
+    choices:
+      - {value: more_than_daily, en: More than once a day, hi: "दिन में एक से ज़्यादा बार", icon: bowel_more}
+      - {value: daily,           en: Once a day,           hi: "रोज़ एक बार",              icon: bowel_daily}
+      - {value: alternate_days,  en: Every 2 days,         hi: "दो दिन में एक बार",         icon: bowel_alt}
+      - {value: less_often,      en: Less often than that, hi: "उससे भी कम",               icon: bowel_less}
+    next: ay_bowel_type
+
+  - id: ay_bowel_type
+    type: choice
+    section: ayush
+    doctor_note: "Koshtha — Krura (hard) / Madhya / Mridu (soft)"
+    text_en: "Is your stool usually hard, normal or loose?"
+    text_hi: "मल आमतौर पर कैसा होता है — सख़्त, ठीक या पतला?"
+    slot: {name: stool_type, type: enum}
+    choices:
+      - {value: hard,    en: Hard,           hi: "सख़्त",        icon: stool_hard}
+      - {value: normal,  en: Normal,         hi: "ठीक-ठाक",      icon: stool_normal}
+      - {value: loose,   en: Loose,          hi: "पतला",         icon: stool_loose}
+      - {value: changes, en: Keeps changing, hi: "बदलता रहता है", icon: stool_changes}
+    next: ay_meal_times
+
+  - id: ay_meal_times
+    type: yesno
+    section: ayush
+    doctor_note: "Ahara Vidhi — regularity of meals"
+    text_en: "Do you eat your meals at about the same time every day?"
+    text_hi: "क्या आप रोज़ लगभग एक ही समय पर खाना खाते हैं?"
+    slot: {name: regular_meals, type: bool}
+    next: ay_diet
+
+  - id: ay_diet
+    type: choice
+    section: ayush
+    doctor_note: "Ahara — diet type"
+    text_en: "What do you usually eat?"
+    text_hi: "आप आमतौर पर क्या खाते हैं?"
+    slot: {name: diet_type, type: enum}
+    choices:
+      - {value: veg,     en: Vegetarian,             hi: "शाकाहारी",          icon: veg}
+      - {value: egg,     en: Vegetarian and eggs,    hi: "शाकाहारी और अंडा",   icon: egg}
+      - {value: non_veg, en: Non-vegetarian,         hi: "मांसाहारी",          icon: non_veg}
+    next: ay_spicy
+
+  - id: ay_spicy
+    type: choice
+    section: ayush
+    doctor_note: "Ahara — Katu / Snigdha excess (spicy, oily)"
+    text_en: "How often do you eat spicy, oily or fried food?"
+    text_hi: "आप तीखा, तेल वाला या तला-भुना खाना कितनी बार खाते हैं?"
+    slot: {name: spicy_oily, type: enum}
+    choices:
+      - {value: daily,  en: Every day,           hi: "रोज़",              icon: daily}
+      - {value: weekly, en: A few times a week,  hi: "हफ़्ते में कुछ बार",  icon: weekly}
+      - {value: rarely, en: Rarely,              hi: "कभी-कभार",          icon: rarely}
+    next: ay_sleep_hours
+
+  - id: ay_sleep_hours
+    type: number
+    section: ayush
+    doctor_note: "Nidra (sleep) — hours"
+    text_en: "How many hours do you sleep at night?"
+    text_hi: "रात में आप कितने घंटे सोते हैं?"
+    slot: {name: sleep_hours, type: number}
+    choices:  # voice fallback
+      - {value: 4,  en: About 4 hours,  hi: "लगभग 4 घंटे",  icon: sleep_4}
+      - {value: 6,  en: About 6 hours,  hi: "लगभग 6 घंटे",  icon: sleep_6}
+      - {value: 8,  en: About 8 hours,  hi: "लगभग 8 घंटे",  icon: sleep_8}
+      - {value: 10, en: 10 hours or more, hi: "10 घंटे या ज़्यादा", icon: sleep_10}
+    next: ay_day_sleep
+
+  - id: ay_day_sleep
+    type: yesno
+    section: ayush
+    doctor_note: "Divaswapna (day sleep)"
+    text_en: "Do you sleep during the day?"
+    text_hi: "क्या आप दिन में सोते हैं?"
+    slot: {name: day_sleep, type: bool}
+    next: ay_triggers
+
+  - id: ay_triggers
+    type: multi
+    section: ayush
+    doctor_note: "Nidana (causative / aggravating factors) as perceived by the patient"
+    text_en: "What do you think makes your problem worse?"
+    text_hi: "आपको क्या लगता है, आपकी तकलीफ़ किस वजह से बढ़ती है?"
+    slot: {name: triggers, type: list_enum}
+    choices:
+      - {value: dont_know,    en: I don't know,       hi: "पता नहीं",          icon: not_sure}
+      - {value: cold_weather, en: Cold weather,       hi: "ठंड का मौसम",       icon: snow}
+      - {value: rainy_season, en: Rainy season,       hi: "बरसात का मौसम",     icon: rain}
+      - {value: heavy_work,   en: Heavy work,         hi: "भारी काम",          icon: heavy_work}
+      - {value: long_sitting, en: Sitting for long,   hi: "देर तक बैठना",       icon: sitting}
+      - {value: stress,       en: Worry or stress,    hi: "चिंता या तनाव",      icon: stress}
+      - {value: late_nights,  en: Sleeping late,      hi: "देर रात तक जागना",   icon: late_night}
+      - {value: food,         en: Some food,          hi: "कुछ खाने से",        icon: food}
+    next: pk_frame
+
+  # Prakriti mini-questionnaire (6 items). Dosha pointers are in doctor_note only.
+  - id: pk_frame
+    type: choice
+    section: ayush
+    doctor_note: "Prakriti — Sharira (build): thin → Vata, medium → Pitta, broad/heavy → Kapha"
+    text_en: "Since young age, how has your body build been?"
+    text_hi: "बचपन से आपका शरीर कैसा रहा है?"
+    slot: {name: pk_frame, type: enum}
+    choices:
+      - {value: thin,   en: Thin,           hi: "दुबला-पतला",     icon: frame_thin}
+      - {value: medium, en: Medium,         hi: "बीच का",         icon: frame_medium}
+      - {value: broad,  en: Broad or heavy, hi: "चौड़ा या भारी",  icon: frame_broad}
+    next: pk_skin
+
+  - id: pk_skin
+    type: choice
+    section: ayush
+    doctor_note: "Prakriti — Twak (skin): dry → Vata, warm/reddish → Pitta, smooth/oily → Kapha"
+    text_en: "How is your skin usually?"
+    text_hi: "आपकी त्वचा आमतौर पर कैसी रहती है?"
+    slot: {name: pk_skin, type: enum}
+    choices:
+      - {value: dry,    en: Dry,                        hi: "रूखी",                    icon: skin_dry}
+      - {value: warm,   en: Warm, gets red easily,      hi: "गरम, जल्दी लाल हो जाती है", icon: skin_warm}
+      - {value: smooth, en: Smooth and soft,            hi: "चिकनी और मुलायम",          icon: skin_smooth}
+    next: pk_appetite
+
+  - id: pk_appetite
+    type: choice
+    section: ayush
+    doctor_note: "Prakriti — Kshudha (hunger): irregular → Vata, sharp → Pitta, slow/steady → Kapha"
+    text_en: "Since young age, how has your hunger been?"
+    text_hi: "बचपन से आपकी भूख कैसी रही है?"
+    slot: {name: pk_appetite, type: enum}
+    choices:
+      - {value: irregular, en: Irregular,                        hi: "कभी ज़्यादा, कभी कम",         icon: appetite_variable}
+      - {value: sharp,     en: Strong — can't stay hungry,       hi: "तेज़ — भूख बर्दाश्त नहीं होती", icon: appetite_sharp}
+      - {value: steady,    en: Slow but steady,                  hi: "धीमी पर एक जैसी",            icon: appetite_steady}
+    next: pk_sleep
+
+  - id: pk_sleep
+    type: choice
+    section: ayush
+    doctor_note: "Prakriti — Nidra: light → Vata, moderate → Pitta, deep/long → Kapha"
+    text_en: "How is your sleep usually?"
+    text_hi: "आपकी नींद आमतौर पर कैसी होती है?"
+    slot: {name: pk_sleep, type: enum}
+    choices:
+      - {value: light,    en: Light, breaks easily, hi: "हल्की, जल्दी टूट जाती है", icon: sleep_light}
+      - {value: moderate, en: Moderate,             hi: "ठीक-ठाक",               icon: sleep_moderate}
+      - {value: deep,     en: Deep and long,        hi: "गहरी और लंबी",           icon: sleep_deep}
+    next: pk_temperament
+
+  - id: pk_temperament
+    type: choice
+    section: ayush
+    doctor_note: "Prakriti — Manas (temperament): changeable → Vata, intense/irritable → Pitta, calm → Kapha"
+    text_en: "How would you describe your nature?"
+    text_hi: "आप अपने स्वभाव को कैसा मानते हैं?"
+    slot: {name: pk_temperament, type: enum}
+    choices:
+      - {value: changeable, en: Quick, mind keeps changing, hi: "फुर्तीला, मन बदलता रहता है", icon: mood_quick}
+      - {value: intense,    en: Sharp, gets angry quickly,   hi: "तेज़, जल्दी ग़ुस्सा आता है", icon: mood_sharp}
+      - {value: calm,       en: Calm and patient,            hi: "शांत और धीरज वाला",          icon: mood_calm}
+    next: pk_weather
+
+  - id: pk_weather
+    type: choice
+    section: ayush
+    doctor_note: "Prakriti — weather intolerance: cold → Vata, heat → Pitta, damp/cold-humid → Kapha"
+    text_en: "Which weather do you dislike the most?"
+    text_hi: "आपको कौन सा मौसम सबसे बुरा लगता है?"
+    slot: {name: pk_weather, type: enum}
+    choices:
+      - {value: cold, en: Cold,             hi: "ठंड",           icon: snow}
+      - {value: heat, en: Heat,             hi: "गर्मी",          icon: sun}
+      - {value: damp, en: Damp and rainy,   hi: "नमी और बरसात",   icon: rain}
+    next: end
