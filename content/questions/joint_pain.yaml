@@ -53,7 +53,7 @@ questions:
     slot: {name: onset, type: enum}
     choices:
       - {value: sudden,  en: Suddenly,   hi: "अचानक",     icon: sudden}
-      - {value: gradual, en: Slowly, over time, hi: "धीरे-धीरे", icon: gradual}
+      - {value: gradual, en: "Slowly, over time",hi: "धीरे-धीरे", icon: gradual}
     next: jp_character
 
   - id: jp_character

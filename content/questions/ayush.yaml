@@ -16,7 +16,7 @@ questions:
     choices:
       - {value: good,     en: Good,                    hi: "अच्छी लगती है",       icon: appetite_good}
       - {value: low,      en: Low,                     hi: "कम लगती है",          icon: appetite_low}
-      - {value: variable, en: Sometimes more, sometimes less, hi: "कभी ज़्यादा, कभी कम", icon: appetite_variable}
+      - {value: variable, en: "Sometimes more, sometimes less", hi: "कभी ज़्यादा, कभी कम", icon: appetite_variable}
       - {value: none,     en: Hardly any,              hi: "लगभग नहीं लगती",       icon: appetite_none}
     next: ay_quantity
 
@@ -225,7 +225,7 @@ questions:
     slot: {name: pk_skin, type: enum}
     choices:
       - {value: dry,    en: Dry,                        hi: "रूखी",                    icon: skin_dry}
-      - {value: warm,   en: Warm, gets red easily,      hi: "गरम, जल्दी लाल हो जाती है", icon: skin_warm}
+      - {value: warm,   en: "Warm, gets red easily",     hi: "गरम, जल्दी लाल हो जाती है", icon: skin_warm}
       - {value: smooth, en: Smooth and soft,            hi: "चिकनी और मुलायम",          icon: skin_smooth}
     next: pk_appetite
 
@@ -250,7 +250,7 @@ questions:
     text_hi: "आपकी नींद आमतौर पर कैसी होती है?"
     slot: {name: pk_sleep, type: enum}
     choices:
-      - {value: light,    en: Light, breaks easily, hi: "हल्की, जल्दी टूट जाती है", icon: sleep_light}
+      - {value: light,    en: "Light, breaks easily",hi: "हल्की, जल्दी टूट जाती है", icon: sleep_light}
       - {value: moderate, en: Moderate,             hi: "ठीक-ठाक",               icon: sleep_moderate}
       - {value: deep,     en: Deep and long,        hi: "गहरी और लंबी",           icon: sleep_deep}
     next: pk_temperament
@@ -263,8 +263,8 @@ questions:
     text_hi: "आप अपने स्वभाव को कैसा मानते हैं?"
     slot: {name: pk_temperament, type: enum}
     choices:
-      - {value: changeable, en: Quick, mind keeps changing, hi: "फुर्तीला, मन बदलता रहता है", icon: mood_quick}
-      - {value: intense,    en: Sharp, gets angry quickly,   hi: "तेज़, जल्दी ग़ुस्सा आता है", icon: mood_sharp}
+      - {value: changeable, en: "Quick, mind keeps changing",hi: "फुर्तीला, मन बदलता रहता है", icon: mood_quick}
+      - {value: intense,    en: "Sharp, gets angry quickly",hi: "तेज़, जल्दी ग़ुस्सा आता है", icon: mood_sharp}
       - {value: calm,       en: Calm and patient,            hi: "शांत और धीरज वाला",          icon: mood_calm}
     next: pk_weather
 

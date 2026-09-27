@@ -20,6 +20,7 @@ COMPLAINT_CODES = {"joint_pain", "fever", "cough", "stomach", "headache", "chest
 REDFLAG_SLOTS = ["chest_pain", "breathless", "stroke_signs", "heavy_bleeding", "fainted"]
 CONDITION_OPS = {"is", "in", "gte", "lte"}
 ALERT_LEVELS = {"urgent", "emergency"}
+CHOICE_KEYS = {"value", "en", "hi", "icon"}
 # question type → slot types that make sense for it
 TYPE_SLOTS = {
     "choice": {"enum", "string"},
@@ -116,6 +117,10 @@ def check_questions(rep: Report) -> dict[str, dict]:
                     for c in choices:
                         if not isinstance(c, dict) or "value" not in c or not c.get("en") or not c.get("hi"):
                             rep.err(qw, f"choice needs value, en and hi: {c!r}")
+                        elif set(c) - CHOICE_KEYS:
+                            # usually an unquoted comma in a flow mapping: {en: Slowly, over time} splits the label
+                            rep.err(qw, f"choice {c['value']!r} has unknown keys {sorted(set(c) - CHOICE_KEYS)} "
+                                        "— quote labels that contain commas")
                         else:
                             values.append(c["value"])
                     if len(values) != len(set(map(str, values))):
