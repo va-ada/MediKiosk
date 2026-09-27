@@ -13,6 +13,7 @@ import httpx
 import yaml
 from pydantic import BaseModel
 
+from app import negation
 from app.config import settings
 from app.normalize import normalize, to_days
 
@@ -278,7 +279,10 @@ async def extract(req: ExtractIn) -> ExtractOut:
             notes.append(f"{s.name} {slots[s.name]} replaced by {days} from '{phrase}'")
         slots[s.name] = days
 
-    # TODO(N4): negation double-check (negation.check) — flags "bukhar nahi" read as fever=true.
+    # Negation double-check: "bukhar nahi hai" read as fever=true → null + uncertain.
+    slots, neg_notes, neg_uncertain = negation.check(req.text, slots)
+    notes += neg_notes
+    uncertain = uncertain or neg_uncertain
 
     if all(v is None for v in slots.values()) and not uncertain:
         notes.append("nothing extracted")

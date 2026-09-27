@@ -40,7 +40,7 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [x] C2 · Red-flag rules, lexicon, festivals — Needs: C1
 - [x] N2 · Normalisation: folk terms and time phrases — Needs: N1, C2
 - [x] N3 · Schema-constrained extraction (`/extract`) — Needs: N2
-- [ ] N4 · Negation double-check — Needs: N3
+- [x] N4 · Negation double-check — Needs: N3
 - [ ] S7 · Voice answers via NLP — Needs: S6, N3
 - [ ] C4 · Render audio prompts — Needs: C1, C2
 - [ ] A9 · Audio prompt playback — Needs: A2, C4
@@ -126,3 +126,4 @@ Tick a task only when its Acceptance checks pass. Run `/clear` between tasks and
 - [N1] BLOCKED: HF gated model — owner must accept terms + hf auth login; skeleton committed, live /asr check pending.
 - [N2] `normalize(text, language, today=None)` (today defaults to Asia/Kolkata date); durations = number(word|digit, incl. dedh/dhai)+unit with optional for/since/pichhle before and se/ago/pehle after, plus relative (kal 1, parson 2, pichhle hafte/mahine/saal, last week…) and festivals (only dated entries ≤ today). Days round half up (2.5 yr = 913). Terms are whole-token, longest-first.
 - [N3] `/extract` never 5xx for Ollama trouble: Ollama down/HTTP error → 200 `uncertain` + note `language model unavailable` (S7 shows fallback choices). Also `uncertain` when every slot is null (`nothing extracted`). Rule-based `normalize()` duration **overrides** the model's (the 3B model says 15/30 for "teen mahine"), with a note. Prompt adds choice labels (en, hi) looked up by slot name from content/questions/*.yaml — the 3B model maps "ghutne"→knee only with them; it is reliable single-slot (~0.5 s warm), weaker multi-slot Devanagari. Manual: `python3 scripts/try_extract.py [--question jp_x] "text"` (re-execs via `uv run --project nlp`).
+- [N4] `negation.check(text, slots, slot_keywords=None)` only touches slots the model set to `true` that are in the keyword map (fever, swelling, injury, chest_pain, breathless, fainted); window = 3 tokens either side; conservative ("haan bukhar hai, sujan nahi" also drops fever → uncertain → tap). Note text: `fever=true dropped: negation 'nahi hai' near 'bukhar'`.
